@@ -11,5 +11,12 @@ public class ReadMeFirst {
     * private Context context = MainActivity.this;
     *
     * Nama variable padakna bae karo sing neng XML
+    *
+    * kie kumpulan library
+    * - Sweet alert (https://github.com/pedant/sweet-alert-dialog)
+    * - Material shadow (https://github.com/harjot-oberai/MaterialShadows)
+    * - Material icon (https://github.com/code-mc/material-icon-lib)
+    *   - 2000 icon di https://materialdesignicons.com/
+    * - Android bootsrap (https://github.com/Bearded-Hen/Android-Bootstrap)
     * */
 }
