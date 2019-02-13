@@ -15,6 +15,7 @@
         android:layout_margin="5dp"
         android:orientation="horizontal">
         <android.support.v7.widget.CardView
+            android:id="@+id/card_absen"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clickable="true"
@@ -25,15 +26,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="5dp"
+                android:orientation="vertical"
                 android:layout_margin="2dp">
                 <rfl.trn.com.starr_cell.Custom.MyTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="18sp"
                     android:text="Absensi"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:src="@drawable/ic_absen"/>
             </LinearLayout>
 
         </android.support.v7.widget.CardView>
         <android.support.v7.widget.CardView
+            android:id="@+id/card_inventory"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:cardElevation="4dp"
@@ -43,11 +53,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="5dp"
+                android:orientation="vertical"
                 android:layout_margin="2dp">
                 <rfl.trn.com.starr_cell.Custom.MyTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="18sp"
                     android:text="Inventory"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:src="@drawable/ic_inventory"/>
             </LinearLayout>
         </android.support.v7.widget.CardView>
     </LinearLayout>
@@ -58,6 +76,7 @@
        android:orientation="horizontal"
        android:weightSum="4">
        <android.support.v7.widget.CardView
+           android:id="@+id/card_income"
            android:layout_width="match_parent"
            android:layout_height="match_parent"
            android:layout_margin="5dp"
@@ -67,14 +86,23 @@
                android:layout_width="match_parent"
                android:layout_height="match_parent"
                android:padding="5dp"
+               android:orientation="vertical"
                android:layout_margin="2dp">
                <rfl.trn.com.starr_cell.Custom.MyTextView
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
+                   android:textSize="18sp"
                    android:text="Income"/>
+               <ImageView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="10dp"
+                   android:src="@drawable/ic_income"/>
            </LinearLayout>
        </android.support.v7.widget.CardView>
        <android.support.v7.widget.CardView
+           android:id="@+id/card_jual"
            android:layout_width="match_parent"
            android:layout_height="match_parent"
            app:cardElevation="4dp"
@@ -84,11 +112,19 @@
                android:layout_width="match_parent"
                android:layout_height="match_parent"
                android:padding="5dp"
+               android:orientation="vertical"
                android:layout_margin="2dp">
                <rfl.trn.com.starr_cell.Custom.MyTextView
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
+                   android:textSize="18sp"
                    android:text="Jual"/>
+               <ImageView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="10dp"
+                   android:layout_marginBottom="10dp"
+                   android:src="@drawable/ic_sell"/>
            </LinearLayout>
        </android.support.v7.widget.CardView>
    </LinearLayout>
