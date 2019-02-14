@@ -11,13 +11,15 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        tool:replace="android:icon"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tool:replace="android:icon">
+        <activity android:name=".Activity.Login"></activity>
         <activity
             android:name=".Activity.Dashboard"
             android:label="@string/title_activity_dashboard"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".Activity.Login">
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activity.Splash"
+            android:theme="@style/Theme.Design.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

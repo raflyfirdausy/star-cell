@@ -47,6 +47,8 @@ dependencies {
     //TODO :: androidbootsrap (https://github.com/Bearded-Hen/Android-Bootstrap)
     implementation 'com.beardedhen:androidbootstrap:2.3.2'
 
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.+'
+
 
 }
 apply plugin: 'com.google.gms.google-services'
