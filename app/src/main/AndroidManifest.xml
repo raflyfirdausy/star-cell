@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tool="http://schemas.android.com/tools"
-    package="rfl.trn.com.starr_cell">
+    package="com.rfl.trn.starr_cell">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -13,12 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tool:replace="android:icon">
-        <activity android:name=".Activity.Login"></activity>
+        <activity android:name="com.rfl.trn.starr_cell.Activity.Login"></activity>
         <activity
-            android:name=".Activity.Dashboard"
+            android:name="com.rfl.trn.starr_cell.Activity.Dashboard"
             android:label="@string/title_activity_dashboard"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activity.Splash"
+        <activity android:name="com.rfl.trn.starr_cell.Activity.Splash"
             android:theme="@style/Theme.Design.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,7 +26,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.MainActivity" />
+        <activity android:name="com.rfl.trn.starr_cell.Activity.MainActivity" />
     </application>
 
 </manifest>

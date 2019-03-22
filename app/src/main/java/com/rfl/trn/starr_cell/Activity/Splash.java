@@ -1,4 +1,4 @@
-package rfl.trn.com.starr_cell.Activity;
+package com.rfl.trn.starr_cell.Activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,7 +6,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import rfl.trn.com.starr_cell.R;
+import com.rfl.trn.starr_cell.R;
 
 public class Splash extends AppCompatActivity {
     private Context context;

@@ -1,26 +1,25 @@
-package rfl.trn.com.starr_cell.Custom;
+package com.rfl.trn.starr_cell.Custom;
 
 import android.content.Context;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 /**
  * Created by one on 3/12/15.
  */
-public class MyTextView extends android.support.v7.widget.AppCompatTextView {
+public class MyEditText extends android.support.v7.widget.AppCompatEditText {
 
-    public MyTextView(Context context, AttributeSet attrs, int defStyle) {
+    public MyEditText(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }
 
-    public MyTextView(Context context, AttributeSet attrs) {
+    public MyEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public MyTextView(Context context) {
+    public MyEditText(Context context) {
         super(context);
         init();
     }

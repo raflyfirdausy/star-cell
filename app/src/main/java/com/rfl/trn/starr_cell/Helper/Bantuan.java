@@ -1,4 +1,4 @@
-package rfl.trn.com.starr_cell.Helper;
+package com.rfl.trn.starr_cell.Helper;
 
 import android.app.AlertDialog;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package rfl.trn.com.starr_cell;
+package com.rfl.trn.starr_cell;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

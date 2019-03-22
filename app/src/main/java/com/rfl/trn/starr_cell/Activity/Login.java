@@ -1,4 +1,4 @@
-package rfl.trn.com.starr_cell.Activity;
+package com.rfl.trn.starr_cell.Activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,9 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rfl.trn.com.starr_cell.Custom.MyEditText;
-import rfl.trn.com.starr_cell.Custom.MyTextView;
-import rfl.trn.com.starr_cell.R;
+import com.rfl.trn.starr_cell.Custom.MyEditText;
+import com.rfl.trn.starr_cell.Custom.MyTextView;
+import com.rfl.trn.starr_cell.R;
 
 public class Login extends AppCompatActivity {
     private Context  context;

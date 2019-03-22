@@ -1,4 +1,4 @@
-package rfl.trn.com.starr_cell.Activity;
+package com.rfl.trn.starr_cell.Activity;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,7 +15,7 @@ import android.view.MenuItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rfl.trn.com.starr_cell.R;
+import com.rfl.trn.starr_cell.R;
 
 public class Dashboard extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {

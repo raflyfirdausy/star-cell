@@ -28,7 +28,7 @@
                 android:padding="5dp"
                 android:orientation="vertical"
                 android:layout_margin="2dp">
-                <rfl.trn.com.starr_cell.Custom.MyTextView
+                <com.rfl.trn.starr_cell.Custom.MyTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
@@ -55,7 +55,7 @@
                 android:padding="5dp"
                 android:orientation="vertical"
                 android:layout_margin="2dp">
-                <rfl.trn.com.starr_cell.Custom.MyTextView
+                <com.rfl.trn.starr_cell.Custom.MyTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
@@ -88,7 +88,7 @@
                android:padding="5dp"
                android:orientation="vertical"
                android:layout_margin="2dp">
-               <rfl.trn.com.starr_cell.Custom.MyTextView
+               <com.rfl.trn.starr_cell.Custom.MyTextView
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:textSize="18sp"
@@ -114,7 +114,7 @@
                android:padding="5dp"
                android:orientation="vertical"
                android:layout_margin="2dp">
-               <rfl.trn.com.starr_cell.Custom.MyTextView
+               <com.rfl.trn.starr_cell.Custom.MyTextView
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:textSize="18sp"

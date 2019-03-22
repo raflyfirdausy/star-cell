@@ -1,4 +1,4 @@
-package rfl.trn.com.starr_cell;
+package com.rfl.trn.starr_cell;
 
 public class ReadMeFirst {
     /*

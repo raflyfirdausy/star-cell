@@ -23,7 +23,7 @@
 
         android:orientation="vertical"
         >
-        <rfl.trn.com.starr_cell.Custom.MyTextView
+        <com.rfl.trn.starr_cell.Custom.MyTextView
             android:id="@+id/head"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
             android:textColorHint="@color/colorhint"
             android:textColor="@color/colortext">
 
-            <rfl.trn.com.starr_cell.Custom.MyEditText
+            <com.rfl.trn.starr_cell.Custom.MyEditText
                 android:id="@+id/myet_email"
                 android:textSize="16dp"
                 android:layout_width="match_parent"
@@ -85,7 +85,7 @@
 
 
 
-            <rfl.trn.com.starr_cell.Custom.MyEditText
+            <com.rfl.trn.starr_cell.Custom.MyEditText
                 android:id="@+id/myet_password"
                 android:textSize="16dp"
                 android:layout_width="match_parent"
@@ -136,7 +136,7 @@
 
 
                 />
-            <rfl.trn.com.starr_cell.Custom.MyTextView
+            <com.rfl.trn.starr_cell.Custom.MyTextView
                 android:layout_weight="2.3"
                 android:id="@+id/forgotpass"
                 android:layout_width="0dp"
@@ -151,7 +151,7 @@
 
         </LinearLayout>
 
-        <rfl.trn.com.starr_cell.Custom.MyTextView
+        <com.rfl.trn.starr_cell.Custom.MyTextView
 
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
