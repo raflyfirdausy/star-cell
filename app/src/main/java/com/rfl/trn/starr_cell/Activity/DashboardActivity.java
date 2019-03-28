@@ -17,7 +17,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.rfl.trn.starr_cell.R;
 
-public class Dashboard extends AppCompatActivity
+public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private Context context;
 
@@ -41,7 +41,7 @@ public class Dashboard extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         ButterKnife.bind(this);
-        context = Dashboard.this;
+        context = DashboardActivity.this;
 
         setSupportActionBar(toolbar);
 

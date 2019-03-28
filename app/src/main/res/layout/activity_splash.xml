@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:theme="@style/Theme.Design.NoActionBar"
-    tools:context=".Activity.Splash">
+    tools:context=".Activity.SplashActivity">
     <pl.droidsonroids.gif.GifImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

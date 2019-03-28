@@ -12,7 +12,7 @@ import com.rfl.trn.starr_cell.Custom.MyEditText;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
 import com.rfl.trn.starr_cell.R;
 
-public class Login extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
     private Context  context;
 
     @BindView(R.id.myet_email)
@@ -27,11 +27,11 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        context = Login.this;
+        context = LoginActivity.this;
     }
 
     @OnClick(R.id.btn_login)
     void login(){
-        startActivity(new Intent(context,Dashboard.class));
+        startActivity(new Intent(context, DashboardActivity.class));
     }
 }

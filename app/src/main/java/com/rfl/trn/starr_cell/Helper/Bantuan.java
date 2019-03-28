@@ -2,7 +2,6 @@ package com.rfl.trn.starr_cell.Helper;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.os.Build;
 import android.widget.Toast;
 
 public class Bantuan {
@@ -23,44 +22,33 @@ public class Bantuan {
 
     public void alertDialogDebugging(String pesan) {
         AlertDialog.Builder builder;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder = new AlertDialog.Builder(context, android.R.style.Theme_Material_Dialog_Alert);
-        } else {
-            builder = new AlertDialog.Builder(context);
-        }
+        builder = new AlertDialog.Builder(context);
         builder.setTitle("Info Debugging")
                 .setMessage(pesan)
                 .setPositiveButton(android.R.string.yes, null)
-                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setCancelable(false)
                 .show();
     }
 
     public void alertDialogPeringatan(String pesan) {
         AlertDialog.Builder builder;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder = new AlertDialog.Builder(context, android.R.style.Theme_Material_Dialog_Alert);
-        } else {
-            builder = new AlertDialog.Builder(context);
-        }
+        builder = new AlertDialog.Builder(context);
         builder.setTitle("Peringatan")
                 .setMessage(pesan)
                 .setPositiveButton(android.R.string.yes, null)
-                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setCancelable(false)
                 .show();
     }
 
     public void alertDialogInformasi(String pesan) {
         AlertDialog.Builder builder;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder = new AlertDialog.Builder(context, android.R.style.Theme_Material_Dialog_Alert);
-        } else {
-            builder = new AlertDialog.Builder(context);
-        }
+        builder = new AlertDialog.Builder(context);
         builder.setTitle("Informasi")
                 .setMessage(pesan)
                 .setPositiveButton(android.R.string.yes, null)
-                .setIcon(android.R.drawable.ic_dialog_info)
+                .setCancelable(false)
                 .show();
     }
+
 
 }

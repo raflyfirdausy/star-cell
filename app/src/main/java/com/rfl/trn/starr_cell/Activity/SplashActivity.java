@@ -8,18 +8,18 @@ import android.os.Bundle;
 
 import com.rfl.trn.starr_cell.R;
 
-public class Splash extends AppCompatActivity {
+public class SplashActivity extends AppCompatActivity {
     private Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        context = Splash.this;
+        context = SplashActivity.this;
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(context,Login.class));
+                startActivity(new Intent(context, LoginActivity.class));
             }
         },1000);
     }

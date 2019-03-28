@@ -4,6 +4,8 @@
     package="com.rfl.trn.starr_cell">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:allowBackup="true"
@@ -12,21 +14,32 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tool:replace="android:icon">
-        <activity android:name="com.rfl.trn.starr_cell.Activity.Login"></activity>
+        tool:replace="android:icon"
+        tool:ignore="GoogleAppIndexingWarning">
+
+        <activity android:name="com.rfl.trn.starr_cell.Activity.LoginActivity"
+            tool:ignore="InnerclassSeparator"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBarTransparent" />
+
         <activity
-            android:name="com.rfl.trn.starr_cell.Activity.Dashboard"
+            android:name="com.rfl.trn.starr_cell.Activity.DashboardActivity"
             android:label="@string/title_activity_dashboard"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="com.rfl.trn.starr_cell.Activity.Splash"
-            android:theme="@style/Theme.Design.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            tool:ignore="InnerclassSeparator" />
+
+        <activity android:name="com.rfl.trn.starr_cell.Activity.SplashActivity"
+            android:theme="@style/Theme.Design.NoActionBar"
+            tool:ignore="InnerclassSeparator">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.rfl.trn.starr_cell.Activity.MainActivity" />
+        <activity android:name="com.rfl.trn.starr_cell.Activity.MainActivity"
+            tool:ignore="InnerclassSeparator" />
     </application>
 
 </manifest>

@@ -16,7 +16,7 @@ public class ReadMeFirst {
     * - Sweet alert (https://github.com/pedant/sweet-alert-dialog)
     * - Material shadow (https://github.com/harjot-oberai/MaterialShadows)
     * - Material icon (https://github.com/code-mc/material-icon-lib)
-    *   - 2000 icon di https://materialdesignicons.com/
+    * - 2000 icon di https://materialdesignicons.com/
     * - Android bootsrap (https://github.com/Bearded-Hen/Android-Bootstrap)
     * */
 }

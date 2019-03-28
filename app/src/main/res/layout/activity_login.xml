@@ -1,194 +1,190 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.Login">
-    <FrameLayout
-        android:id="@+id/frame"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:background="@drawable/teacherbg"
-        android:scaleType="centerCrop"
+    android:background="@drawable/side_nav_bar"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:weightSum="100"
+    tools:context=".Activity.LoginActivity">
 
-        >
-    </FrameLayout>
     <LinearLayout
-        android:layout_below="@+id/frame"
-        android:id="@+id/linear"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
+        android:layout_height="0dp"
+        android:layout_weight="85"
         android:orientation="vertical"
-        >
-        <com.rfl.trn.starr_cell.Custom.MyTextView
-            android:id="@+id/head"
+        android:padding="30dp">
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Login Karyawan"
-            android:textColor="#4c565f"
-            android:textSize="29dp"
-            android:gravity="center"
+            android:layout_height="match_parent">
 
-            />
-
-
-
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/email1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColorHint="@color/colorhint"
-            android:textColor="@color/colortext">
-
-            <com.rfl.trn.starr_cell.Custom.MyEditText
-                android:id="@+id/myet_email"
-                android:textSize="16dp"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Email"
-                android:layout_marginLeft="46dp"
-                android:layout_marginRight="46dp"
-                android:textColorHint="@color/colorhint"
-                android:textColor="@color/colortext"
-                android:maxLength="12"
-                android:background="#0000"
-                android:inputType="textEmailAddress"
-                android:padding="16dp"
-                android:gravity="left"
-                android:drawableLeft="@drawable/ic_user"
-                android:drawablePadding="12dp"
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/frame"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:background="@drawable/teacherbg"
+                    android:scaleType="centerCrop" />
+
+                <LinearLayout
+                    android:id="@+id/linear"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.rfl.trn.starr_cell.Custom.MyTextView
+                        android:id="@+id/head"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="monospace"
+                        android:gravity="center"
+                        android:text="@string/login_star_cell"
+                        android:textColor="@color/white"
+                        android:textSize="25sp"
+                        android:textStyle="bold" />
 
 
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/email1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:theme="@style/login">
 
-                />
+                        <com.rfl.trn.starr_cell.Custom.MyEditText
+                            android:id="@+id/myet_email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_user"
+                            android:drawablePadding="15dp"
+                            android:drawableTint="@color/white"
+                            android:hint="@string/email"
+                            android:inputType="textEmailAddress"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white"
+                            tools:targetApi="m" />
 
-        </android.support.design.widget.TextInputLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_marginLeft="56dp"
-            android:layout_marginRight="56dp"
-            android:layout_height="1dp"
-            android:background="#f39c12"/>
-
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColorHint="@color/colorhint"
-            android:textColor="@color/colortext">
-
-
-
-            <com.rfl.trn.starr_cell.Custom.MyEditText
-                android:id="@+id/myet_password"
-                android:textSize="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Password"
-                android:layout_marginLeft="46dp"
-                android:layout_marginRight="46dp"
-                android:textColorHint="@color/colorhint"
-                android:textColor="@color/colortext"
-                android:background="#0000"
-                android:padding="16dp"
-                android:inputType="textPassword"
-                android:drawableLeft="@drawable/ic_pass"
-                android:drawablePadding="12dp"
+                    </android.support.design.widget.TextInputLayout>
 
 
-                />
-        </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:theme="@style/login">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_marginLeft="56dp"
-            android:layout_marginRight="56dp"
-            android:layout_height="1dp"
-            android:background="#f39c12"/>
+                        <com.rfl.trn.starr_cell.Custom.MyEditText
+                            android:id="@+id/myet_password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_pass"
+                            android:drawablePadding="15dp"
+                            android:drawableTint="@color/white"
+                            android:hint="@string/password"
+                            android:inputType="textPassword"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white"
+                            tools:targetApi="m" />
+                    </android.support.design.widget.TextInputLayout>
 
-        <LinearLayout
-            android:layout_marginTop="12dp"
-            android:id="@+id/linear4"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
+                    <LinearLayout
+                        android:id="@+id/linear4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
-            >
-
-            <CheckBox
-                android:layout_weight="2"
-                android:id="@+id/remember"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Remember me"
-                android:checked="false"
-                android:buttonTint="@color/colorhint"
-                android:textColor="@color/colorhint"
-                android:layout_marginLeft="60dp"
-                android:textSize="11dp"
-
-
-                />
-            <com.rfl.trn.starr_cell.Custom.MyTextView
-                android:layout_weight="2.3"
-                android:id="@+id/forgotpass"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Forgot password?"
-                android:textColor="@color/colorhint"
-                android:layout_gravity="center"
-                android:textSize="11dp"
-
-                />
+                        <CheckBox
+                            android:id="@+id/remember"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="60dp"
+                            android:layout_weight="2"
+                            android:buttonTint="@color/colorhint"
+                            android:checked="false"
+                            android:text="Remember me"
+                            android:textColor="@color/colorhint"
+                            android:textSize="11dp"
 
 
-        </LinearLayout>
+                            />
 
-        <com.rfl.trn.starr_cell.Custom.MyTextView
+                        <com.rfl.trn.starr_cell.Custom.MyTextView
+                            android:id="@+id/forgotpass"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="2.3"
+                            android:text="Forgot password?"
+                            android:textColor="@color/colorhint"
+                            android:textSize="11dp"
 
-            android:id="@+id/btn_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rect1"
-            android:text="Sign in"
-            android:textSize="16dp"
-            android:textColor="#fff"
-            android:gravity="center"
-            android:layout_marginLeft="60dp"
-            android:layout_marginRight="60dp"
-            android:padding="12dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="11dp"
-            android:elevation="3dp"
+                            />
 
 
+                    </LinearLayout>
 
+                    <com.rfl.trn.starr_cell.Custom.MyTextView
+                        android:id="@+id/btn_login"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/rect1"
+                        android:elevation="3dp"
+                        android:fontFamily="monospace"
+                        android:gravity="center"
+                        android:padding="12dp"
+                        android:text="@string/sign_in"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
 
-            />
+                </LinearLayout>
 
+            </LinearLayout>
 
-
-        <!--<rfl.trn.com.starr_cell.Custom.MyTextView-->
-            <!--android:id="@+id/or"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="or"-->
-            <!--android:layout_above="@+id/acc"-->
-            <!--android:gravity="center"-->
-            <!--android:lines="1"-->
-            <!--android:textColor="@color/colorhint"-->
-            <!--android:layout_marginBottom="5dp"-->
-
-
-            <!--/>-->
+        </RelativeLayout>
 
     </LinearLayout>
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="15">
+
+        <com.scwang.wave.MultiWaveHeader
+            android:id="@+id/waveHeader"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:scaleY="-1"
+            app:mwhCloseColor="@color/white"
+            app:mwhColorAlpha="0.45"
+            app:mwhGradientAngle="90"
+            app:mwhProgress="1"
+            app:mwhStartColor="@color/white"
+            app:mwhVelocity="1"
+            app:mwhWaveHeight="40dp"
+            app:mwhWaves="MultiWave">
+
+        </com.scwang.wave.MultiWaveHeader>
+
+    </LinearLayout>
+
+</LinearLayout>
