@@ -13,7 +13,7 @@ import com.rfl.trn.starr_cell.Custom.MyTextView;
 import com.rfl.trn.starr_cell.R;
 
 public class LoginActivity extends AppCompatActivity {
-    private Context  context;
+    private Context context = LoginActivity.this;
 
     @BindView(R.id.myet_email)
     MyEditText myetEmail;
@@ -27,7 +27,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        context = LoginActivity.this;
     }
 
     @OnClick(R.id.btn_login)

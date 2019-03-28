@@ -7,8 +7,13 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-    <string name="sign_in">Sign in</string>
+    <string name="sign_in">LOGIN</string>
     <string name="login_star_cell">LOGIN STAR CELL</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="remember_me">Remember me</string>
+    <string name="deskripsi_star_cell">Deskripsi Star Cell</string>
+    <string name="tidak_ada_koneksi">Tidak Ada Koneksi Internet !</string>
+    <string name="coba_lagi">Coba Lagi</string>
 </resources>

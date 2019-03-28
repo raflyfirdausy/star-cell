@@ -15,6 +15,8 @@
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
+
+
     <style name="login" parent="TextAppearance.AppCompat">
         <!-- Hint color and label color in FALSE state -->
         <item name="android:textColorHint">@color/white</item>

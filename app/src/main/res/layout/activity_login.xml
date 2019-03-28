@@ -112,16 +112,14 @@
                             android:id="@+id/remember"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="60dp"
+                            android:layout_marginStart="60dp"
                             android:layout_weight="2"
                             android:buttonTint="@color/colorhint"
                             android:checked="false"
-                            android:text="Remember me"
+                            android:text="@string/remember_me"
                             android:textColor="@color/colorhint"
-                            android:textSize="11dp"
-
-
-                            />
+                            android:textSize="11sp"
+                            tools:ignore="SmallSp" />
 
                         <com.rfl.trn.starr_cell.Custom.MyTextView
                             android:id="@+id/forgotpass"
@@ -129,13 +127,10 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="2.3"
-                            android:text="Forgot password?"
+                            android:text="@string/forgot_password"
                             android:textColor="@color/colorhint"
-                            android:textSize="11dp"
-
-                            />
-
-
+                            android:textSize="11sp"
+                            tools:ignore="SmallSp" />
                     </LinearLayout>
 
                     <com.rfl.trn.starr_cell.Custom.MyTextView
