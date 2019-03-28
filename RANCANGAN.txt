@@ -1,0 +1,25 @@
+transaksi, data barang, per toko
+login : 
+ - admin
+ - karyawan
+
+#barang
+- paket internet [perdana,voucer]
+- perdana biasa
+
+#ADMIN
+- lihat semua transaksi / per konter
+- crud data barang (ada 3 kelas)
+- manage karyawan (password dll)
+- bisa transaksi
+- history semua transaksi (per konter/per lainya)
+- cek absensi (pakai foto selfie)
+- 
+
+# KARYAWAN
+- absen
+- transaksi
+- history transaksi karyawan
+- lihat rekapan absensi
+
+jenis pembayaran - ada no rek kalo pembayaranya transfer

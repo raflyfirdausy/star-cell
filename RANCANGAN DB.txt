@@ -1,0 +1,46 @@
+konter (masuk firebase auth)
+|- {id_konter} 
+ |- email
+ |- nama_konter
+ |- alamat_konter
+
+karyawan (Ga masuk firebase auth)
+|- {id_karyawan} (random id)
+ |- nama_karyawan
+ |- jenis_kelamin
+ |- nomer_hp
+ |- url_foto
+ |- status_kerja
+
+absen
+|-id_konter (ambil dari key node konter)
+ |- {id_absen} (random id)
+  |- id_karyawan (ambil dari key node karyawan)
+  |- tanggal
+  |- jam_masuk
+  |- jam_keluar
+  |- konfirmasi 
+
+barang
+|- id_konter (ambil dari key node konter)
+ |- {id_barang}
+  |- nama_barang
+  |- stok_barang
+  |- harga1
+  |- harga2
+  |- harga3
+
+transaksi
+|- id_konter (ambil dari key node konter)
+ |- {id_transaksi}
+  |- nama_pelanggan
+  |- nama_karyawan
+  |- tanggal
+  |- jam_transaksi
+  |- total_harga
+  |- detail_barang
+   |- {id_detail_barang}
+    |- nama_barang
+    |- harga_satuan
+    |- jumlah_beli
+

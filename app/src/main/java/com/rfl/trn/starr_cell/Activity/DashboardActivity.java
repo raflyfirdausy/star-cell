@@ -44,8 +44,6 @@ public class DashboardActivity extends AppCompatActivity
         context = DashboardActivity.this;
 
         setSupportActionBar(toolbar);
-
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -57,6 +55,7 @@ public class DashboardActivity extends AppCompatActivity
     void absen(){
 
     }
+
     @OnClick(R.id.card_income)
     void income(){
 
@@ -97,7 +96,6 @@ public class DashboardActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
-
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
