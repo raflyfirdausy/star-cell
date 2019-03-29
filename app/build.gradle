@@ -40,7 +40,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:16.1.0'
     implementation 'com.google.firebase:firebase-auth:16.2.0'
     //TODO :: sweet alert (https://github.com/pedant/sweet-alert-dialog)
-    implementation 'cn.pedant.sweetalert:library:1.3'
+//    implementation 'cn.pedant.sweetalert:library:1.3'
+//    implementation 'com.github.f0ris.sweetalert:library:1.5.1'
+    implementation 'com.github.thomper:sweet-alert-dialog:1.4.0'
+
     //TODO :: material shadow (https://github.com/harjot-oberai/MaterialShadows)
     implementation 'com.sdsmdg.harjot:materialshadows:1.2.5'
     //TODO :: material icon (https://github.com/code-mc/material-icon-lib)

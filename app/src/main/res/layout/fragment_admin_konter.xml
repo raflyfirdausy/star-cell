@@ -35,11 +35,10 @@
                     android:padding="10dp">
 
                     <TextView
-                        android:id="@+id/tv_namaIbu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="monospace"
-                        android:text="Daftar Konter"
+                        android:text="@string/daftar_konter"
                         android:textColor="@color/colorPrimary"
                         android:textSize="23sp"
                         android:textStyle="bold" />

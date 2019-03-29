@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rfl.trn.starr_cell.Fragment.Admin.AdminBarangFragment;
 import com.rfl.trn.starr_cell.Fragment.Admin.AdminDashboardFragment;
 import com.rfl.trn.starr_cell.Fragment.Admin.AdminKaryawanFragment;
@@ -21,8 +22,11 @@ import com.rfl.trn.starr_cell.Fragment.Admin.AdminKonterFragment;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
 import com.rfl.trn.starr_cell.R;
 
+import java.util.Objects;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -43,6 +47,9 @@ public class MainActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Star Cell");
+        getSupportActionBar().setSubtitle(getString(R.string.dashboard));
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
@@ -98,7 +105,25 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_barang) {
             FT.replace(R.id.fl_content, new AdminBarangFragment(), "admin_barang").commit();
         } else if (id == R.id.nav_logout) {
-            new Bantuan(context).alertDialogInformasi("Coming Soon !");
+//            new Bantuan(context).alertDialogInformasi("Coming Soon !");
+            new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
+                    .setTitleText("Peringatan")
+                    .setContentText("Apakah kamu ingin logout dari aplikasi ?")
+                    .setConfirmText("YA")
+                    .setCancelText("TIDAK")
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            sDialog
+                                    .setTitleText("Berhasil Logout !")
+                                    .setConfirmText("OK")
+                                    .showContentText(false)
+                                    .setConfirmClickListener(null)
+                                    .showCancelButton(false)
+                                    .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                        }
+                    })
+                    .show();
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
