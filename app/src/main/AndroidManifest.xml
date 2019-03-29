@@ -18,6 +18,11 @@
         tool:replace="android:icon"
         tool:ignore="GoogleAppIndexingWarning">
 
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
         <activity android:name="com.rfl.trn.starr_cell.Activity.LoginActivity"
             tool:ignore="InnerclassSeparator"
             android:configChanges="orientation"
