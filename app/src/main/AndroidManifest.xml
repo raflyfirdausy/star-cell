@@ -25,7 +25,7 @@
             android:theme="@style/AppTheme.NoActionBarTransparent" />
 
         <activity
-            android:name="com.rfl.trn.starr_cell.Activity.DashboardActivity"
+            android:name="com.rfl.trn.starr_cell.Activity.MainActivity"
             android:label="@string/title_activity_dashboard"
             android:theme="@style/AppTheme.NoActionBar"
             tool:ignore="InnerclassSeparator" />
@@ -40,8 +40,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.rfl.trn.starr_cell.Activity.MainActivity"
-            tool:ignore="InnerclassSeparator" />
     </application>
 
 </manifest>

@@ -17,4 +17,19 @@
     <string name="tidak_ada_koneksi">Tidak Ada Koneksi Internet !</string>
     <string name="coba_lagi">Coba Lagi</string>
     <string name="jenis_akun">Jenis Akun</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="manajemen_konter">Manajemen Konter</string>
+    <string name="manajemen_karyawan">Manajemen Karyawan</string>
+    <string name="konter">Konter</string>
+    <string name="karyawan">Karyawan</string>
+    <string name="barang">Barang</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="log_out">Log Out</string>
+    <string name="lain_lain">Lain-Lain</string>
+    <string name="tambah_konter">Tambah Konter</string>
+    <string name="detail_konter">Silahkan Pilih konter di bawah ini untuk melihat detail konter tersebut.</string>
+    <string name="yah_belum_ada_konter_yang_terdaftar">Yah, belum ada konter yang terdaftar :(</string>
+    <string name="yuk_tambahkan_konter_pertamamu_dengan_cara_klik_tombol_merah_di_pojok_kanan_bawah">Yuk tambahkan konter pertamamu dengan cara klik tombol merah di pojok kanan bawah.</string>
 </resources>

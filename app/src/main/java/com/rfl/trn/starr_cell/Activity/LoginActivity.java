@@ -31,6 +31,6 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_login)
     void login(){
-        startActivity(new Intent(context, DashboardActivity.class));
+        startActivity(new Intent(context, MainActivity.class));
     }
 }

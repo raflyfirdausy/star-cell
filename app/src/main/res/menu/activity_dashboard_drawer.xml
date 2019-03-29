@@ -4,27 +4,33 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_dashboard"
+            android:title="@string/dashboard"
+            android:icon="@drawable/ic_dashboard_black_24dp"
+            />
+
+        <item
+            android:id="@+id/nav_konter"
+            android:title="@string/konter"
+            android:icon="@drawable/ic_store"/>
         <item
             android:id="@+id/nav_karyawan"
-
-            android:title="Karyawan" />
+            android:title="@string/karyawan"
+            android:icon="@drawable/ic_group_add_black_24dp"/>
         <item
-            android:id="@+id/nav_bantuan"
-
-            android:title="bantuan" />
-        <item
-            android:id="@+id/nav_profil"
-
-            android:title="Profil" />
+            android:id="@+id/nav_barang"
+            android:title="@string/barang"
+            android:icon="@drawable/ic_inventory_lagi"/>
     </group>
 
-    <item android:title="Lain-lain">
+    <item android:title="@string/lain_lain">
         <menu>
             <item
                 android:id="@+id/nav_logout"
-
-                android:title="Log out" />
-
+                android:title="@string/log_out"
+                android:icon="@drawable/ic_logout"/>
         </menu>
     </item>
 
