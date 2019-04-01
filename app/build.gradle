@@ -64,5 +64,8 @@ dependencies {
     //TODO : https://www.androidhive.info/2018/01/android-content-placeholder-animation-like-facebook-using-shimmer/
     //TODO : https://medium.com/mindorks/android-design-shimmer-effect-fa7f74c68a93
     implementation 'com.facebook.shimmer:shimmer:0.4.0'
+
+    //TODO : https://github.com/square/picasso
+    implementation 'com.squareup.picasso:picasso:2.5.2'
 }
 apply plugin: 'com.google.gms.google-services'

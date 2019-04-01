@@ -8,6 +8,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.rfl.trn.starr_cell.Helper.Internet;
 import com.rfl.trn.starr_cell.R;
 
@@ -21,6 +24,8 @@ public class SplashActivity extends AppCompatActivity {
     @BindView(R.id.coordinator)
     CoordinatorLayout coordinator;
     private Context context = SplashActivity.this;
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +35,7 @@ public class SplashActivity extends AppCompatActivity {
 
         boolean cekKoneksi = new Internet().CekKoneksi(context);
         if (cekKoneksi) {
+
             Timer timer = new Timer();
             timer.schedule(new Splash(), 1000);
         } else {
@@ -49,8 +55,13 @@ public class SplashActivity extends AppCompatActivity {
     class Splash extends TimerTask {
         @Override
         public void run() {
-            startActivity(new Intent(context, LoginActivity.class));
-            finish();
+            if (firebaseAuth.getCurrentUser() != null) {
+                startActivity(new Intent(context, MainActivity.class));
+                finish();
+            } else {
+                startActivity(new Intent(context, LoginActivity.class));
+                finish();
+            }
         }
     }
 }

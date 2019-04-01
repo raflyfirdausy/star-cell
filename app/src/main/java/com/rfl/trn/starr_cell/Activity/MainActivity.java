@@ -1,6 +1,7 @@
 package com.rfl.trn.starr_cell.Activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -14,6 +15,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rfl.trn.starr_cell.Fragment.Admin.AdminBarangFragment;
 import com.rfl.trn.starr_cell.Fragment.Admin.AdminDashboardFragment;
@@ -39,6 +43,8 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
     private Context context = MainActivity.this;
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,12 +120,20 @@ public class MainActivity extends AppCompatActivity
                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sDialog) {
+                            firebaseAuth.signOut();
                             sDialog
                                     .setTitleText("Berhasil Logout !")
                                     .setConfirmText("OK")
                                     .showContentText(false)
                                     .setConfirmClickListener(null)
                                     .showCancelButton(false)
+                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                            startActivity(new Intent(context, LoginActivity.class));
+                                            finish();
+                                        }
+                                    })
                                     .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
                         }
                     })

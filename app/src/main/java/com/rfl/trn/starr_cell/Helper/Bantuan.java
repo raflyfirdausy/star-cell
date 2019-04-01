@@ -2,6 +2,7 @@ package com.rfl.trn.starr_cell.Helper;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.widget.Toast;
 
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
@@ -65,25 +66,35 @@ public class Bantuan {
                 .show();
     }
 
-    public void swal_error(String pesan){
+    public void swal_error(String pesan) {
         new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
                 .setTitleText("Oops...")
                 .setContentText(pesan)
                 .show();
     }
 
-    public void swal_warning(String pesan){
+    public void swal_warning(String pesan) {
         new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
                 .setTitleText("Peringatan")
                 .setContentText(pesan)
                 .show();
     }
 
-    public void swal_sukses(String pesan){
+    public void swal_sukses(String pesan) {
         new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
                 .setTitleText("Peringatan")
                 .setContentText(pesan)
                 .show();
+    }
+
+    public SweetAlertDialog swal_loading(String pesan) {
+        SweetAlertDialog SAD =  new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
+        SAD.getProgressHelper().setBarColor(Color.parseColor("#2980b9"));
+        SAD.setTitleText("Loading...");
+        SAD.setContentText(pesan);
+        SAD.setCancelable(false);
+
+        return SAD;
     }
 
 }

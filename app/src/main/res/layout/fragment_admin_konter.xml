@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Fragment.Admin.AdminKonterFragment">
+
     <LinearLayout
+        android:id="@+id/ll_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -16,8 +18,8 @@
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:padding="20dp"
-            app:srcCompat="@drawable/ic_store"
-            android:tint="@color/colorPrimary" />
+            android:tint="@color/colorPrimary"
+            app:srcCompat="@drawable/ic_store" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -60,6 +62,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/ll_header"
         android:orientation="vertical">
 
         <LinearLayout
@@ -67,22 +70,12 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:visibility="visible"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="GAWEKNA RECYCLER VIEW NENG KENE NGGO NGAMPUNG DAFTAR KONTERE YAAA !!!!!"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:fontFamily="monospace"
-                android:textColor="@color/black"
-                android:textSize="30sp"/>
-
             <RelativeLayout
                 android:id="@+id/rl_belumadaKonter"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center">
+                android:layout_gravity="center"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -102,8 +95,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="monospace"
                         android:layout_gravity="center"
+                        android:fontFamily="monospace"
                         android:gravity="center"
                         android:paddingTop="10dp"
                         android:text="@string/yah_belum_ada_konter_yang_terdaftar"
@@ -125,12 +118,12 @@
 
                 </LinearLayout>
             </RelativeLayout>
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_konter"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"/>
 
-            </android.support.v7.widget.RecyclerView>
         </LinearLayout>
 
 
@@ -148,9 +141,9 @@
         android:tooltipText="@string/tambah_konter"
         app:backgroundTint="@color/red"
         app:fabSize="normal"
+        app:fab_label="@string/tambah_konter"
         app:fab_showAnimation="@anim/fab_slide_in_from_right"
         app:fab_showShadow="false"
-        app:fab_label="@string/tambah_konter"
         tools:targetApi="o" />
 
 </RelativeLayout>

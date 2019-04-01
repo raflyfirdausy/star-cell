@@ -33,4 +33,10 @@
     <string name="yah_belum_ada_konter_yang_terdaftar">Yah, belum ada konter yang terdaftar :(</string>
     <string name="yuk_tambahkan_konter_pertamamu_dengan_cara_klik_tombol_merah_di_pojok_kanan_bawah">Yuk tambahkan konter pertamamu dengan cara klik tombol merah di pojok kanan bawah.</string>
     <string name="daftar_konter">Daftar Konter</string>
+    <string name="detail_tambah_konter">Silahkan isi data di bawah ini dengan lengkap sesuai konkter yang mau di tambahkan</string>
+    <string name="tambahkan_gambar_konter">Tambahkan Gambar Konter</string>
+    <string name="nama_konter">Nama Konter</string>
+    <string name="alamat_konter">Alamat Konter</string>
+    <string name="konfirmasi_password">Konfirmasi Password</string>
+    <string name="daftar">DAFTAR</string>
 </resources>
