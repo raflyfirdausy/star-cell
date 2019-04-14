@@ -29,7 +29,7 @@ public class AdapterListKonter extends RecyclerView.Adapter<AdapterListKonter.My
 
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_daftar_konter, viewGroup, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_list_konter, viewGroup, false);
 
         return new MyViewHolder(view);
     }

@@ -1,11 +1,18 @@
 package com.rfl.trn.starr_cell.Adapter;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AdapterListHistorySemuaTransaksi extends RecyclerView.Adapter<AdapterListHistorySemuaTransaksi.MyViewHolder> {
+    private Context context;
+    private List<String> data = new ArrayList();
+
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
