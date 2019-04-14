@@ -57,7 +57,7 @@
                 android:paddingStart="10dp"
                 tools:ignore="RtlSymmetry">
 
-                <TextView
+                <com.rfl.trn.starr_cell.Custom.MyTextView
                     android:id="@+id/tv_namaPengguna"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -68,14 +68,14 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
-                <TextView
+                <com.rfl.trn.starr_cell.Custom.MyTextView
                     android:id="@+id/tv_emailPengguna"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="monospace"
                     android:text="@string/email" />
 
-                <TextView
+                <com.rfl.trn.starr_cell.Custom.MyTextView
                     android:id="@+id/tv_tipePengguna"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

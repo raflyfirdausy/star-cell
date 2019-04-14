@@ -3,6 +3,7 @@ package com.rfl.trn.starr_cell.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import com.rfl.trn.starr_cell.Helper.Bantuan;
 import com.rfl.trn.starr_cell.R;
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
+
 
 import java.io.File;
 import java.util.Objects;
@@ -56,6 +58,12 @@ public class DaftarKonterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_daftar_konter);
         ButterKnife.bind(this);
+
+        //custom font buat type password
+
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Lato-Light.ttf");
+        myetPasswordKonter.setTypeface(typeface);
+        myetKonfirmasiPasswordKonter.setTypeface(typeface);
     }
 
     @OnClick({R.id.iv_gambarKonter, R.id.btn_daftar})

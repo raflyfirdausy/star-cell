@@ -33,7 +33,7 @@
                 android:orientation="vertical"
                 android:padding="10dp">
 
-                <TextView
+                <com.rfl.trn.starr_cell.Custom.MyTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="monospace"
@@ -42,7 +42,7 @@
                     android:textSize="23sp"
                     android:textStyle="bold" />
 
-                <TextView
+                <com.rfl.trn.starr_cell.Custom.MyTextView
                     android:id="@+id/tv_detailKonter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -183,6 +183,7 @@
                         android:drawableTint="@color/colorPrimaryDark"
                         android:hint="@string/password"
                         android:inputType="textPassword"
+                        android:fontFamily="@fonts/Lato-Light"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
                         android:textColor="@color/colorPrimaryDark"
