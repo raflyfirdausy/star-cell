@@ -20,7 +20,8 @@ import butterknife.ButterKnife;
 public class AdapterListKonter extends RecyclerView.Adapter<AdapterListKonter.MyViewHolder> {
 
     private Context context;
-    private List<String> data = new ArrayList<>();
+    private List<String> data ;
+
 
     public AdapterListKonter(Context context, List<String> data) {
         this.context = context;

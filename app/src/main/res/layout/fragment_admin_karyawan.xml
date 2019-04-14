@@ -6,9 +6,22 @@
     tools:context=".Fragment.Admin.AdminKaryawanFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:orientation="vertical">
+       <com.rfl.trn.starr_cell.Custom.MyTextView
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:layout_gravity="center"
+           android:gravity="center"
+           android:textSize="30sp"
+           android:text="Belum ada karyawan"/>
+   </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_karyawan"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Karyawan" />
+        android:layout_height="match_parent">
 
+    </android.support.v7.widget.RecyclerView>
 </FrameLayout>

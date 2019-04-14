@@ -12,6 +12,8 @@ import com.rfl.trn.starr_cell.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+
 public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.MyViewHolder> {
     private Context context;
     private List<String> data ;
@@ -23,7 +25,7 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_list_barang,viewGroup);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_list_barang,viewGroup,false);
 
         return new MyViewHolder(view);
     }
@@ -35,12 +37,13 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
 
     @Override
     public int getItemCount() {
-        return 0;
+        return data.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
+            ButterKnife.bind(this,itemView);
         }
     }
 }

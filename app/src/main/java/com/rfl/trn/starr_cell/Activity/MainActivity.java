@@ -3,6 +3,7 @@ package com.rfl.trn.starr_cell.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -42,6 +43,10 @@ public class MainActivity extends AppCompatActivity
     NavigationView navView;
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
+
+    boolean tekanKembaliUntukKeluar = false;
+
+
     private Context context = MainActivity.this;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -70,11 +75,26 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+
+            if (tekanKembaliUntukKeluar == false) {
+                new Bantuan(context).toastLong("Tekan sekali lagi untuk keluar");
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        tekanKembaliUntukKeluar = true;
+
+                    }
+                }, 1000);
+            } else {
+                tekanKembaliUntukKeluar = false;
+                super.onBackPressed();
+
+            }
         }
     }
 
