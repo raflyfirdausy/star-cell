@@ -17,12 +17,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AdapterDaftarKonter extends RecyclerView.Adapter<AdapterDaftarKonter.MyViewHolder> {
+public class AdapterListKonter extends RecyclerView.Adapter<AdapterListKonter.MyViewHolder> {
 
     private Context context;
     private List<String> data = new ArrayList<>();
 
-    public AdapterDaftarKonter(Context context, List<String> data) {
+    public AdapterListKonter(Context context, List<String> data) {
         this.context = context;
         this.data = data;
     }
