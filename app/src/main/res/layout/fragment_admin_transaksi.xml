@@ -80,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textSize="20sp"
-                    android:text="Belum ada transakis"/>
+                    android:text="Belum ada transaksi"/>
             </LinearLayout>
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_transaksi"
