@@ -25,6 +25,7 @@ import com.rfl.trn.starr_cell.Fragment.Admin.AdminBarangFragment;
 import com.rfl.trn.starr_cell.Fragment.Admin.AdminDashboardFragment;
 import com.rfl.trn.starr_cell.Fragment.Admin.AdminKaryawanFragment;
 import com.rfl.trn.starr_cell.Fragment.Admin.AdminKonterFragment;
+import com.rfl.trn.starr_cell.Fragment.Admin.AdminTransaksiFragment;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
 import com.rfl.trn.starr_cell.R;
 
@@ -133,8 +134,9 @@ public class MainActivity extends AppCompatActivity
             FT.replace(R.id.fl_content, new AdminBarangFragment(), "admin_barang").commit();
         }else if(id == R.id.nav_absensi){
             FT.replace(R.id.fl_content, new AdminAbsensiFragment(), "admin_absensi").commit();
-
-        }else if (id == R.id.nav_logout)
+        }else if (id == R.id.nav_transaksi){
+            FT.replace(R.id.fl_content, new AdminTransaksiFragment(), "admin_transaksi").commit();
+        }else if(id == R.id.nav_karyawan){} else if (id == R.id.nav_logout)
         {
 //            new Bantuan(context).alertDialogInformasi("Coming Soon !");
             new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)

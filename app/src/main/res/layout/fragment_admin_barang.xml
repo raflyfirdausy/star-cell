@@ -16,7 +16,7 @@
             android:layout_marginTop="70dp"
             android:layout_width="match_parent"
             android:layout_height="500dp"
-            android:src="@drawable/bg_recyclerview_tidak_ada_barang" />
+            android:src="@drawable/undraw_collecting_fjjl" />
         <com.rfl.trn.starr_cell.Custom.MyTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

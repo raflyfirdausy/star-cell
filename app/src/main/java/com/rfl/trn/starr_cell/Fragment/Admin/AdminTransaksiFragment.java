@@ -1,4 +1,4 @@
-package com.rfl.trn.starr_cell.Fragment.Karyawan;
+package com.rfl.trn.starr_cell.Fragment.Admin;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -8,13 +8,16 @@ import android.view.ViewGroup;
 
 import com.rfl.trn.starr_cell.R;
 
-public class KaryawanRekapanAbsensiFragment extends Fragment {
+public class AdminTransaksiFragment extends Fragment {
 
-    public KaryawanRekapanAbsensiFragment(){}
+    public AdminTransaksiFragment(){
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_karyawan_rekapan_absensi, container, false);
+        return inflater.inflate(R.layout.fragment_admin_transaksi, container, false);
     }
 }

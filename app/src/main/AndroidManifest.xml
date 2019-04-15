@@ -16,9 +16,9 @@
         android:theme="@style/AppTheme"
         tool:ignore="GoogleAppIndexingWarning"
         tool:replace="android:icon">
-        <activity android:name=".Fragment.Karyawan.KaryawanTransaksiFragment"></activity>
+        <activity android:name=".Fragment.Admin.AdminTransaksiFragment"></activity>
         <activity android:name=".Fragment.Karyawan.KaryawanAbsensiFragment" />
-        <activity android:name=".Fragment.Karyawan.KaryawanRekapanAbsensiFragment" />
+        <activity android:name=".Fragment.Admin.AdminRekapanAbsensiFragment" />
         <activity android:name=".Fragment.Admin.AdminAbsensiFragment" />
         <activity android:name=".Activity.CetakStrukActivity" />
         <activity android:name=".Activity.CekAbsensiActivity" />
