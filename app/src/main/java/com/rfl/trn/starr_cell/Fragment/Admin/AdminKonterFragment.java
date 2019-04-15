@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.github.clans.fab.FloatingActionButton;
@@ -30,8 +31,8 @@ import butterknife.Unbinder;
 public class AdminKonterFragment extends Fragment {
 
 
-    @BindView(R.id.rl_belumadaKonter)
-    RelativeLayout rlBelumadaKonter;
+    @BindView(R.id.ll_belum_da_konter)
+    LinearLayout rlBelumadaKonter;
     @BindView(R.id.fab_tambahKonter)
     FloatingActionButton fabTambahKonter;
     Unbinder unbinder;

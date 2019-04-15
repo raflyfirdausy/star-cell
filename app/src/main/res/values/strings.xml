@@ -39,4 +39,6 @@
     <string name="alamat_konter">Alamat Konter</string>
     <string name="konfirmasi_password">Konfirmasi Password</string>
     <string name="daftar">DAFTAR</string>
+    <string name="absensi">Absensi</string>
+    <string name="transaksi">Transaksi</string>
 </resources>

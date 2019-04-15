@@ -25,11 +25,11 @@
             android:icon="@drawable/ic_inventory_lagi"/>
         <item
             android:id="@+id/nav_absensi"
-            android:title="@string/barang"
+            android:title="@string/absensi"
             android:icon="@drawable/ic_inventory_lagi"/>
         <item
             android:id="@+id/nav_transaksi"
-            android:title="@string/barang"
+            android:title="@string/transaksi"
             android:icon="@drawable/ic_inventory_lagi"/>
     </group>
 
