@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+import com.rfl.trn.starr_cell.Fragment.Admin.AdminAbsensiFragment;
 import com.rfl.trn.starr_cell.Fragment.Admin.AdminBarangFragment;
 import com.rfl.trn.starr_cell.Fragment.Admin.AdminDashboardFragment;
 import com.rfl.trn.starr_cell.Fragment.Admin.AdminKaryawanFragment;
@@ -130,7 +131,11 @@ public class MainActivity extends AppCompatActivity
             FT.replace(R.id.fl_content, new AdminKaryawanFragment(), "admin_karyawan").commit();
         } else if (id == R.id.nav_barang) {
             FT.replace(R.id.fl_content, new AdminBarangFragment(), "admin_barang").commit();
-        } else if (id == R.id.nav_logout) {
+        }else if(id == R.id.nav_absensi){
+            FT.replace(R.id.fl_content, new AdminAbsensiFragment(), "admin_absensi").commit();
+
+        }else if (id == R.id.nav_logout)
+        {
 //            new Bantuan(context).alertDialogInformasi("Coming Soon !");
             new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
                     .setTitleText("Peringatan")

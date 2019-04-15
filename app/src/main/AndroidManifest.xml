@@ -16,12 +16,19 @@
         android:theme="@style/AppTheme"
         tool:ignore="GoogleAppIndexingWarning"
         tool:replace="android:icon">
-
+        <activity android:name=".Fragment.Karyawan.KaryawanTransaksiFragment"></activity>
+        <activity android:name=".Fragment.Karyawan.KaryawanAbsensiFragment" />
+        <activity android:name=".Fragment.Karyawan.KaryawanRekapanAbsensiFragment" />
+        <activity android:name=".Fragment.Admin.AdminAbsensiFragment" />
+        <activity android:name=".Activity.CetakStrukActivity" />
+        <activity android:name=".Activity.CekAbsensiActivity" />
+        <activity android:name=".Activity.DetailTransaksiActivity" />
+        <activity android:name=".Activity.TambahBarangActivity" />
+        <activity android:name=".Activity.TambahKaryawanActivity" />
         <activity
             android:name=".Activity.DaftarKonterActivity"
             android:screenOrientation="portrait"
-            tool:ignore="InnerclassSeparator" >
-        </activity>
+            tool:ignore="InnerclassSeparator" />
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
@@ -46,6 +53,7 @@
             tool:ignore="InnerclassSeparator">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

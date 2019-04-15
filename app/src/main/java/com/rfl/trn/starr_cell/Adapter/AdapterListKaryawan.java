@@ -31,7 +31,9 @@ public class AdapterListKaryawan extends RecyclerView.Adapter<AdapterListKaryawa
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
+        final List<String> isiData = data;
 
+        myViewHolder.setDataKewView(isiData);
     }
 
     @Override
@@ -44,6 +46,9 @@ public class AdapterListKaryawan extends RecyclerView.Adapter<AdapterListKaryawa
             super(itemView);
 
             ButterKnife.bind(this,itemView);
+        }
+
+        public void setDataKewView(List<String> isiData) {
         }
     }
 }

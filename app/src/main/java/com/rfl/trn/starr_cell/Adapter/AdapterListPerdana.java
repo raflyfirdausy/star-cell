@@ -31,7 +31,9 @@ public class AdapterListPerdana extends RecyclerView.Adapter<AdapterListPerdana.
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
+        final List<String> isiData = data;
 
+        myViewHolder.setDataKewView(isiData);
     }
 
     @Override
@@ -43,6 +45,9 @@ public class AdapterListPerdana extends RecyclerView.Adapter<AdapterListPerdana.
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
+        }
+
+        public void setDataKewView(List<String> isiData) {
         }
     }
 }

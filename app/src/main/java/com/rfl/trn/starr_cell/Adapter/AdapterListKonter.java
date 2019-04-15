@@ -38,13 +38,14 @@ public class AdapterListKonter extends RecyclerView.Adapter<AdapterListKonter.My
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         //populasikan datane disini
-        
-        binView( data);
+
+        final List<String> isiData = data;
+
+        myViewHolder.setDataKewView(isiData);
 
     }
 
-    private void binView(List<String> data) {
-    }
+
 
     @Override
     public int getItemCount() {
@@ -62,6 +63,9 @@ public class AdapterListKonter extends RecyclerView.Adapter<AdapterListKonter.My
             super(itemView);
             ButterKnife.bind(this,itemView);
 
+        }
+
+        public void setDataKewView(List<String> isiData) {
         }
     }
 }

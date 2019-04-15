@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffff"
     tools:context=".Fragment.Admin.AdminKaryawanFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -10,13 +11,18 @@
        android:layout_width="match_parent"
        android:layout_height="match_parent"
        android:orientation="vertical">
+       <ImageView
+           android:layout_marginTop="60dp"
+           android:layout_width="match_parent"
+           android:layout_height="500dp"
+           android:src="@drawable/bg_recyclerview_tidak_ada_karyawan"/>
        <com.rfl.trn.starr_cell.Custom.MyTextView
            android:layout_width="match_parent"
-           android:layout_height="match_parent"
+           android:layout_height="wrap_content"
            android:layout_gravity="center"
            android:gravity="center"
-           android:textSize="30sp"
-           android:text="Belum ada karyawan"/>
+           android:textSize="20sp"
+           android:text="Opps....\nBelum ada karyawan"/>
    </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_karyawan"

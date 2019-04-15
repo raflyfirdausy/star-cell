@@ -33,8 +33,13 @@ public class AdapterListAbsensi extends RecyclerView.Adapter<AdapterListAbsensi.
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
+        final List<String> isidata = data;
+
+        myViewHolder.setDataKeView(isidata);
 
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -45,6 +50,9 @@ public class AdapterListAbsensi extends RecyclerView.Adapter<AdapterListAbsensi.
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
+        }
+
+        private void setDataKeView(List<String> data) {
         }
     }
 }

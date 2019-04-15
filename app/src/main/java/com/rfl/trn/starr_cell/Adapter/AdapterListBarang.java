@@ -32,7 +32,9 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-
+        final List<String> isiData = data;
+        
+        myViewHolder.setDataKewView(isiData);
     }
 
     @Override
@@ -44,6 +46,9 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
+        }
+
+        public void setDataKewView(List<String> isiData) {
         }
     }
 }
