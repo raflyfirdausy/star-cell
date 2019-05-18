@@ -41,4 +41,13 @@
     <string name="daftar">DAFTAR</string>
     <string name="absensi">Absensi</string>
     <string name="transaksi">Transaksi</string>
+    <string name="tambah_data_konter">Tambah data konter</string>
+
+    <string name="bottom_sheet_option_camera">Use Camera</string>
+    <string name="bottom_sheet_option_gallery">Upload from Gallery</string>
+    <string name="bottom_sheet_option_heading">Add Photo</string>
+    <string name="bottom_sheet_option_remove_photo">Remove Photo</string>
+    <string name="tambahkan_foto_konter">Tambahkan Foto Konter</string>
+    <string name="gunakan_kamera">Gunakan kamera</string>
+    <string name="pilih_dari_gallery">Pilih dari Gallery</string>
 </resources>

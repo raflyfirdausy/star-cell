@@ -35,7 +35,6 @@ public class SplashActivity extends AppCompatActivity {
 
         boolean cekKoneksi = new Internet().CekKoneksi(context);
         if (cekKoneksi) {
-
             Timer timer = new Timer();
             timer.schedule(new Splash(), 1000);
         } else {
@@ -49,7 +48,6 @@ public class SplashActivity extends AppCompatActivity {
                     })
                     .show();
         }
-
     }
 
     class Splash extends TimerTask {

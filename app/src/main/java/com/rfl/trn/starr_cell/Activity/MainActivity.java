@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity
 
     boolean tekanKembaliUntukKeluar = false;
 
-
     private Context context = MainActivity.this;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -72,18 +71,16 @@ public class MainActivity extends AppCompatActivity
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fl_content, new AdminDashboardFragment(), "dasboard_admin")
                 .commit();
-
     }
 
     @Override
     public void onBackPressed() {
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
 
-            if (tekanKembaliUntukKeluar == false) {
+            if (!tekanKembaliUntukKeluar) {
                 new Bantuan(context).toastLong("Tekan sekali lagi untuk keluar");
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -95,7 +92,6 @@ public class MainActivity extends AppCompatActivity
             } else {
                 tekanKembaliUntukKeluar = false;
                 super.onBackPressed();
-
             }
         }
     }
@@ -132,12 +128,11 @@ public class MainActivity extends AppCompatActivity
             FT.replace(R.id.fl_content, new AdminKaryawanFragment(), "admin_karyawan").commit();
         } else if (id == R.id.nav_barang) {
             FT.replace(R.id.fl_content, new AdminBarangFragment(), "admin_barang").commit();
-        }else if(id == R.id.nav_absensi){
+        } else if (id == R.id.nav_absensi) {
             FT.replace(R.id.fl_content, new AdminAbsensiFragment(), "admin_absensi").commit();
-        }else if (id == R.id.nav_transaksi){
+        } else if (id == R.id.nav_transaksi) {
             FT.replace(R.id.fl_content, new AdminTransaksiFragment(), "admin_transaksi").commit();
-        }else if(id == R.id.nav_karyawan){} else if (id == R.id.nav_logout)
-        {
+        } else if (id == R.id.nav_logout) {
 //            new Bantuan(context).alertDialogInformasi("Coming Soon !");
             new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
                     .setTitleText("Peringatan")
