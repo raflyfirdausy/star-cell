@@ -1,7 +1,7 @@
 //noinspection GradleCompatible
 //noinspection GradleCompatible
 apply plugin: 'com.android.application'
-
+apply plugin: 'io.fabric'
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -41,6 +41,12 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:17.0.0'
     implementation 'com.google.firebase:firebase-storage:17.0.0'
     implementation 'com.google.firebase:firebase-auth:17.0.0'
+    // Check for v11.4.2 or higher
+    implementation 'com.google.firebase:firebase-core:16.0.9'
+
+    // Add dependency
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
+
 
     //TODO :: sweet alert (https://github.com/pedant/sweet-alert-dialog)
 //    implementation 'cn.pedant.sweetalert:library:1.3'
