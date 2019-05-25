@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -43,7 +42,6 @@ import com.rfl.trn.starr_cell.R;
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -79,12 +77,13 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
     MyEditText myetKonfirmasiPasswordKonter;
     @BindView(R.id.btn_daftar)
     MyTextView btnDaftar;
+    private String currentPhotoPath;
     private Context context = DaftarKonterActivity.this;
     private Uri IMAGE_URI;
-    private String currentPhotoPath;
     private FirebaseAuth firebaseAuth, firebaseAuth2;
     private DatabaseReference databaseReference, current_db;
     private FirebaseAnalytics mFirebaseAnalytics;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -286,42 +285,36 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == CODE_GALLERY && resultCode == RESULT_OK) {
             Uri imageUri = Objects.requireNonNull(data).getData();
-//            new Bantuan(context).swal_warning(String.valueOf(imageUri));
             if (imageUri != null) {
                 startCrop(imageUri);
             }
         } else if (requestCode == CODE_CAMERA && resultCode == RESULT_OK) {
-
-            new Bantuan(context).swal_sukses(currentPhotoPath + "awwwwwwwwwwww");
-//
-//            File file = new File(currentPhotoPath);
-//            try {
-//                Bitmap bitmap = MediaStore.Images.Media
-//                        .getBitmap(context.getContentResolver(), Uri.fromFile(file));
-//                Uri imageUri = getImageUri(context, bitmap);
-//                if (imageUri != null) {
-//                    startCrop(imageUri);
-//                }
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                new Bantuan(context).swal_error(e.getMessage());
-//            }
-
-
-//            Bitmap photo = (Bitmap) Objects.requireNonNull(Objects.requireNonNull(data).getExtras()).get("data");
-//            Uri imageUri = getImageUri(getApplicationContext(), photo);
-//            new Bantuan(context).swal_warning(String.valueOf(IMAGE_URI));
-//            if (imageUri != null) {
-//                startCrop(imageUri);
-//            }
+            if (currentPhotoPath == null) {
+                new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("Oops...")
+                        .setContentText("Gagal Memuat foto, silahkan coba lagi\nJika gagal terus silahkan ambil foto melalui gallery")
+                        .setConfirmText("Coba Lagi")
+                        .setCancelText("Nanti Saja")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                startCamera();
+                            }
+                        })
+                        .show();
+            } else {
+                File file = new File(currentPhotoPath);
+                Uri imageUri = Uri.fromFile(file);
+                if (imageUri != null) {
+                    startCrop(imageUri);
+                }
+            }
         } else if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
             Uri hasilCrop = UCrop.getOutput(Objects.requireNonNull(data));
             if (hasilCrop != null) {
                 ivGambarKonter.setImageURI(hasilCrop);
-
                 Picasso.get()
                         .load(hasilCrop)
                         .into(ivGambarKonter);
@@ -334,84 +327,38 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
     private void startCamera() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            File photoFile;
-            photoFile = createImageFile();
-
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                new Bantuan(context).swal_error(ex.getMessage());
+            }
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,
                         "com.example.android.fileprovider",
                         photoFile);
-//                Uri photoURI = Uri.fromFile(photoFile);
-                IMAGE_URI = photoURI;
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-
-//                File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-//                File image = File.createTempFile(imageFileName,
-//                        ".jpg",
-//                        storageDir
-//                );
-
                 startActivityForResult(takePictureIntent, CODE_CAMERA);
             }
         }
-//        File photo = new File(Environment.getExternalStorageDirectory(), System.currentTimeMillis() + ".jpg");
-//        IMAGE_URI = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName(), photo);
-//        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//        intent.putExtra(MediaStore.EXTRA_OUTPUT, IMAGE_URI);
-//        intent.putExtra("return data", true);
-//        startActivityForResult(takePictureIntent, CODE_CAMERA);
     }
 
-    private File createImageFile(){
+    private File createImageFile() throws IOException {
         // Create an image file name
         @SuppressLint("SimpleDateFormat")
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "KONTER_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = null;
-        try {
-            image = File.createTempFile(
-                    imageFileName,  /* prefix */
-                    ".jpg",         /* suffix */
-                    storageDir      /* directory */
-            );
-        } catch (IOException e) {
-            new Bantuan(context).swal_error(e.getMessage());
-            e.printStackTrace();
-        }
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
 
         // Save a file: path for use with ACTION_VIEW intents
-        if (image != null) {
-            currentPhotoPath = image.getAbsolutePath();
-            new Bantuan(context).swal_error(currentPhotoPath);
-        } else {
-            new Bantuan(context).swal_error("image null");
-        }
+        currentPhotoPath = image.getAbsolutePath();
+
         return image;
     }
 
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
-    }
-
-    public String getRealPathFromURI(Uri uri) {
-        String path = "";
-        if (getContentResolver() != null) {
-            Cursor cursor = getContentResolver().query(uri,
-                    null,
-                    null,
-                    null,
-                    null);
-            if (cursor != null) {
-                cursor.moveToFirst();
-                int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-                path = cursor.getString(idx);
-                cursor.close();
-            }
-        }
-        return path;
-    }
 }
