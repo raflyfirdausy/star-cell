@@ -50,4 +50,7 @@
     <string name="tambahkan_foto_konter">Tambahkan Foto Konter</string>
     <string name="gunakan_kamera">Gunakan kamera</string>
     <string name="pilih_dari_gallery">Pilih dari Gallery</string>
+    <string name="yah_belum_ada_karyawan_terdaftar">Yah, belum ada karyawan terdaftar</string>
+    <string name="yuk_tambah_karyawan">Yuk tambahkan karyawan biar bisa nggaji orang :)</string>
+    <string name="daftar_karyawan">Daftar Karyawan</string>
 </resources>
