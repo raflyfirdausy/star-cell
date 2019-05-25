@@ -53,21 +53,9 @@ public class AdapterListKonter extends RecyclerView.Adapter<AdapterListKonter.My
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, @SuppressLint("RecyclerView") final int i) {
-        myViewHolder.tvNamaKonter.setText(data.get(i).getNamaKonter());
-        myViewHolder.tvAlamatKonter.setText(data.get(i).getAlamatKonter());
-
-        String firstLetter = String.valueOf(data.get(i).getNamaKonter().charAt(0));
         ColorGenerator generator = ColorGenerator.MATERIAL;
         int color = generator.getColor(i);
-        TextDrawable drawable = TextDrawable.builder().buildRound(firstLetter, color);
-        myViewHolder.ivKonter.setImageDrawable(drawable);
-
-        myViewHolder.llParent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Bantuan(context).swal_sukses(data.get(i).getKey());
-            }
-        });
+        myViewHolder.setData(data.get(i),color);
     }
 
 
@@ -89,6 +77,24 @@ public class AdapterListKonter extends RecyclerView.Adapter<AdapterListKonter.My
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        void setData(final KonterModel konterModel, int color){
+            tvNamaKonter.setText(konterModel.getNamaKonter());
+            tvAlamatKonter.setText(konterModel.getAlamatKonter());
+
+            String firstLetter = String.valueOf(konterModel.getNamaKonter().charAt(0));
+
+
+            TextDrawable drawable = TextDrawable.builder().buildRound(firstLetter, color);
+            ivKonter.setImageDrawable(drawable);
+
+            llParent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new Bantuan(context).swal_sukses(konterModel.getKey());
+                }
+            });
         }
     }
 }

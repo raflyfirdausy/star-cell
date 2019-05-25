@@ -83,7 +83,7 @@
                         android:text="Belum ada yang absen nih hari ini"/>
                 </LinearLayout>
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_absensi"
+                    android:id="@+id/rv"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
