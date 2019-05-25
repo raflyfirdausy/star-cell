@@ -295,7 +295,7 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
             }
         } else if (requestCode == CODE_CAMERA && resultCode == RESULT_OK) {
 
-            new Bantuan(context).swal_sukses(currentPhotoPath);
+            new Bantuan(context).swal_sukses(currentPhotoPath + "awwwwwwwwwwww");
 //
 //            File file = new File(currentPhotoPath);
 //            try {
@@ -334,14 +334,8 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
     private void startCamera() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-                new Bantuan(context).swal_error(e.getMessage());
-            }
-
+            File photoFile;
+            photoFile = createImageFile();
 
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,
@@ -368,20 +362,31 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
 //        startActivityForResult(takePictureIntent, CODE_CAMERA);
     }
 
-    private File createImageFile() throws IOException {
+    private File createImageFile(){
         // Create an image file name
         @SuppressLint("SimpleDateFormat")
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "KONTER_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
+        File image = null;
+        try {
+            image = File.createTempFile(
+                    imageFileName,  /* prefix */
+                    ".jpg",         /* suffix */
+                    storageDir      /* directory */
+            );
+        } catch (IOException e) {
+            new Bantuan(context).swal_error(e.getMessage());
+            e.printStackTrace();
+        }
 
         // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
+        if (image != null) {
+            currentPhotoPath = image.getAbsolutePath();
+            new Bantuan(context).swal_error(currentPhotoPath);
+        } else {
+            new Bantuan(context).swal_error("image null");
+        }
         return image;
     }
 
