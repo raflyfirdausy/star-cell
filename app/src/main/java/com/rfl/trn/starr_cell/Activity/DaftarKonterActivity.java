@@ -14,6 +14,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -292,9 +293,25 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
             }
         } else if (requestCode == CODE_CAMERA && resultCode == RESULT_OK) {
 
+            new Bantuan(context).swal_sukses(currentPhotoPath);
+//
+//            File file = new File(currentPhotoPath);
+//            try {
+//                Bitmap bitmap = MediaStore.Images.Media
+//                        .getBitmap(context.getContentResolver(), Uri.fromFile(file));
+//                Uri imageUri = getImageUri(context, bitmap);
+//                if (imageUri != null) {
+//                    startCrop(imageUri);
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//                new Bantuan(context).swal_error(e.getMessage());
+//            }
+
+
 //            Bitmap photo = (Bitmap) Objects.requireNonNull(Objects.requireNonNull(data).getExtras()).get("data");
 //            Uri imageUri = getImageUri(getApplicationContext(), photo);
-            new Bantuan(context).swal_warning(String.valueOf(IMAGE_URI));
+//            new Bantuan(context).swal_warning(String.valueOf(IMAGE_URI));
 //            if (imageUri != null) {
 //                startCrop(imageUri);
 //            }
@@ -312,31 +329,6 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
         }
     }
 
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
-    }
-
-    public String getRealPathFromURI(Uri uri) {
-        String path = "";
-        if (getContentResolver() != null) {
-            Cursor cursor = getContentResolver().query(uri,
-                    null,
-                    null,
-                    null,
-                    null);
-            if (cursor != null) {
-                cursor.moveToFirst();
-                int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-                path = cursor.getString(idx);
-                cursor.close();
-            }
-        }
-        return path;
-    }
-
     private void startCamera() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -350,10 +342,10 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
 
 
             if (photoFile != null) {
-//                Uri photoURI = FileProvider.getUriForFile(this,
-//                        "com.example.android.fileprovider",
-//                        photoFile);
-                Uri photoURI = Uri.fromFile(photoFile);
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.example.android.fileprovider",
+                        photoFile);
+//                Uri photoURI = Uri.fromFile(photoFile);
                 IMAGE_URI = photoURI;
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
 
@@ -389,5 +381,30 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
         return image;
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    public String getRealPathFromURI(Uri uri) {
+        String path = "";
+        if (getContentResolver() != null) {
+            Cursor cursor = getContentResolver().query(uri,
+                    null,
+                    null,
+                    null,
+                    null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+                path = cursor.getString(idx);
+                cursor.close();
+            }
+        }
+        return path;
     }
 }

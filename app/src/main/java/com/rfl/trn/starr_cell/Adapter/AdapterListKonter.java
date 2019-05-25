@@ -1,5 +1,6 @@
 package com.rfl.trn.starr_cell.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
@@ -42,6 +43,7 @@ public class AdapterListKonter extends RecyclerView.Adapter<AdapterListKonter.My
         this.data = data;
     }
 
+    @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_list_konter, viewGroup, false);
@@ -50,7 +52,7 @@ public class AdapterListKonter extends RecyclerView.Adapter<AdapterListKonter.My
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, final int i) {
+    public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, @SuppressLint("RecyclerView") final int i) {
         myViewHolder.tvNamaKonter.setText(data.get(i).getNamaKonter());
         myViewHolder.tvAlamatKonter.setText(data.get(i).getAlamatKonter());
 
