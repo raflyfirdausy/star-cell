@@ -1,6 +1,5 @@
 package com.rfl.trn.starr_cell.Activity;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -8,12 +7,10 @@ import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -31,6 +28,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.mindorks.paracamera.Camera;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rfl.trn.starr_cell.Custom.MyEditText;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
@@ -42,10 +40,8 @@ import com.rfl.trn.starr_cell.R;
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -79,10 +75,11 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
     MyTextView btnDaftar;
     private String currentPhotoPath;
     private Context context = DaftarKonterActivity.this;
-    private Uri IMAGE_URI;
     private FirebaseAuth firebaseAuth, firebaseAuth2;
-    private DatabaseReference databaseReference, current_db;
+    private DatabaseReference databaseReference;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private Camera camera;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +87,6 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
         setContentView(R.layout.activity_daftar_konter);
         ButterKnife.bind(this);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
         Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.app_name);
         getSupportActionBar().setSubtitle(R.string.tambah_data_konter);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
@@ -226,15 +222,11 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
         UCrop.Options options = new UCrop.Options();
         options.setCompressionQuality(80);
         options.setCompressionFormat(Bitmap.CompressFormat.JPEG);
-
         options.setHideBottomControls(false);
         options.setFreeStyleCropEnabled(false);
-
         options.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
         options.setToolbarColor(getResources().getColor(R.color.colorPrimary));
-
         options.setToolbarTitle("Crop Gambar");
-
         return options;
     }
 
@@ -249,7 +241,6 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
                     android.Manifest.permission.CAMERA,
                     android.Manifest.permission.WRITE_EXTERNAL_STORAGE
             };
-
             if (!Permissions.hasPermissions(this, PERMISSIONS)) {
                 ActivityCompat.requestPermissions(this, PERMISSIONS, ALL_PERMISSION);
             } else {
@@ -290,26 +281,12 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
             if (imageUri != null) {
                 startCrop(imageUri);
             }
-        } else if (requestCode == CODE_CAMERA && resultCode == RESULT_OK) {
-            if (currentPhotoPath == null) {
-                new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
-                        .setTitleText("Oops...")
-                        .setContentText("Gagal Memuat foto, silahkan coba lagi\nJika gagal terus silahkan ambil foto melalui gallery")
-                        .setConfirmText("Coba Lagi")
-                        .setCancelText("Nanti Saja")
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                startCamera();
-                            }
-                        })
-                        .show();
+        } else if (requestCode == Camera.REQUEST_TAKE_PHOTO) {
+            Uri imageUri = getImageUri(context, camera.getCameraBitmap());
+            if (imageUri != null) {
+                startCrop(imageUri);
             } else {
-                File file = new File(currentPhotoPath);
-                Uri imageUri = Uri.fromFile(file);
-                if (imageUri != null) {
-                    startCrop(imageUri);
-                }
+                new Bantuan(context).swal_error("Gagal mengambil gambar !");
             }
         } else if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
             Uri hasilCrop = UCrop.getOutput(Objects.requireNonNull(data));
@@ -325,40 +302,33 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
     }
 
     private void startCamera() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                new Bantuan(context).swal_error(ex.getMessage());
-            }
-            if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.example.android.fileprovider",
-                        photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, CODE_CAMERA);
-            }
+        camera = new Camera.Builder()
+                .resetToCorrectOrientation(true)// it will rotate the camera bitmap to the correct orientation from meta data
+                .setTakePhotoRequestCode(CODE_CAMERA)
+                .setDirectory("pics")
+                .setName("konter_" + System.currentTimeMillis())
+                .setImageFormat(Camera.IMAGE_JPEG)
+                .setCompression(75)
+                .setImageHeight(1000)// it will try to achieve this height as close as possible maintaining the aspect ratio;
+                .build(this);
+        try {
+            camera.takePicture();
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Bantuan(context).swal_error(e.getMessage());
         }
     }
 
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        @SuppressLint("SimpleDateFormat")
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "KONTER_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
-
-        return image;
+    private Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        camera.deleteImage();
+    }
 }
