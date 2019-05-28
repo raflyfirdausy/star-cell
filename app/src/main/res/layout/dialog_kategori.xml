@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="400dp"
+    android:layout_gravity="center"
+    android:layout_height="wrap_content"
+    android:background="#ffff">
+   <com.rfl.trn.starr_cell.Custom.MyTextView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_margin="10dp"
+       android:textSize="20sp"
+       android:text="Pilih Kategori"/>
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="horizontal">
+      <com.rfl.trn.starr_cell.Custom.MyEditText
+          android:id="@+id/myet_namaKategori"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="Nama Kategori"
+          android:layout_weight="9"
+          android:layout_margin="10dp"/>
+      <ImageView
+          android:id="@+id/btn_add"
+          android:layout_width="40dp"
+          android:layout_height="40dp"
+          android:layout_gravity="center"
+          android:layout_marginStart="10dp"
+          android:layout_marginEnd="10dp"
+          android:clickable="true"
+          android:background="?selectableItemBackground"
+          android:src="@drawable/ic_check_black_24dp"
+          android:layout_weight="1"/>
+   </LinearLayout>
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:minHeight="300dp"
+          android:orientation="vertical">
+         <FrameLayout
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+            <com.rfl.trn.starr_cell.Custom.MyTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Belum ada kategori"
+                android:layout_gravity="center"
+                android:textSize="18sp"
+                android:textStyle="italic"
+                android:gravity="center"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_kategori"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+
+            </android.support.v7.widget.RecyclerView>
+         </FrameLayout>
+
+      </LinearLayout>
+
+
+</LinearLayout>
