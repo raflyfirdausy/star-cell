@@ -68,7 +68,7 @@ public class AdminKonterFragment extends Fragment {
         //firebase
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
-
+        getDataKonter();
         return view;
     }
 
@@ -83,7 +83,7 @@ public class AdminKonterFragment extends Fragment {
             }
         });
 
-        getDataKonter();
+
     }
 
     private void getDataKonter() {

@@ -1,20 +1,16 @@
 package com.rfl.trn.starr_cell.Activity;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -32,6 +28,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.mindorks.paracamera.Camera;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rfl.trn.starr_cell.Custom.MyEditText;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
@@ -45,9 +42,6 @@ import com.yalantis.ucrop.UCrop;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -79,19 +73,20 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
     MyEditText myetKonfirmasiPasswordKonter;
     @BindView(R.id.btn_daftar)
     MyTextView btnDaftar;
-    private Context context = DaftarKonterActivity.this;
-    private Uri IMAGE_URI;
     private String currentPhotoPath;
+    private Context context = DaftarKonterActivity.this;
     private FirebaseAuth firebaseAuth, firebaseAuth2;
-    private DatabaseReference databaseReference, current_db;
+    private DatabaseReference databaseReference;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private Camera camera;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_daftar_konter);
         ButterKnife.bind(this);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
         Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.app_name);
         getSupportActionBar().setSubtitle(R.string.tambah_data_konter);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
@@ -227,15 +222,11 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
         UCrop.Options options = new UCrop.Options();
         options.setCompressionQuality(80);
         options.setCompressionFormat(Bitmap.CompressFormat.JPEG);
-
         options.setHideBottomControls(false);
         options.setFreeStyleCropEnabled(false);
-
         options.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
         options.setToolbarColor(getResources().getColor(R.color.colorPrimary));
-
         options.setToolbarTitle("Crop Gambar");
-
         return options;
     }
 
@@ -250,7 +241,6 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
                     android.Manifest.permission.CAMERA,
                     android.Manifest.permission.WRITE_EXTERNAL_STORAGE
             };
-
             if (!Permissions.hasPermissions(this, PERMISSIONS)) {
                 ActivityCompat.requestPermissions(this, PERMISSIONS, ALL_PERMISSION);
             } else {
@@ -286,42 +276,22 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == CODE_GALLERY && resultCode == RESULT_OK) {
             Uri imageUri = Objects.requireNonNull(data).getData();
-//            new Bantuan(context).swal_warning(String.valueOf(imageUri));
             if (imageUri != null) {
                 startCrop(imageUri);
             }
-        } else if (requestCode == CODE_CAMERA && resultCode == RESULT_OK) {
-
-            new Bantuan(context).swal_sukses(currentPhotoPath);
-//
-//            File file = new File(currentPhotoPath);
-//            try {
-//                Bitmap bitmap = MediaStore.Images.Media
-//                        .getBitmap(context.getContentResolver(), Uri.fromFile(file));
-//                Uri imageUri = getImageUri(context, bitmap);
-//                if (imageUri != null) {
-//                    startCrop(imageUri);
-//                }
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                new Bantuan(context).swal_error(e.getMessage());
-//            }
-
-
-//            Bitmap photo = (Bitmap) Objects.requireNonNull(Objects.requireNonNull(data).getExtras()).get("data");
-//            Uri imageUri = getImageUri(getApplicationContext(), photo);
-//            new Bantuan(context).swal_warning(String.valueOf(IMAGE_URI));
-//            if (imageUri != null) {
-//                startCrop(imageUri);
-//            }
+        } else if (requestCode == Camera.REQUEST_TAKE_PHOTO) {
+            Uri imageUri = getImageUri(context, camera.getCameraBitmap());
+            if (imageUri != null) {
+                startCrop(imageUri);
+            } else {
+                new Bantuan(context).swal_error("Gagal mengambil gambar !");
+            }
         } else if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
             Uri hasilCrop = UCrop.getOutput(Objects.requireNonNull(data));
             if (hasilCrop != null) {
                 ivGambarKonter.setImageURI(hasilCrop);
-
                 Picasso.get()
                         .load(hasilCrop)
                         .into(ivGambarKonter);
@@ -332,81 +302,33 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
     }
 
     private void startCamera() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-                new Bantuan(context).swal_error(e.getMessage());
-            }
-
-
-            if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.example.android.fileprovider",
-                        photoFile);
-//                Uri photoURI = Uri.fromFile(photoFile);
-                IMAGE_URI = photoURI;
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-
-//                File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-//                File image = File.createTempFile(imageFileName,
-//                        ".jpg",
-//                        storageDir
-//                );
-
-                startActivityForResult(takePictureIntent, CODE_CAMERA);
-            }
+        camera = new Camera.Builder()
+                .resetToCorrectOrientation(true)// it will rotate the camera bitmap to the correct orientation from meta data
+                .setTakePhotoRequestCode(CODE_CAMERA)
+                .setDirectory("pics")
+                .setName("konter_" + System.currentTimeMillis())
+                .setImageFormat(Camera.IMAGE_JPEG)
+                .setCompression(75)
+                .setImageHeight(1000)// it will try to achieve this height as close as possible maintaining the aspect ratio;
+                .build(this);
+        try {
+            camera.takePicture();
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Bantuan(context).swal_error(e.getMessage());
         }
-//        File photo = new File(Environment.getExternalStorageDirectory(), System.currentTimeMillis() + ".jpg");
-//        IMAGE_URI = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName(), photo);
-//        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//        intent.putExtra(MediaStore.EXTRA_OUTPUT, IMAGE_URI);
-//        intent.putExtra("return data", true);
-//        startActivityForResult(takePictureIntent, CODE_CAMERA);
     }
 
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        @SuppressLint("SimpleDateFormat")
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "KONTER_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
-
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
+    private Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
 
-    public String getRealPathFromURI(Uri uri) {
-        String path = "";
-        if (getContentResolver() != null) {
-            Cursor cursor = getContentResolver().query(uri,
-                    null,
-                    null,
-                    null,
-                    null);
-            if (cursor != null) {
-                cursor.moveToFirst();
-                int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-                path = cursor.getString(idx);
-                cursor.close();
-            }
-        }
-        return path;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        camera.deleteImage();
     }
 }
