@@ -75,7 +75,7 @@
                 android:layout_height="250dp"
                 android:padding="20dp"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/ic_add_image"
+                app:srcCompat="@drawable/bg_take_pict"
                 android:clickable="true"
                 android:focusable="true" />
 
