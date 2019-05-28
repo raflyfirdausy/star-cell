@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.rfl.trn.starr_cell.Model.KaryawanModel;
 import com.rfl.trn.starr_cell.R;
 
 import java.util.ArrayList;
@@ -16,9 +17,9 @@ import butterknife.ButterKnife;
 
 public class AdapterListKaryawan extends RecyclerView.Adapter<AdapterListKaryawan.MyViewHolder> {
     private Context context;
-    private List<String> data;
+    private List<KaryawanModel> data;
 
-    public AdapterListKaryawan(Context context, List<String> data){
+    public AdapterListKaryawan(Context context, List<KaryawanModel> data){
         this.context = context;
         this.data = data;
     }
@@ -31,7 +32,7 @@ public class AdapterListKaryawan extends RecyclerView.Adapter<AdapterListKaryawa
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-        final List<String> isiData = data;
+        final List<KaryawanModel> isiData = data;
 
         myViewHolder.setDataKewView(isiData);
     }
@@ -48,7 +49,7 @@ public class AdapterListKaryawan extends RecyclerView.Adapter<AdapterListKaryawa
             ButterKnife.bind(this,itemView);
         }
 
-        public void setDataKewView(List<String> isiData) {
+        public void setDataKewView(List<KaryawanModel> isiData) {
         }
     }
 }
