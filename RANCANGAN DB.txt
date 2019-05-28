@@ -3,6 +3,7 @@ konter(masuk firebase auth)
  |- email
  |- nama_konter
  |- alamat_konter
+ |- url_foto
 
 karyawan(Ga masuk firebase auth)
 |- {id_karyawan} (random id)
