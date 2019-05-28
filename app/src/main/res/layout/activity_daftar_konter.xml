@@ -15,7 +15,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/iv_konter"
+            android:id="@+id/iv_karyawan"
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:padding="20dp"
@@ -43,7 +43,7 @@
                     android:textStyle="bold" />
 
                 <com.rfl.trn.starr_cell.Custom.MyTextView
-                    android:id="@+id/tv_detailKonter"
+                    android:id="@+id/tv_detailKaryawan"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="monospace"
@@ -104,7 +104,7 @@
                     android:theme="@style/daftar">
 
                     <com.rfl.trn.starr_cell.Custom.MyEditText
-                        android:id="@+id/myet_namaKonter"
+                        android:id="@+id/myet_namaKaryawan"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/ic_store"
@@ -127,7 +127,7 @@
                     android:theme="@style/daftar">
 
                     <com.rfl.trn.starr_cell.Custom.MyEditText
-                        android:id="@+id/myet_alamatKonter"
+                        android:id="@+id/myet_noHpKaryawan"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"

@@ -15,7 +15,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/iv_konter"
+            android:id="@+id/iv_karyawan"
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:padding="20dp"
@@ -37,13 +37,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="monospace"
-                    android:text="@string/tambah_konter"
+                    android:text="@string/tambah_karyawan"
                     android:textColor="@color/colorPrimary"
                     android:textSize="23sp"
                     android:textStyle="bold" />
 
                 <com.rfl.trn.starr_cell.Custom.MyTextView
-                    android:id="@+id/tv_detailKonter"
+                    android:id="@+id/tv_detailKaryawan"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="monospace"
@@ -70,7 +70,7 @@
 
             <ImageView
 
-                android:id="@+id/iv_gambarKonter"
+                android:id="@+id/iv_gambarKaryawan"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:padding="20dp"
@@ -85,7 +85,7 @@
                 android:fontFamily="monospace"
                 android:gravity="center"
                 android:paddingTop="10dp"
-                android:text="@string/tambahkan_gambar_konter"
+                android:text="@string/tambah_gambar_karyawan"
                 android:textColor="@color/colortext"
                 android:textSize="14sp" />
 
@@ -104,7 +104,7 @@
                     android:theme="@style/daftar">
 
                     <com.rfl.trn.starr_cell.Custom.MyEditText
-                        android:id="@+id/myet_namaKonter"
+                        android:id="@+id/myet_namaKaryawan"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/ic_store"
@@ -127,7 +127,7 @@
                     android:theme="@style/daftar">
 
                     <com.rfl.trn.starr_cell.Custom.MyEditText
-                        android:id="@+id/myet_alamatKonter"
+                        android:id="@+id/myet_noHpKaryawan"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -153,16 +153,19 @@
                     android:textColor="@color/colorPrimaryDark"
                     android:text="Jenis Kelamin"/>
                 <RadioGroup
+                    android:id="@+id/radioGroupJenisKelamin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginStart="35dp"
                     android:orientation="horizontal">
                     <RadioButton
+                        android:id="@+id/radioLakiLaki"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Laki-Laki"/>
                     <RadioButton
+                        android:id="@+id/radioPerempuan"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Perempuan"/>

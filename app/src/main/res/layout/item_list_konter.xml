@@ -10,7 +10,7 @@
     android:paddingEnd="@dimen/dp_16">
 
     <ImageView
-        android:id="@+id/iv_konter"
+        android:id="@+id/iv_karyawan"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:padding="5dp"

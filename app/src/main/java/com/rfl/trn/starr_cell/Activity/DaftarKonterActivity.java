@@ -53,17 +53,17 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
     private final int CODE_GALLERY = 1;
     private final int CODE_CAMERA = 2;
     private final int ALL_PERMISSION = 999;
-    @BindView(R.id.iv_konter)
+    @BindView(R.id.iv_karyawan)
     ImageView ivKonter;
-    @BindView(R.id.tv_detailKonter)
+    @BindView(R.id.tv_detailKaryawan)
     TextView tvDetailKonter;
     @BindView(R.id.ll_header)
     LinearLayout llHeader;
     @BindView(R.id.iv_gambarKonter)
     ImageView ivGambarKonter;
-    @BindView(R.id.myet_namaKonter)
+    @BindView(R.id.myet_namaKaryawan)
     MyEditText myetNamaKonter;
-    @BindView(R.id.myet_alamatKonter)
+    @BindView(R.id.myet_noHpKaryawan)
     MyEditText myetAlamatKonter;
     @BindView(R.id.myet_emailKonter)
     MyEditText myetEmailKonter;

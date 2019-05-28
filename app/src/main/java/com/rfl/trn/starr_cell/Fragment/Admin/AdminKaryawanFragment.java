@@ -23,10 +23,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.rfl.trn.starr_cell.Activity.TambahKaryawanActivity;
 import com.rfl.trn.starr_cell.Adapter.AdapterListKaryawan;
-import com.rfl.trn.starr_cell.Adapter.AdapterListKonter;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
 import com.rfl.trn.starr_cell.Model.KaryawanModel;
-import com.rfl.trn.starr_cell.Model.KonterModel;
 import com.rfl.trn.starr_cell.R;
 
 import java.util.ArrayList;
@@ -43,27 +41,29 @@ import butterknife.Unbinder;
 public class AdminKaryawanFragment extends Fragment {
 
 
-    @BindView(R.id.iv_konter)
+    @BindView(R.id.iv_karyawan)
     ImageView ivKonter;
     @BindView(R.id.tv_namaKonter)
     MyTextView tvNamaKonter;
-    @BindView(R.id.tv_detailKonter)
+    @BindView(R.id.tv_detailKaryawan)
     MyTextView tvDetailKonter;
     @BindView(R.id.ll_header)
     LinearLayout llHeader;
     @BindView(R.id.ll_belum_da_konter)
     LinearLayout llBelumDaKonter;
-    @BindView(R.id.rv_karyawan)
+    @BindView(R.id.rv_barang)
     RecyclerView rvKaryawan;
-    @BindView(R.id.fab_tambahKaryawan)
+    @BindView(R.id.fab_tambahBarang)
     FloatingActionButton fabTambahKaryawan;
     Unbinder unbinder;
+    @BindView(R.id.bg_noData)
+    LinearLayout bgNoData;
 
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
     private List<KaryawanModel> list = new ArrayList<>();
     private AdapterListKaryawan adapterListKaryawan;
-    private RecyclerView rv;
+
 
     public AdminKaryawanFragment() {
         // Required empty public constructor
@@ -77,25 +77,30 @@ public class AdminKaryawanFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_admin_karyawan, container, false);
         unbinder = ButterKnife.bind(this, view);
         firebaseAuth = FirebaseAuth.getInstance();
-
-
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child("KARYAWAN")
+        getKaryawan();
+        return view;
+    }
+
+    private void getKaryawan() {
+        databaseReference.child("karyawan")
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()){
+                        if (dataSnapshot.exists()) {
+                            bgNoData.setVisibility(View.GONE);
+                            list.clear();
                             KaryawanModel model;
-                            for (DataSnapshot data: dataSnapshot.getChildren() ){
+                            for (DataSnapshot data : dataSnapshot.getChildren()) {
                                 model = data.getValue(KaryawanModel.class);
 
                                 list.add(model);
 
                             }
+                            adapterListKaryawan = new AdapterListKaryawan(getActivity(), list);
                             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                            rv.setLayoutManager(layoutManager);
-                           adapterListKaryawan = new AdapterListKaryawan(getActivity(), list);
-                           rv.setAdapter(adapterListKaryawan);
+                            rvKaryawan.setLayoutManager(layoutManager);
+                            rvKaryawan.setAdapter(adapterListKaryawan);
                         }
                     }
 
@@ -105,7 +110,6 @@ public class AdminKaryawanFragment extends Fragment {
                     }
                 });
 
-        return view;
     }
 
     @Override
@@ -124,4 +128,6 @@ public class AdminKaryawanFragment extends Fragment {
         super.onDestroyView();
         unbinder.unbind();
     }
+
+
 }

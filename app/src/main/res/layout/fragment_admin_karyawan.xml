@@ -16,7 +16,7 @@
     android:orientation="horizontal">
 
     <ImageView
-        android:id="@+id/iv_konter"
+        android:id="@+id/iv_karyawan"
         android:layout_width="100dp"
         android:layout_height="match_parent"
         android:padding="20dp"
@@ -45,7 +45,7 @@
                 android:textStyle="bold" />
 
             <com.rfl.trn.starr_cell.Custom.MyTextView
-                android:id="@+id/tv_detailKonter"
+                android:id="@+id/tv_detailKaryawan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="monospace"
@@ -79,6 +79,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/bg_noData"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
@@ -120,7 +121,7 @@
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_karyawan"
+                android:id="@+id/rv_barang"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
@@ -129,7 +130,7 @@
     </LinearLayout>
 
     <com.github.clans.fab.FloatingActionButton
-        android:id="@+id/fab_tambahKaryawan"
+        android:id="@+id/fab_tambahBarang"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

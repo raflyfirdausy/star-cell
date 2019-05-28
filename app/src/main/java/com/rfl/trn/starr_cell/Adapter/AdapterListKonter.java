@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
 
 public class AdapterListKonter extends RecyclerView.Adapter<AdapterListKonter.MyViewHolder> {
 
-    @BindView(R.id.iv_konter)
+    @BindView(R.id.iv_karyawan)
     ImageView ivKonter;
     @BindView(R.id.tv_namaKonter)
     MyTextView tvNamaKonter;
@@ -65,7 +65,7 @@ public class AdapterListKonter extends RecyclerView.Adapter<AdapterListKonter.My
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.iv_konter)
+        @BindView(R.id.iv_karyawan)
         ImageView ivKonter;
         @BindView(R.id.tv_namaKonter)
         TextView tvNamaKonter;

@@ -3,18 +3,32 @@ package com.rfl.trn.starr_cell.Model;
 import java.io.Serializable;
 
 public class KaryawanModel implements Serializable {
-    String idKaryawan,jenisKelamin,photoUrl,statusKerja;
+    String idKaryawan;
+    String jenisKelamin;
+    String photoUrl;
+    String statusKerja;
+    String namaKarywan;
     int nomerHp;
 
     public KaryawanModel() {
     }
 
-    public KaryawanModel(String idKaryawan, String jenisKelamin, String photoUrl, String statusKerja, int nomerHp) {
+    public KaryawanModel(String idKaryawan, String jenisKelamin, String photoUrl, String statusKerja, String namaKarywan, int nomerHp) {
         this.idKaryawan = idKaryawan;
         this.jenisKelamin = jenisKelamin;
         this.photoUrl = photoUrl;
         this.statusKerja = statusKerja;
+        this.namaKarywan = namaKarywan;
         this.nomerHp = nomerHp;
+    }
+
+
+    public String getNamaKarywan() {
+        return namaKarywan;
+    }
+
+    public void setNamaKarywan(String namaKarywan) {
+        this.namaKarywan = namaKarywan;
     }
 
     public String getIdKaryawan() {

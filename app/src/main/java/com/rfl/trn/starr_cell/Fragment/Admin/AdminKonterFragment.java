@@ -102,9 +102,10 @@ public class AdminKonterFragment extends Fragment {
                                 Objects.requireNonNull(konterModel).setKey(ds.getKey());
                                 list.add(konterModel);
                             }
+
+                            adapterListKonter = new AdapterListKonter(getActivity(), list);
                             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
                             rvKonter.setLayoutManager(layoutManager);
-                            adapterListKonter = new AdapterListKonter(getActivity(), list);
                             rvKonter.setAdapter(adapterListKonter);
                         } else {
                             //TODO : belum ada data konter

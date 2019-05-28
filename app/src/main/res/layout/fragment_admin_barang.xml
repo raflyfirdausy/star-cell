@@ -1,35 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#ffff"
     tools:context=".Fragment.Admin.AdminBarangFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
+        android:id="@+id/ll_header"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
 
         <ImageView
-            android:layout_marginTop="70dp"
+            android:id="@+id/iv_barang"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:padding="20dp"
+            android:tint="@color/colorPrimary"
+            app:srcCompat="@drawable/ic_store" />
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="500dp"
-            android:src="@drawable/undraw_collecting_fjjl" />
-        <com.rfl.trn.starr_cell.Custom.MyTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textSize="20sp"
-            android:text="Hmm.... \nBelum ada Barang" />
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <com.rfl.trn.starr_cell.Custom.MyTextView
+                    android:id="@+id/tv_namaBarang"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:text="@string/daftar_karyawan"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="23sp"
+                    android:textStyle="bold" />
+
+                <com.rfl.trn.starr_cell.Custom.MyTextView
+                    android:id="@+id/tv_detailBarang"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:paddingTop="5dp"
+                    android:text="@string/detail_konter"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:textStyle="normal" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
     </LinearLayout>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_barang"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ll_header"
+        android:orientation="vertical">
 
-    </android.support.v7.widget.RecyclerView>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ffff">
+
+            <LinearLayout
+                android:id="@+id/llbelumAdaData"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/bg_noData"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:orientation="vertical"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="400dp"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/bg_recyclerview_tidak_ada_karyawan" />
+
+                    <com.rfl.trn.starr_cell.Custom.MyTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="monospace"
+                        android:gravity="center"
+                        android:paddingTop="10dp"
+                        android:text="@string/yah_belum_ada_karyawan_terdaftar"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <com.rfl.trn.starr_cell.Custom.MyTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="monospace"
+                        android:gravity="center"
+                        android:paddingTop="10dp"
+                        android:text="@string/yuk_tambah_karyawan"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="14sp"
+                        android:textStyle="normal" />
 
 
-</FrameLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_barang"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <com.github.clans.fab.FloatingActionButton
+        android:id="@+id/fab_tambahBarang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/add"
+        android:tooltipText="@string/tambah_konter"
+        app:backgroundTint="@color/red"
+        app:fabSize="normal"
+        app:fab_label="@string/tambah_konter"
+        app:fab_showAnimation="@anim/fab_slide_in_from_right"
+        app:fab_showShadow="false"
+        tools:targetApi="o" />
+
+
+</RelativeLayout>

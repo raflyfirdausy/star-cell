@@ -55,4 +55,6 @@
     <string name="daftar_karyawan">Daftar Karyawan</string>
     <string name="nama_karyawan">Nama Karyawan</string>
     <string name="no_hp">No Hp</string>
+    <string name="tambah_karyawan">Tambah Karyawan</string>
+    <string name="tambah_gambar_karyawan">Tambahkan Gambar Karyawan</string>
 </resources>

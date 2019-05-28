@@ -1,6 +1,8 @@
 package com.rfl.trn.starr_cell.Model;
 
-public class KonterModel {
+import java.io.Serializable;
+
+public class KonterModel implements Serializable {
     private String key,namaKonter,alamatKonter,emailKonter,password;
 
     public KonterModel(){
