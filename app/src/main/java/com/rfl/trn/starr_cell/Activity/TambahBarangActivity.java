@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -60,6 +61,7 @@ public class TambahBarangActivity extends AppCompatActivity {
     private FirebaseAnalytics mFirebaseAnalytics;
     private DatabaseReference databaseReference;
     private List<KategoriModel> listKategori;
+    private boolean tambahKategori = false;
     Context context;
 
     @Override
@@ -82,10 +84,27 @@ public class TambahBarangActivity extends AppCompatActivity {
         dialog.setContentView(R.layout.dialog_kategori);
 
         final RecyclerView listView = (RecyclerView) dialog.findViewById(R.id.rv_kategori);
-        final ImageView buttonTambah = (ImageView) dialog.findViewById(R.id.btn_add);
+        final ImageButton buttonTambah = (ImageButton) dialog.findViewById(R.id.btn_add_kategori);
         final MyEditText namaKategori = (MyEditText) dialog.findViewById(R.id.myet_namaKategori);
-        dialog.show();
+        final LinearLayout tambah = (LinearLayout) dialog.findViewById(R.id.ll_tambah);
+        final ImageButton add = (ImageButton) dialog.findViewById(R.id.btn_add_act);
+        tambah.setVisibility(View.GONE);
 
+
+
+        dialog.show();
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (tambahKategori){
+                    tambah.setVisibility(View.VISIBLE);
+                    tambahKategori = false;
+                }else {
+                    tambah.setVisibility(View.GONE);
+                    tambahKategori = true;
+                }
+            }
+        });
         databaseReference.child("kategori")
                 .addValueEventListener(new ValueEventListener() {
                     @Override
