@@ -22,13 +22,18 @@ absen
   |- konfirmasi 
 
 barang
-|- id_konter(ambil dari key node konter)
- |- {id_barang}
-  |- nama_barang
-  |- stok_barang
-  |- harga1
-  |- harga2
-  |- harga3
+|- id_konter (ambil dari key node konter)
+ |- {id-kategori} (ambil dari key node kategori)
+  |- {id_barang} random
+   |- nama_barang
+   |- stok_barang
+   |- harga1
+   |- harga2
+   |- harga3
+
+Kategori
+|- {id_kategori} random
+ |- nama_kategori
 
 transaksi
 |- id_konter (ambil dari key node konter)
