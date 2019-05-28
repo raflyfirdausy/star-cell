@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -19,8 +20,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -28,6 +32,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.mindorks.paracamera.Camera;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rfl.trn.starr_cell.Custom.MyEditText;
@@ -73,11 +80,12 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
     MyEditText myetKonfirmasiPasswordKonter;
     @BindView(R.id.btn_daftar)
     MyTextView btnDaftar;
-    private String currentPhotoPath;
     private Context context = DaftarKonterActivity.this;
     private FirebaseAuth firebaseAuth, firebaseAuth2;
     private DatabaseReference databaseReference;
+    private StorageReference storageReference;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private Uri downloadURL;
     private Camera camera;
 
 
@@ -99,19 +107,24 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
         //firebase
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
+        storageReference = FirebaseStorage.getInstance().getReference();
     }
 
     @OnClick({R.id.iv_gambarKonter, R.id.btn_daftar})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_gambarKonter:
-                BottomSheetDialogFotoKonter bottomSheetDialogFotoKonter = new BottomSheetDialogFotoKonter();
-                bottomSheetDialogFotoKonter.show(getSupportFragmentManager(), "Ambil Foto Konter");
+                ambilFoto();
                 break;
             case R.id.btn_daftar:
                 prosesDaftar();
                 break;
         }
+    }
+
+    private void ambilFoto() {
+        BottomSheetDialogFotoKonter bottomSheetDialogFotoKonter = new BottomSheetDialogFotoKonter();
+        bottomSheetDialogFotoKonter.show(getSupportFragmentManager(), "Ambil Foto Konter");
     }
 
     private void prosesDaftar() {
@@ -125,78 +138,134 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
                 .equals(Objects.requireNonNull(myetKonfirmasiPasswordKonter.getText()).toString())) {
             new Bantuan(context).swal_error("Konfirmasi Password Salah !");
             myetKonfirmasiPasswordKonter.setError("Konfirmasi Password Salah !");
+        } else if (ivGambarKonter.getDrawable().getConstantState() ==
+                getResources().getDrawable(R.drawable.bg_take_pict).getConstantState()) {
+            final SweetAlertDialog dialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE);
+            dialog.setTitleText("Peringatan");
+            dialog.setContentText("Foto konter belum di tambahkan.\nApakah tetap ingin menyimpan data tanpa foto ?");
+            dialog.setConfirmText("Iya, Simpan");
+            dialog.setCancelText("Tambahkan Foto");
+            dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    simpanKeDatabase();
+                    dialog.dismissWithAnimation();
+                }
+            });
+            dialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    ambilFoto();
+                    dialog.dismissWithAnimation();
+                }
+            });
+            dialog.show();
         } else {
-            final SweetAlertDialog loading = new Bantuan(context).swal_loading("Tunggu beberapa saat, proses pendaftaran konter");
-            loading.show();
+            simpanKeDatabase();
+        }
+    }
 
-            FirebaseOptions firebaseOptions = new FirebaseOptions.Builder()
-                    .setDatabaseUrl("https://star-cell-rafly-trian.firebaseio.com/")
-                    .setApiKey("AIzaSyCIuABdUJX-_5uTBEGrYU2qRpTrpOUU9tk")
-                    .setApplicationId("com.rfl.trn.starr_cell")
-                    .build();
+    private void simpanKeDatabase() {
+        final SweetAlertDialog loading = new Bantuan(context).swal_loading("Tunggu beberapa saat, proses pendaftaran konter");
+        loading.show();
 
-            try {
-                FirebaseApp firebaseApp = FirebaseApp.initializeApp(getApplicationContext(),
-                        firebaseOptions,
-                        getString(R.string.app_name));
-                firebaseAuth2 = FirebaseAuth.getInstance(firebaseApp);
-            } catch (IllegalStateException e) {
-                firebaseAuth2 = FirebaseAuth.getInstance(FirebaseApp.getInstance(getString(R.string.app_name)));
-            }
+        FirebaseOptions firebaseOptions = new FirebaseOptions.Builder()
+                .setDatabaseUrl(getString(R.string.databaseUrl))
+                .setApiKey(getString(R.string.apiKey))
+                .setApplicationId(getString(R.string.applicationId))
+                .build();
 
-            firebaseAuth2.createUserWithEmailAndPassword(Objects.requireNonNull(myetEmailKonter.getText()).toString(),
-                    myetPasswordKonter.getText().toString())
-                    .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                        @Override
-                        public void onSuccess(AuthResult authResult) {
+        try {
+            FirebaseApp firebaseApp = FirebaseApp.initializeApp(getApplicationContext(),
+                    firebaseOptions,
+                    getString(R.string.app_name));
+            firebaseAuth2 = FirebaseAuth.getInstance(firebaseApp);
+        } catch (IllegalStateException e) {
+            firebaseAuth2 = FirebaseAuth.getInstance(FirebaseApp.getInstance(getString(R.string.app_name)));
+        }
 
-                            String key = authResult.getUser().getUid();
-                            KonterModel konterModel = new KonterModel();
-                            konterModel.setNamaKonter(Objects.requireNonNull(myetNamaKonter.getText()).toString());
-                            konterModel.setAlamatKonter(Objects.requireNonNull(myetAlamatKonter.getText()).toString());
-                            konterModel.setEmailKonter(Objects.requireNonNull(myetEmailKonter.getText()).toString());
-                            konterModel.setPassword(Objects.requireNonNull(myetPasswordKonter.getText()).toString());
+        firebaseAuth2.createUserWithEmailAndPassword(Objects.requireNonNull(myetEmailKonter.getText()).toString(),
+                Objects.requireNonNull(myetPasswordKonter.getText()).toString())
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
 
-                            databaseReference.child("konter")
-                                    .child(key)
-                                    .setValue(konterModel)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            loading.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-                                            loading.showContentText(true);
-                                            loading.setTitleText("Sukses");
-                                            loading.setContentText("Berhasil Mendaftarkan Konter Baru");
-                                            loading.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        final String key = authResult.getUser().getUid();
+                        final KonterModel konterModel = new KonterModel();
+
+
+                        Bitmap bitmap = ((BitmapDrawable) ivGambarKonter.getDrawable()).getBitmap();
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                        byte[] data = baos.toByteArray();
+
+                        final StorageReference ref = storageReference.child("konter")
+                                .child(key)
+                                .child(System.currentTimeMillis() + ".jpeg");
+
+                        UploadTask uploadTask = ref.putBytes(data);
+                        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                            @Override
+                            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                                if (!task.isSuccessful()) {
+                                    throw Objects.requireNonNull(task.getException());
+                                }
+                                return ref.getDownloadUrl();
+                            }
+                        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Uri> task) {
+                                if (task.isSuccessful()) {
+                                    downloadURL = task.getResult();
+                                    konterModel.setNamaKonter(Objects.requireNonNull(myetNamaKonter.getText()).toString());
+                                    konterModel.setAlamatKonter(Objects.requireNonNull(myetAlamatKonter.getText()).toString());
+                                    konterModel.setEmailKonter(Objects.requireNonNull(myetEmailKonter.getText()).toString());
+                                    konterModel.setPassword(Objects.requireNonNull(myetPasswordKonter.getText()).toString());
+                                    konterModel.setUrl_foto(downloadURL.toString());
+                                    databaseReference.child("konter")
+                                            .child(key)
+                                            .setValue(konterModel)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
-                                                public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                    finish();
+                                                public void onSuccess(Void aVoid) {
+                                                    loading.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                                    loading.showContentText(true);
+                                                    loading.setTitleText("Sukses");
+                                                    loading.setContentText("Berhasil Mendaftarkan Konter Baru");
+                                                    loading.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                        @Override
+                                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                            finish();
+                                                        }
+                                                    });
+                                                    firebaseAuth2.signOut();
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    loading.changeAlertType(SweetAlertDialog.WARNING_TYPE);
+                                                    loading.showContentText(true);
+                                                    loading.setTitleText("Gagal");
+                                                    loading.setContentText(e.getMessage());
                                                 }
                                             });
-                                            firebaseAuth2.signOut();
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            loading.changeAlertType(SweetAlertDialog.WARNING_TYPE);
-                                            loading.showContentText(true);
-                                            loading.setTitleText("Gagal");
-                                            loading.setContentText(e.getMessage());
-                                        }
-                                    });
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            loading.changeAlertType(SweetAlertDialog.WARNING_TYPE);
-                            loading.showContentText(true);
-                            loading.setTitleText("Gagal");
-                            loading.setContentText(e.getMessage());
-                        }
-                    });
-        }
+                                } else {
+                                    new Bantuan(context).swal_error(Objects.requireNonNull(task.getException()).getMessage());
+                                }
+                            }
+                        });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        loading.changeAlertType(SweetAlertDialog.WARNING_TYPE);
+                        loading.showContentText(true);
+                        loading.setTitleText("Gagal");
+                        loading.setContentText(e.getMessage());
+                    }
+                });
     }
 
     @Override
