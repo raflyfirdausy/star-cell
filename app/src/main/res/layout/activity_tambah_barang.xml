@@ -107,6 +107,28 @@
                     android:theme="@style/daftar">
 
                     <com.rfl.trn.starr_cell.Custom.MyEditText
+                        android:id="@+id/myet_konter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_store"
+                        android:drawablePadding="15dp"
+                        android:drawableTint="@color/colorPrimaryDark"
+                        android:hint="kategori"
+                        android:inputType="text"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textColorHint="@color/colorPrimaryDark"
+                        tools:targetApi="m" />
+
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:theme="@style/daftar">
+
+                    <com.rfl.trn.starr_cell.Custom.MyEditText
                         android:id="@+id/myet_namaBarang"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DataSnapshot;
@@ -19,15 +18,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.rfl.trn.starr_cell.Adapter.AdapterDialogKonter;
 import com.rfl.trn.starr_cell.Adapter.AdapterKategori;
 import com.rfl.trn.starr_cell.Custom.MyEditText;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
-import com.rfl.trn.starr_cell.Interface.ItemKategori;
+import com.rfl.trn.starr_cell.Helper.Bantuan;
+import com.rfl.trn.starr_cell.Interface.IDialog;
+import com.rfl.trn.starr_cell.Model.BarangModel;
 import com.rfl.trn.starr_cell.Model.KategoriModel;
+import com.rfl.trn.starr_cell.Model.KonterModel;
 import com.rfl.trn.starr_cell.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -57,11 +59,15 @@ public class TambahBarangActivity extends AppCompatActivity {
     MyEditText myetHarga3;
     @BindView(R.id.btn_daftar)
     MyTextView btnDaftar;
+    @BindView(R.id.myet_konter)
+    MyEditText myetKonter;
 
     private FirebaseAnalytics mFirebaseAnalytics;
     private DatabaseReference databaseReference;
     private List<KategoriModel> listKategori;
+    private List<KonterModel> listKonter;
     private boolean tambahKategori = false;
+    private String idKonter,idKategori;
     Context context;
 
     @Override
@@ -79,28 +85,29 @@ public class TambahBarangActivity extends AppCompatActivity {
     public void DialogKategori() {
         listKategori = new ArrayList<>();
         listKategori.clear();
+
         final Dialog dialog = new Dialog(context);
 
         dialog.setContentView(R.layout.dialog_kategori);
 
-        final RecyclerView listView = (RecyclerView) dialog.findViewById(R.id.rv_kategori);
+        final RecyclerView rv = (RecyclerView) dialog.findViewById(R.id.rv_kategori);
         final ImageButton buttonTambah = (ImageButton) dialog.findViewById(R.id.btn_add_kategori);
         final MyEditText namaKategori = (MyEditText) dialog.findViewById(R.id.myet_namaKategori);
         final LinearLayout tambah = (LinearLayout) dialog.findViewById(R.id.ll_tambah);
         final ImageButton add = (ImageButton) dialog.findViewById(R.id.btn_add_act);
+
         tambah.setVisibility(View.GONE);
-
-
 
         dialog.show();
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (tambahKategori){
-                    tambah.setVisibility(View.VISIBLE);
-                    tambahKategori = false;
-                }else {
+
+                if (tambahKategori) {
                     tambah.setVisibility(View.GONE);
+                    tambahKategori = false;
+                } else {
+                    tambah.setVisibility(View.VISIBLE);
                     tambahKategori = true;
                 }
             }
@@ -116,19 +123,21 @@ public class TambahBarangActivity extends AppCompatActivity {
                                 model = data.getValue(KategoriModel.class);
                                 listKategori.add(model);
                             }
-                            AdapterKategori adapterKategori = new AdapterKategori(listKategori, context, new ItemKategori() {
+                            AdapterKategori adapterKategori = new AdapterKategori(listKategori, context, new IDialog() {
                                 @Override
                                 public void onItemClick(String id, String nama, boolean isDismiss) {
                                     myetKategori.setText(nama);
-                                    if (isDismiss){{
-                                        dialog.dismiss();
+                                    idKategori = id;
+                                    if (isDismiss) {
+                                        {
+                                            dialog.dismiss();
                                         }
                                     }
                                 }
                             });
                             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
-                            listView.setLayoutManager(layoutManager);
-                            listView.setAdapter(adapterKategori);
+                            rv.setLayoutManager(layoutManager);
+                            rv.setAdapter(adapterKategori);
 
                         }
                     }
@@ -147,8 +156,62 @@ public class TambahBarangActivity extends AppCompatActivity {
                 databaseReference.child("kategori")
                         .child(idKategori)
                         .setValue(model);
+                namaKategori.setText("");
             }
         });
+    }
+
+    public void DialogKonter() {
+        listKonter = new ArrayList<>();
+        listKonter.clear();
+        final Dialog dialog = new Dialog(context);
+
+        dialog.setContentView(R.layout.dialog_kategori);
+        final RecyclerView rv = (RecyclerView) dialog.findViewById(R.id.rv_kategori);
+        final ImageButton buttonTambah = (ImageButton) dialog.findViewById(R.id.btn_add_kategori);
+        final MyEditText namaKategori = (MyEditText) dialog.findViewById(R.id.myet_namaKategori);
+        final LinearLayout tambah = (LinearLayout) dialog.findViewById(R.id.ll_tambah);
+        final ImageButton add = (ImageButton) dialog.findViewById(R.id.btn_add_act);
+
+        tambah.setVisibility(View.GONE);
+        add.setVisibility(View.GONE);
+        dialog.show();
+
+
+        databaseReference.child("konter")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                KonterModel model;
+
+                                model = data.getValue(KonterModel.class);
+                                listKonter.add(model);
+                            }
+                            AdapterDialogKonter adapterDialogKonter = new AdapterDialogKonter(context, listKonter, new IDialog() {
+                                @Override
+                                public void onItemClick(String id, String nama, boolean isDismiss) {
+                                    if (isDismiss){
+                                        myetKonter.setText(nama);
+                                        idKonter = id;
+                                        dialog.dismiss();
+                                    }
+                                }
+                            });
+                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
+                            rv.setLayoutManager(layoutManager);
+                            rv.setAdapter(adapterDialogKonter);
+                        }
+                        new Bantuan(context).alertDialogInformasi("ada");
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        new Bantuan(context).alertDialogInformasi("gada");
+                    }
+                });
+
     }
 
     //TODO :: Bind(OnCLick dll)
@@ -157,6 +220,26 @@ public class TambahBarangActivity extends AppCompatActivity {
         DialogKategori();
     }
 
+    @OnClick(R.id.myet_konter)
+    void kontelKlik(){
+        DialogKonter();
+    }
+    @OnClick(R.id.btn_daftar)
+    void tambahBarang() {
+
+        BarangModel model = new BarangModel(
+                myetNamaBarang.getText().toString(),
+                myetStokBarang.getText().toString(),
+                Double.parseDouble(myetHarga1.getText().toString()),
+                Double.parseDouble(myetHarga2.getText().toString()),
+                Double.parseDouble(myetHarga3.getText().toString()));
+
+            databaseReference.child("barang")
+                    .child(idKonter)
+                    .child(idKategori)
+                    .push()
+                    .setValue(model);
+    }
 
     //TODO :: LifeCycle
 
