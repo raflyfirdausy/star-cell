@@ -11,13 +11,20 @@ import com.rfl.trn.starr_cell.R;
 
 public class AdminAbsensiFragment extends Fragment {
 
-    public AdminAbsensiFragment(){
+    public AdminAbsensiFragment() {
 
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_admin_absensi, container, false);
     }
+
+    //TODO :: Fetch Data
+
+    //TODO :: Bind(OnCLick dll)
+
+    //TODO :: LifeCycle
 }

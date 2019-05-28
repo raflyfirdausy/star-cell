@@ -57,7 +57,7 @@ public class AdminBarangFragment extends Fragment {
     FloatingActionButton fabTambahBarang;
     Unbinder unbinder;
 
-    private List<BarangModel> list ;
+    private List<BarangModel> list;
     private AdapterListBarang adapterListBarang;
     private DatabaseReference databaseReference;
 
@@ -78,14 +78,15 @@ public class AdminBarangFragment extends Fragment {
         return view;
     }
 
+    //TODO :: Fetch Data
     private void getBarang() {
         databaseReference.child("barang")
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         list = new ArrayList<>();
-                        if (dataSnapshot.exists()){
-                            for (DataSnapshot data : dataSnapshot.getChildren()){
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot data : dataSnapshot.getChildren()) {
                                 BarangModel model = new BarangModel();
 
                                 model = data.getValue(BarangModel.class);
@@ -106,10 +107,13 @@ public class AdminBarangFragment extends Fragment {
                 });
     }
 
+    //TODO :: Bind(OnCLick dll)
     @OnClick(R.id.fab_tambahBarang)
-    void tambahBarang(){
+    void tambahBarang() {
         startActivity(new Intent(getActivity(), TambahBarangActivity.class));
     }
+
+    //TODO :: LifeCycle
     @Override
     public void onDestroyView() {
         super.onDestroyView();

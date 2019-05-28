@@ -32,6 +32,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 
@@ -53,7 +54,7 @@ public class AdminKaryawanFragment extends Fragment {
     LinearLayout llBelumDaKonter;
     @BindView(R.id.rv_barang)
     RecyclerView rvKaryawan;
-    @BindView(R.id.fab_tambahBarang)
+    @BindView(R.id.fab_tambahKaryawan)
     FloatingActionButton fabTambahKaryawan;
     Unbinder unbinder;
     @BindView(R.id.bg_noData)
@@ -82,6 +83,7 @@ public class AdminKaryawanFragment extends Fragment {
         return view;
     }
 
+    //TODO :: Fetch Data
     private void getKaryawan() {
         databaseReference.child("karyawan")
                 .addValueEventListener(new ValueEventListener() {
@@ -112,15 +114,18 @@ public class AdminKaryawanFragment extends Fragment {
 
     }
 
+
+    //TODO :: Bind(OnCLick dll)
+    @OnClick(R.id.fab_tambahKaryawan)
+    void tambahKaryawan() {
+        startActivity(new Intent(getActivity(), TambahKaryawanActivity.class));
+    }
+
+    //TODO :: LifeCycle
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fabTambahKaryawan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), TambahKaryawanActivity.class));
-            }
-        });
+
     }
 
     @Override

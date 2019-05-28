@@ -32,6 +32,7 @@ import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 
@@ -72,20 +73,8 @@ public class AdminKonterFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
 
-        fabTambahKonter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), DaftarKonterActivity.class));
-            }
-        });
-
-
-    }
-
+    //TODO :: Fetch Data
     private void getDataKonter() {
         databaseReference.child("konter")
                 .addValueEventListener(new ValueEventListener() {
@@ -108,7 +97,6 @@ public class AdminKonterFragment extends Fragment {
                             rvKonter.setLayoutManager(layoutManager);
                             rvKonter.setAdapter(adapterListKonter);
                         } else {
-                            //TODO : belum ada data konter
                             rlBelumadaKonter.setVisibility(View.VISIBLE);
                             rvKonter.setVisibility(View.GONE);
                         }
@@ -119,6 +107,19 @@ public class AdminKonterFragment extends Fragment {
                         new Bantuan(getActivity()).swal_error(databaseError.getMessage());
                     }
                 });
+    }
+
+    //TODO :: Bind(OnCLick dll)
+    @OnClick(R.id.fab_tambahKonter)
+    void tambahKOnter() {
+        startActivity(new Intent(getActivity(), DaftarKonterActivity.class));
+    }
+
+    //TODO :: LifeCycle
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
     }
 
     @Override
