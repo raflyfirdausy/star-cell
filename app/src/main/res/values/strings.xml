@@ -47,7 +47,7 @@
     <string name="bottom_sheet_option_gallery">Upload from Gallery</string>
     <string name="bottom_sheet_option_heading">Add Photo</string>
     <string name="bottom_sheet_option_remove_photo">Remove Photo</string>
-    <string name="tambahkan_foto_konter">Tambahkan Foto Konter</string>
+    <string name="tambahkan_foto_konter">Pilih tindakan untuk foto konter</string>
     <string name="gunakan_kamera">Gunakan kamera</string>
     <string name="pilih_dari_gallery">Pilih dari Gallery</string>
     <string name="yah_belum_ada_karyawan_terdaftar">Yah, belum ada karyawan terdaftar</string>
@@ -64,4 +64,6 @@
     <string name="belum_ada_barang">Belum ada barang yang ditambahkan</string>
     <string name="tambah_data_barang">Tambah Data Barang</string>
     <string name="tambah_data_karyawan">Tambah Data Karyawan</string>
+    <string name="edit_data_konter">Edit Data Konter</string>
+    <string name="hapus_foto">Hapus Foto</string>
 </resources>

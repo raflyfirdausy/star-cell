@@ -24,6 +24,8 @@ public class BottomSheetDialogFotoKonter extends BottomSheetDialogFragment {
     MyTextView tvBtnAddPhotoCamera;
     @BindView(R.id.tv_btn_add_photo_gallery)
     MyTextView tvBtnAddPhotoGallery;
+    @BindView(R.id.tv_btn_hapus_foto)
+    MyTextView tvBtnHapusFoto;
     Unbinder unbinder;
     private BottomSheetListener mBottomSheetListener;
 
@@ -44,6 +46,13 @@ public class BottomSheetDialogFotoKonter extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 mBottomSheetListener.onOptionClick("gallery");
+                dismiss();
+            }
+        });
+        tvBtnHapusFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mBottomSheetListener.onOptionClick("hapus");
                 dismiss();
             }
         });
