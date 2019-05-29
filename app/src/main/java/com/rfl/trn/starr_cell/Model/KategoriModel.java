@@ -4,13 +4,15 @@ import java.io.Serializable;
 
 public class KategoriModel implements Serializable {
     String idKategroi,namaKategori;
+    Long waktuDiubah;
 
     public KategoriModel() {
     }
 
-    public KategoriModel(String idKategroi, String namaKategori) {
+    public KategoriModel(String idKategroi, String namaKategori, Long waktuDiubah) {
         this.idKategroi = idKategroi;
         this.namaKategori = namaKategori;
+        this.waktuDiubah = waktuDiubah;
     }
 
     public String getIdKategroi() {
@@ -27,5 +29,13 @@ public class KategoriModel implements Serializable {
 
     public void setNamaKategori(String namaKategori) {
         this.namaKategori = namaKategori;
+    }
+
+    public Long getWaktuDiubah() {
+        return waktuDiubah;
+    }
+
+    public void setWaktuDiubah(Long waktuDiubah) {
+        this.waktuDiubah = waktuDiubah;
     }
 }

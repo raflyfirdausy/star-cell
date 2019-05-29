@@ -20,17 +20,8 @@ absen
   |- jam_masuk
   |- jam_keluar
   |- konfirmasi 
-//coba
-barang
-|- id_konter (ambil dari key node konter)
- |- {id-kategori} (ambil dari key node kategori)
-  |- {id_barang} random
-   |- nama_barang
-   |- stok_barang
-   |- harga1
-   |- harga2
-   |- harga3
-//option
+
+
 barang
   |- {id_barang} random
    |- nama_barang

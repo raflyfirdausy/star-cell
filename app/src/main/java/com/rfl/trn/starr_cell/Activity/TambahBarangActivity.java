@@ -41,8 +41,10 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Currency;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -86,10 +88,8 @@ public class TambahBarangActivity extends AppCompatActivity {
     private boolean tambahKategori = false;
     private String idKonter = null;
     private String idKategori = null;
-    private String harga1 = null;
-    private String harga2 = null;
-    private String harga3 = null;
-
+    private Date date = new Date();
+    private Long timestamp = date.getTime();
     RecyclerView rvDialog;
     ImageButton tambahItemDialog;
     MyEditText namaDialog;
@@ -108,6 +108,9 @@ public class TambahBarangActivity extends AppCompatActivity {
         context = TambahBarangActivity.this;
         databaseReference = FirebaseDatabase.getInstance().getReference();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.app_name);
+        getSupportActionBar().setSubtitle(R.string.tambah_data_barang);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_kategori_konter);
@@ -129,6 +132,8 @@ public class TambahBarangActivity extends AppCompatActivity {
         listKategori.clear();
         layoutTambahItemDialog.setVisibility(View.GONE);
         dialog.show();
+
+
         buttonTambahItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -182,7 +187,9 @@ public class TambahBarangActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String idKategori = databaseReference.push().getKey();
-                KategoriModel model = new KategoriModel(idKategori, namaDialog.getText().toString());
+                KategoriModel model = new KategoriModel(idKategori,
+                        namaDialog.getText().toString(),
+                        new Bantuan(context).getDayTimestamp(timestamp));
                 databaseReference.child("kategori")
                         .child(idKategori)
                         .setValue(model);
@@ -261,7 +268,9 @@ public class TambahBarangActivity extends AppCompatActivity {
                     myetHarga2.getValueString(),
                     myetHarga3.getValueString(),
                     idKonter,
-                    idKategori);
+                    idKategori,
+                    new Bantuan(context).getDayTimestamp(timestamp)
+                    );
             databaseReference.child("barang")
                     .push()
                     .setValue(model)

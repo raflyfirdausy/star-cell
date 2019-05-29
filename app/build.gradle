@@ -89,7 +89,7 @@ dependencies {
 
     //TODO : https://github.com/wajahatkarim3/EasyMoney-Widgets
     implementation 'com.wajahatkarim3.EasyMoney-Widgets:EasyMoney-Widgets:1.0.0'
-
-
+    //TODO : joda
+    implementation 'joda-time:joda-time:2.9.7'
 }
 apply plugin: 'com.google.gms.google-services'

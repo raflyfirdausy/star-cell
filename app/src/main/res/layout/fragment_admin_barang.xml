@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#ffff"
-    tools:context=".Fragment.Admin.AdminBarangFragment">
-
+    tools:context=".Fragment.Admin.AdminTransaksiFragment">
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:id="@+id/ll_header"
@@ -16,7 +16,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/iv_barang"
+            android:id="@+id/iv_karyawan"
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:padding="20dp"
@@ -35,17 +35,17 @@
                 android:padding="10dp">
 
                 <com.rfl.trn.starr_cell.Custom.MyTextView
-                    android:id="@+id/tv_namaBarang"
+                    android:id="@+id/tv_namaKonter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="monospace"
-                    android:text="@string/daftar_karyawan"
+                    android:text="Daftar Barang"
                     android:textColor="@color/colorPrimary"
                     android:textSize="23sp"
                     android:textStyle="bold" />
 
                 <com.rfl.trn.starr_cell.Custom.MyTextView
-                    android:id="@+id/tv_detailBarang"
+                    android:id="@+id/tv_detailKaryawan"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="monospace"
@@ -73,7 +73,7 @@
             android:background="#ffff">
 
             <LinearLayout
-                android:id="@+id/llbelumAdaData"
+                android:id="@+id/ll_belum_ada_barang"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -91,7 +91,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="400dp"
                         android:layout_gravity="center"
-                        app:srcCompat="@drawable/bg_recyclerview_tidak_ada_karyawan" />
+                        app:srcCompat="@drawable/undraw_savings_hjfl"/>
 
                     <com.rfl.trn.starr_cell.Custom.MyTextView
                         android:layout_width="wrap_content"
@@ -100,7 +100,7 @@
                         android:fontFamily="monospace"
                         android:gravity="center"
                         android:paddingTop="10dp"
-                        android:text="@string/yah_belum_ada_karyawan_terdaftar"
+                        android:text="@string/belum_ada_barang"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="20sp"
                         android:textStyle="bold" />

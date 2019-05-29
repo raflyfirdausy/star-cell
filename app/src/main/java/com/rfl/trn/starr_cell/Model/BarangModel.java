@@ -4,11 +4,11 @@ import java.io.Serializable;
 
 public class BarangModel implements Serializable {
     String namaBarang,stokBarang, harga1,harga2,harga3,idKonter,idKategori;
-
+    Long tanggalDiubah;
     public BarangModel() {
     }
 
-    public BarangModel(String namaBarang, String stokBarang, String harga1, String harga2, String harga3, String idKonter, String idKategori) {
+    public BarangModel(String namaBarang, String stokBarang, String harga1, String harga2, String harga3, String idKonter, String idKategori, Long tanggalDiubah) {
         this.namaBarang = namaBarang;
         this.stokBarang = stokBarang;
         this.harga1 = harga1;
@@ -16,6 +16,7 @@ public class BarangModel implements Serializable {
         this.harga3 = harga3;
         this.idKonter = idKonter;
         this.idKategori = idKategori;
+        this.tanggalDiubah = tanggalDiubah;
     }
 
     public String getNamaBarang() {
@@ -72,5 +73,13 @@ public class BarangModel implements Serializable {
 
     public void setIdKategori(String idKategori) {
         this.idKategori = idKategori;
+    }
+
+    public Long getTanggalDiubah() {
+        return tanggalDiubah;
+    }
+
+    public void setTanggalDiubah(Long tanggalDiubah) {
+        this.tanggalDiubah = tanggalDiubah;
     }
 }

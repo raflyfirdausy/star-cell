@@ -49,8 +49,8 @@ public class AdminBarangFragment extends Fragment {
     LinearLayout llHeader;
     @BindView(R.id.bg_noData)
     LinearLayout bgNoData;
-    @BindView(R.id.ll_belum_ada_konter)
-    LinearLayout llBelumDaKonter;
+    @BindView(R.id.ll_belum_ada_barang)
+    LinearLayout layoutBelumAdaBarang;
     @BindView(R.id.rv_barang)
     RecyclerView rvBarang;
     @BindView(R.id.fab_tambahBarang)
@@ -70,7 +70,7 @@ public class AdminBarangFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_admin_transaksi, container, false);
+        View view = inflater.inflate(R.layout.fragment_admin_barang, container, false);
         unbinder = ButterKnife.bind(this, view);
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -86,7 +86,7 @@ public class AdminBarangFragment extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         list = new ArrayList<>();
                         if (dataSnapshot.exists()) {
-                            llBelumDaKonter.setVisibility(View.GONE);
+                            layoutBelumAdaBarang.setVisibility(View.GONE);
                             for (DataSnapshot data : dataSnapshot.getChildren()) {
                                 BarangModel model ;
 

@@ -57,7 +57,7 @@ public class AdminKaryawanFragment extends Fragment {
     @BindView(R.id.fab_tambahKaryawan)
     FloatingActionButton fabTambahKaryawan;
     Unbinder unbinder;
-    @BindView(R.id.bg_noData)
+    @BindView(R.id.bg_noDataKaryawan)
     LinearLayout bgNoData;
 
     private FirebaseAuth firebaseAuth;

@@ -61,4 +61,7 @@
     <string name="apiKey">AIzaSyCIuABdUJX-_5uTBEGrYU2qRpTrpOUU9tk</string>
     <string name="applicationId">com.rfl.trn.starr_cell</string>
     <string name="simpan">SIMPAN</string>
+    <string name="belum_ada_barang">Belum ada barang yang ditambahkan</string>
+    <string name="tambah_data_barang">Tambah Data Barang</string>
+    <string name="tambah_data_karyawan">Tambah Data Karyawan</string>
 </resources>
