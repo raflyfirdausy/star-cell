@@ -119,6 +119,27 @@
                         tools:targetApi="m" />
 
                 </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:theme="@style/daftar">
+
+                    <com.rfl.trn.starr_cell.Custom.MyEditText
+                        android:id="@+id/myet_alamatKaryawan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_store"
+                        android:drawablePadding="15dp"
+                        android:drawableTint="@color/colorPrimaryDark"
+                        android:hint="Alamat Karyawan"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textColorHint="@color/colorPrimaryDark"
+                        tools:targetApi="m" />
+
+                </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -171,7 +192,7 @@
                         android:text="Perempuan"/>
                 </RadioGroup>
                 <com.rfl.trn.starr_cell.Custom.MyTextView
-                    android:id="@+id/btn_daftar"
+                    android:id="@+id/btn_tambahKaryawan"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
