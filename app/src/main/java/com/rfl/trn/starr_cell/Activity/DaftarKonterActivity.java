@@ -55,8 +55,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class DaftarKonterActivity extends AppCompatActivity
-        implements BottomSheetDialogFotoKonter.BottomSheetListener {
+public class DaftarKonterActivity extends AppCompatActivity implements BottomSheetDialogFotoKonter.BottomSheetListener {
 
     private final int CODE_GALLERY = 1;
     private final int CODE_CAMERA = 2;
