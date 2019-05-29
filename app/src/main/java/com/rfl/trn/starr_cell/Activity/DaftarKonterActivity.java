@@ -444,7 +444,7 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
             startActivityForResult(new Intent()
                     .setAction(Intent.ACTION_GET_CONTENT)
                     .setType("image/*"), CODE_GALLERY);
-        } else {
+        } else if (text.equalsIgnoreCase("kamera")) {
             String[] PERMISSIONS = {
                     android.Manifest.permission.CAMERA,
                     android.Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -454,6 +454,28 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
             } else {
                 startCamera();
             }
+        } else {
+
+            final SweetAlertDialog dialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE);
+            dialog.setTitleText("Peringatan");
+            dialog.setContentText("Apakah anda yakin ingin menghapus foto konter ?");
+            dialog.setConfirmText("Iya, hapus");
+            dialog.setCancelText("Batal");
+            dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    ivGambarKonter.setImageDrawable(getDrawable(R.drawable.bg_take_pict));
+                    new Bantuan(context).toastShort("Foto konter berhasil di hapus");
+                    dialog.dismissWithAnimation();
+                }
+            });
+            dialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    dialog.dismissWithAnimation();
+                }
+            });
+            dialog.show();
         }
     }
 

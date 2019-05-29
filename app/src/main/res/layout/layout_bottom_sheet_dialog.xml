@@ -50,6 +50,23 @@
         android:text="@string/pilih_dari_gallery"
         android:textColor="@color/black"
         android:textSize="16sp"
+        tools:targetApi="m"/>
+
+    <com.rfl.trn.starr_cell.Custom.MyTextView
+        android:id="@+id/tv_btn_hapus_foto"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginEnd="@dimen/dp_16"
+        android:background="?attr/selectableItemBackground"
+        android:layout_marginStart="@dimen/dp_16"
+        android:backgroundTint="@android:color/white"
+        android:drawablePadding="@dimen/dp_32"
+        android:drawableStart="@drawable/ic_delete_black_24dp"
+        android:drawableTint="@color/black"
+        android:gravity="start|center_vertical"
+        android:text="@string/hapus_foto"
+        android:textColor="@color/black"
+        android:textSize="16sp"
         tools:targetApi="m"
         android:layout_marginBottom="@dimen/dp_16"/>
 
