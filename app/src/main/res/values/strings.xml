@@ -60,4 +60,5 @@
     <string name="databaseUrl">https://star-cell-rafly-trian.firebaseio.com/</string>
     <string name="apiKey">AIzaSyCIuABdUJX-_5uTBEGrYU2qRpTrpOUU9tk</string>
     <string name="applicationId">com.rfl.trn.starr_cell</string>
+    <string name="simpan">SIMPAN</string>
 </resources>

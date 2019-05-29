@@ -108,7 +108,31 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         storageReference = FirebaseStorage.getInstance().getReference();
+
+        if (getIntent().hasExtra("jenis")) {
+            if (getIntent().getStringExtra("jenis").equalsIgnoreCase("edit")) {
+                setAndGetTampilanEdit();
+            }
+        }
     }
+
+    private void setAndGetTampilanEdit() {
+        myetEmailKonter.setEnabled(false);
+        myetPasswordKonter.setVisibility(View.GONE);
+        myetKonfirmasiPasswordKonter.setVisibility(View.GONE);
+        btnDaftar.setText(getString(R.string.simpan));
+
+        if (getIntent().hasExtra("urlFoto")) {
+            Picasso.get()
+                    .load(getIntent().getStringExtra("urlFoto"))
+                    .placeholder(R.drawable.bg_take_pict)
+                    .into(ivGambarKonter);
+        }
+        myetNamaKonter.setText(getIntent().getStringExtra("namaKonter"));
+        myetAlamatKonter.setText(getIntent().getStringExtra("alamatKonter"));
+        myetEmailKonter.setText(getIntent().getStringExtra("emailKonter"));
+    }
+
 
     @OnClick({R.id.iv_gambarKonter, R.id.btn_daftar})
     public void onViewClicked(View view) {
@@ -117,9 +141,25 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
                 ambilFoto();
                 break;
             case R.id.btn_daftar:
-                prosesDaftar();
+                if (getIntent().hasExtra("jenis")) {
+                    if (getIntent().getStringExtra("jenis").equalsIgnoreCase("edit")) {
+                        prosesEdit();
+                    } else if (getIntent().getStringExtra("jenis").equalsIgnoreCase("password")) {
+                        prosesGantiPassword();
+                    }
+                } else {
+                    prosesDaftar();
+                }
                 break;
         }
+    }
+
+    private void prosesEdit() {
+        new Bantuan(context).swal_warning("coming soon hehe");
+    }
+
+    private void prosesGantiPassword() {
+        new Bantuan(context).swal_warning("coming soon hehe");
     }
 
     private void ambilFoto() {
@@ -169,11 +209,7 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
         final SweetAlertDialog loading = new Bantuan(context).swal_loading("Tunggu beberapa saat, proses pendaftaran konter");
         loading.show();
 
-        FirebaseOptions firebaseOptions = new FirebaseOptions.Builder()
-                .setDatabaseUrl(getString(R.string.databaseUrl))
-                .setApiKey(getString(R.string.apiKey))
-                .setApplicationId(getString(R.string.applicationId))
-                .build();
+        FirebaseOptions firebaseOptions = new Bantuan(context).getFirebaseOptions();
 
         try {
             FirebaseApp firebaseApp = FirebaseApp.initializeApp(getApplicationContext(),
@@ -189,10 +225,8 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-
                         final String key = authResult.getUser().getUid();
                         final KonterModel konterModel = new KonterModel();
-
 
                         Bitmap bitmap = ((BitmapDrawable) ivGambarKonter.getDrawable()).getBitmap();
                         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -201,7 +235,7 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
 
                         final StorageReference ref = storageReference.child("konter")
                                 .child(key)
-                                .child(System.currentTimeMillis() + ".jpeg");
+                                .child(key + ".jpeg");
 
                         UploadTask uploadTask = ref.putBytes(data);
                         Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -398,6 +432,8 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        camera.deleteImage();
+        if (camera != null) {
+            camera.deleteImage();
+        }
     }
 }
