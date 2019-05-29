@@ -304,7 +304,7 @@ public class TambahBarangActivity extends AppCompatActivity {
                 TextUtils.isEmpty(myetStokBarang.getText()) ||
                 TextUtils.isEmpty(myetKategori.getText()) ||
                 TextUtils.isEmpty(myetKonter.getText()) ||
-                harga1.isEmpty()) {
+                TextUtils.isEmpty(myetHarga1.getText())) {
             return false;
 
         } else {

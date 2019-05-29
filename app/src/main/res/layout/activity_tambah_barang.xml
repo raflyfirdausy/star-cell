@@ -165,7 +165,7 @@
                         android:drawablePadding="15dp"
                         android:drawableTint="@color/colorPrimaryDark"
                         android:hint="Stok Barang"
-                        android:inputType="text"
+                        android:inputType="numberDecimal"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
                         android:textColor="@color/colorPrimaryDark"
