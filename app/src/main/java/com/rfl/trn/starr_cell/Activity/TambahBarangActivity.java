@@ -66,9 +66,9 @@ public class TambahBarangActivity extends AppCompatActivity {
     @BindView(R.id.myet_harga1)
     EasyMoneyEditText myetHarga1;
     @BindView(R.id.myet_harga2)
-    MyEditText myetHarga2;
+    EasyMoneyEditText myetHarga2;
     @BindView(R.id.myet_harga3)
-    MyEditText myetHarga3;
+    EasyMoneyEditText myetHarga3;
     @BindView(R.id.btn_tambahBarang)
     MyTextView btnDaftar;
     @BindView(R.id.myet_konter)

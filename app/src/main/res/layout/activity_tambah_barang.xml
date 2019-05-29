@@ -89,7 +89,6 @@
                         android:drawableStart="@drawable/ic_store"
                         android:drawablePadding="15dp"
                         android:drawableTint="@color/colorPrimaryDark"
-                        android:focusable="true"
                         android:hint="Nama Barang"
                         android:inputType="text"
                         android:paddingTop="10dp"
