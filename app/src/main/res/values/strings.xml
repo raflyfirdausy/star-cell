@@ -34,11 +34,11 @@
     <string name="yuk_tambahkan_konter_pertamamu_dengan_cara_klik_tombol_merah_di_pojok_kanan_bawah">Yuk tambahkan konter pertamamu dengan cara klik tombol merah di pojok kanan bawah.</string>
     <string name="daftar_konter">Daftar Konter</string>
     <string name="detail_tambah_konter">Silahkan isi data di bawah ini dengan lengkap sesuai konkter yang mau di tambahkan</string>
-    <string name="tambahkan_gambar_konter">Tambahkan Gambar Konter</string>
+    <string name="tambahkan_gambar_konter">Klik gambar diatas untuk menambahkan gambar konter</string>
     <string name="nama_konter">Nama Konter</string>
     <string name="alamat_konter">Alamat Konter</string>
     <string name="konfirmasi_password">Konfirmasi Password</string>
-    <string name="daftar">DAFTAR</string>
+    <string name="daftar">Daftar</string>
     <string name="absensi">Absensi</string>
     <string name="transaksi">Transaksi</string>
     <string name="tambah_data_konter">Tambah data konter</string>
@@ -60,10 +60,14 @@
     <string name="databaseUrl">https://star-cell-rafly-trian.firebaseio.com/</string>
     <string name="apiKey">AIzaSyCIuABdUJX-_5uTBEGrYU2qRpTrpOUU9tk</string>
     <string name="applicationId">com.rfl.trn.starr_cell</string>
-    <string name="simpan">SIMPAN</string>
+    <string name="simpan">Simpan</string>
     <string name="belum_ada_barang">Belum ada barang yang ditambahkan</string>
     <string name="tambah_data_barang">Tambah Data Barang</string>
     <string name="tambah_data_karyawan">Tambah Data Karyawan</string>
     <string name="edit_data_konter">Edit Data Konter</string>
     <string name="hapus_foto">Hapus Foto</string>
+    <string name="password_saat_ni">Password Saat ni</string>
+    <string name="ubah_password">Ubah Password</string>
+    <string name="ubah_password_konter">Ubah Password Konter</string>
+    <string name="password_baru">Password Baru</string>
 </resources>

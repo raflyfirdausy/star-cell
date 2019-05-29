@@ -134,18 +134,9 @@ public class AdapterListKonter extends RecyclerView.Adapter<AdapterListKonter.My
                                                 );
                                         detail.show();
                                     } else if (which == 1) {
-                                        Intent intent = new Intent(context, DaftarKonterActivity.class);
-                                        intent.putExtra("jenis", "edit");
-                                        intent.putExtra("key", konterModel.getKey());
-                                        intent.putExtra("namaKonter", konterModel.getNamaKonter());
-                                        intent.putExtra("alamatKonter", konterModel.getAlamatKonter());
-                                        intent.putExtra("emailKonter", konterModel.getEmailKonter());
-                                        if(konterModel.getUrl_foto() != null){
-                                            intent.putExtra("urlFoto", konterModel.getUrl_foto());
-                                        }
-                                        context.startActivity(intent);
+                                        pindahActivity(konterModel, "edit");
                                     } else if (which == 2) {
-                                        new Bantuan(context).swal_warning("Ubah");
+                                        pindahActivity(konterModel, "password");
                                     } else if (which == 3) {
 
                                         SweetAlertDialog tanya = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
@@ -213,5 +204,19 @@ public class AdapterListKonter extends RecyclerView.Adapter<AdapterListKonter.My
                 }
             });
         }
+    }
+
+    private void pindahActivity(KonterModel konterModel, String jenis){
+        Intent intent = new Intent(context, DaftarKonterActivity.class);
+        intent.putExtra("jenis", jenis);
+        intent.putExtra("key", konterModel.getKey());
+        intent.putExtra("namaKonter", konterModel.getNamaKonter());
+        intent.putExtra("alamatKonter", konterModel.getAlamatKonter());
+        intent.putExtra("emailKonter", konterModel.getEmailKonter());
+        intent.putExtra("passwordKonter", konterModel.getPassword());
+        if(konterModel.getUrl_foto() != null){
+            intent.putExtra("urlFoto", konterModel.getUrl_foto());
+        }
+        context.startActivity(intent);
     }
 }
