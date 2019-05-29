@@ -1,5 +1,6 @@
 package com.rfl.trn.starr_cell.Activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -23,10 +24,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -41,7 +39,6 @@ import com.rfl.trn.starr_cell.Fragment.Custom.BottomSheetDialogFotoKonter;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
 import com.rfl.trn.starr_cell.Helper.Permissions;
 import com.rfl.trn.starr_cell.Model.KaryawanModel;
-import com.rfl.trn.starr_cell.Model.KonterModel;
 import com.rfl.trn.starr_cell.R;
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
@@ -78,8 +75,10 @@ public class TambahKaryawanActivity extends AppCompatActivity implements BottomS
     RadioButton radioPerempuan;
     @BindView(R.id.radioGroupJenisKelamin)
     RadioGroup radioGroupJenisKelamin;
-    @BindView(R.id.btn_daftar)
+    @BindView(R.id.btn_tambahKaryawan)
     MyTextView btnDaftar;
+    @BindView(R.id.myet_alamatKaryawan)
+    MyEditText myetAlamatKaryawan;
 
     private Context context = TambahKaryawanActivity.this;
     private FirebaseAuth firebaseAuth, firebaseAuth2;
@@ -118,14 +117,14 @@ public class TambahKaryawanActivity extends AppCompatActivity implements BottomS
 
     }
 
-    @OnClick(R.id.btn_daftar)
+    @OnClick(R.id.btn_tambahKaryawan)
     void tambahKaryawan() {
         if (cekInput()) {
             try {
                 if (ivGambarKaryawan.getDrawable().getConstantState() == getResources().getDrawable(R.drawable.bg_take_pict).getConstantState()) {
                     final SweetAlertDialog dialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE);
                     dialog.setTitleText("Peringatan");
-                    dialog.setContentText("Foto konter belum di tambahkan.\nApakah tetap ingin menyimpan data tanpa foto ?");
+                    dialog.setContentText("Foto konter belum di tambahkan.\n Apakah tetap ingin menyimpan data tanpa foto ?");
                     dialog.setConfirmText("Iya, Simpan");
                     dialog.setCancelText("Enggak Usah");
                     dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -143,10 +142,14 @@ public class TambahKaryawanActivity extends AppCompatActivity implements BottomS
                         }
                     });
                     dialog.show();
+                }else {
+                    simpanKeDatabase();
                 }
 
             } catch (NullPointerException e) {
                 e.printStackTrace();
+                new Bantuan(context).swal_error(e.getMessage());
+            }catch (Exception e){
                 new Bantuan(context).swal_error(e.getMessage());
             }
         } else {
@@ -166,69 +169,72 @@ public class TambahKaryawanActivity extends AppCompatActivity implements BottomS
                 .child(key)
                 .child(key + ".jpeg");
 
-                UploadTask uploadTask = ref.putBytes(data);
-                Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                    @Override
-                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                        if (!task.isSuccessful()) {
-                            throw Objects.requireNonNull(task.getException());
-                        }
-                        return ref.getDownloadUrl();
-                    }
-                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Uri> task) {
-                        if (task.isSuccessful()) {
-                            downloadURL = task.getResult();
-                            int selectedId = radioGroupJenisKelamin.getCheckedRadioButtonId();
-                            radioButtonSex = (RadioButton) findViewById(selectedId);
-                            KaryawanModel model = new KaryawanModel(
-                                    key,
-                                    radioButtonSex.getText().toString(),
-                                    downloadURL.toString(),
-                                    "belum aktif",
-                                    myetNamaKaryawan.getText().toString(),
-                                    Integer.parseInt(myetNoHpKaryawan.getText().toString()),
-                                    new Bantuan(context).getDayTimestamp(timestamp));
+        UploadTask uploadTask = ref.putBytes(data);
+        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw Objects.requireNonNull(task.getException());
+                }
+                return ref.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    downloadURL = task.getResult();
+                    int selectedId = radioGroupJenisKelamin.getCheckedRadioButtonId();
+                    radioButtonSex = (RadioButton) findViewById(selectedId);
+                    KaryawanModel model = new KaryawanModel(
+                            key,
+                            radioButtonSex.getText().toString(),
+                            downloadURL.toString(),
+                            "belum aktif",
+                            myetNamaKaryawan.getText().toString(),
+                            myetAlamatKaryawan.getText().toString(),
+                            Integer.parseInt(myetNoHpKaryawan.getText().toString()),
+                            new Bantuan(context).getDayTimestamp(timestamp)
+                            );
 
-                            databaseReference.child("karyawan")
-                                    .child(key)
-                                    .setValue(model)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    databaseReference.child("karyawan")
+                            .child(key)
+                            .setValue(model)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    loading.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                    loading.showContentText(true);
+                                    loading.setTitleText("Sukses");
+                                    loading.setContentText("Berhasil Menambahkan Karyawan Baru");
+                                    loading.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                         @Override
-                                        public void onSuccess(Void aVoid) {
-                                            loading.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-                                            loading.showContentText(true);
-                                            loading.setTitleText("Sukses");
-                                            loading.setContentText("Berhasil Menambahkan Karyawan Baru");
-                                            loading.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                                @Override
-                                                public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                    finish();
-                                                }
-                                            });
-
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            loading.changeAlertType(SweetAlertDialog.WARNING_TYPE);
-                                            loading.showContentText(true);
-                                            loading.setTitleText("Gagal");
-                                            loading.setContentText(e.getMessage());
+                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                            finish();
                                         }
                                     });
-                        } else {
-                         new Bantuan(context).swal_error(Objects.requireNonNull(task.getException()).getMessage());
-                        }
-                    }
-                });
+
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    loading.changeAlertType(SweetAlertDialog.WARNING_TYPE);
+                                    loading.showContentText(true);
+                                    loading.setTitleText("Gagal");
+                                    loading.setContentText(e.getMessage());
+                                }
+                            });
+                } else {
+                    new Bantuan(context).swal_error(Objects.requireNonNull(task.getException()).getMessage());
+                }
+            }
+        });
     }
 
     private boolean cekInput() {
         if (TextUtils.isEmpty(myetNamaKaryawan.getText()) ||
-                TextUtils.isEmpty(myetNoHpKaryawan.getText())) {
+                TextUtils.isEmpty(myetNoHpKaryawan.getText()) ||
+        TextUtils.isEmpty(myetAlamatKaryawan.getText())) {
             return false;
         } else {
             return true;
@@ -243,8 +249,8 @@ public class TambahKaryawanActivity extends AppCompatActivity implements BottomS
                     .setType("image/*"), CODE_GALLERY);
         } else {
             String[] PERMISSIONS = {
-                    android.Manifest.permission.CAMERA,
-                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
             };
             if (!Permissions.hasPermissions(this, PERMISSIONS)) {
                 ActivityCompat.requestPermissions(this, PERMISSIONS, ALL_PERMISSION);
@@ -259,7 +265,7 @@ public class TambahKaryawanActivity extends AppCompatActivity implements BottomS
                 .resetToCorrectOrientation(true)// it will rotate the camera bitmap to the correct orientation from meta data
                 .setTakePhotoRequestCode(CODE_CAMERA)
                 .setDirectory("pics")
-                .setName("konter_" + System.currentTimeMillis())
+                .setName("karyawan_" + System.currentTimeMillis())
                 .setImageFormat(Camera.IMAGE_JPEG)
                 .setCompression(75)
                 .setImageHeight(1000)// it will try to achieve this height as close as possible maintaining the aspect ratio;
@@ -336,7 +342,7 @@ public class TambahKaryawanActivity extends AppCompatActivity implements BottomS
         tujuan += ".jpg";
         UCrop uCrop = UCrop.of(uri, Uri.fromFile(new File(getCacheDir(), tujuan)));
         uCrop.withAspectRatio(16, 9);
-        uCrop.withMaxResultSize(1600, 900);
+        uCrop.withMaxResultSize(1600, 1600);
         uCrop.withOptions(getCropOption());
         uCrop.start(TambahKaryawanActivity.this);
     }

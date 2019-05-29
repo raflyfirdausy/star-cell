@@ -9,8 +9,10 @@ karyawan(Ga masuk firebase auth)
  |- nama_karyawan
  |- jenis_kelamin
  |- nomer_hp
+ |- Alamat
  |- url_foto
  |- status_kerja
+ |- tanggalDiubah
 
 absen
 |-id_konter(ambil dari key node konter)
@@ -30,11 +32,13 @@ barang
    |- harga2
    |- {id-kategori} (ambil dari key node kategori)
    |- id_konter (ambil dari key node konter)
+   |- tanggalDiubah
    |- harga3
 
 Kategori
 |- {id_kategori} random
  |- nama_kategori
+ |- tanggalDiubah
 
 transaksi
 |- id_konter (ambil dari key node konter)

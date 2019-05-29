@@ -62,6 +62,7 @@ public class AdminKaryawanFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
     private List<KaryawanModel> list = new ArrayList<>();
+    private List<String> listKey = new ArrayList<>();
     private AdapterListKaryawan adapterListKaryawan;
 
 
@@ -91,14 +92,16 @@ public class AdminKaryawanFragment extends Fragment {
                         if (dataSnapshot.exists()) {
                             bgNoDataKaryawan.setVisibility(View.GONE);
                             list.clear();
+                            listKey.clear();
                             KaryawanModel model;
                             for (DataSnapshot data : dataSnapshot.getChildren()) {
                                 model = data.getValue(KaryawanModel.class);
-
+                                String key = data.getKey();
                                 list.add(model);
+                                listKey.add(key);
 
                             }
-                            adapterListKaryawan = new AdapterListKaryawan(getActivity(), list);
+                            adapterListKaryawan = new AdapterListKaryawan(getActivity(), list,listKey);
                             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
                             rvKaryawan.setLayoutManager(layoutManager);
                             rvKaryawan.setAdapter(adapterListKaryawan);
