@@ -87,5 +87,9 @@ dependencies {
     implementation 'com.mindorks:paracamera:0.2.2'
 
 
+    //TODO : https://github.com/wajahatkarim3/EasyMoney-Widgets
+    implementation 'com.wajahatkarim3.EasyMoney-Widgets:EasyMoney-Widgets:1.0.0'
+
+
 }
 apply plugin: 'com.google.gms.google-services'

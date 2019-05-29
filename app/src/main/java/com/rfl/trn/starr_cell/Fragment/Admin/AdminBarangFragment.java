@@ -87,7 +87,7 @@ public class AdminBarangFragment extends Fragment {
                         list = new ArrayList<>();
                         if (dataSnapshot.exists()) {
                             for (DataSnapshot data : dataSnapshot.getChildren()) {
-                                BarangModel model = new BarangModel();
+                                BarangModel model ;
 
                                 model = data.getValue(BarangModel.class);
                                 list.add(model);

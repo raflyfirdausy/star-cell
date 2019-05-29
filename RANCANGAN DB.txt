@@ -3,7 +3,6 @@ konter(masuk firebase auth)
  |- email
  |- nama_konter
  |- alamat_konter
- |- url_foto
 
 karyawan(Ga masuk firebase auth)
 |- {id_karyawan} (random id)
@@ -21,7 +20,7 @@ absen
   |- jam_masuk
   |- jam_keluar
   |- konfirmasi 
-
+//coba
 barang
 |- id_konter (ambil dari key node konter)
  |- {id-kategori} (ambil dari key node kategori)
@@ -30,6 +29,16 @@ barang
    |- stok_barang
    |- harga1
    |- harga2
+   |- harga3
+//option
+barang
+  |- {id_barang} random
+   |- nama_barang
+   |- stok_barang
+   |- harga1
+   |- harga2
+   |- {id-kategori} (ambil dari key node kategori)
+   |- id_konter (ambil dari key node konter)
    |- harga3
 
 Kategori

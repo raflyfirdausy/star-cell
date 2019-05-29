@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 
 import com.rfl.trn.starr_cell.Custom.MyTextView;
 import com.rfl.trn.starr_cell.Interface.IDialog;
-import com.rfl.trn.starr_cell.Model.KategoriModel;
+import com.rfl.trn.starr_cell.Model.KonterModel;
 import com.rfl.trn.starr_cell.R;
 
 import java.util.List;
@@ -18,29 +18,32 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AdapterKategori extends RecyclerView.Adapter<AdapterKategori.MyViewHolder> {
-    List<KategoriModel> data;
+public class AdapterDialogKonter extends RecyclerView.Adapter<AdapterDialogKonter.MyViewHolder> {
     Context context;
+    List<KonterModel> data;
+    List<String> idKOnter ;
     IDialog listener;
 
 
-    public AdapterKategori(List<KategoriModel> data, Context context, IDialog IDialog) {
-        this.data = data;
+
+    public AdapterDialogKonter(Context context, List<KonterModel> data, List<String> listIdKonter, IDialog IDialog) {
         this.context = context;
+        this.data = data;
+        this.idKOnter = listIdKonter;
         this.listener = IDialog;
+
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(context).inflate(R.layout.item_list_dialog_kategori_konter, viewGroup, false);
-
-        return new MyViewHolder(v);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_list_dialog_kategori_konter, viewGroup, false);
+        return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-        myViewHolder.setData(data.get(i));
+        myViewHolder.setData(data.get(i),idKOnter.get(i));
     }
 
     @Override
@@ -58,15 +61,15 @@ public class AdapterKategori extends RecyclerView.Adapter<AdapterKategori.MyView
             ButterKnife.bind(this,itemView);
         }
 
-        void setData(final KategoriModel s) {
-            tvNamaKategori.setText(s.getNamaKategori());
-
+        public void setData(final KonterModel konterModel, final String s) {
+            tvNamaKategori.setText(konterModel.getNamaKonter());
             llParent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClick(s.getIdKategroi(),s.getNamaKategori(),true);
+                    listener.onItemClick(s,konterModel.getNamaKonter(),true);
                 }
             });
         }
     }
+
 }
