@@ -41,7 +41,6 @@ import butterknife.Unbinder;
  */
 public class AdminKonterFragment extends Fragment {
 
-
     @BindView(R.id.ll_belum_da_konter)
     LinearLayout rlBelumadaKonter;
     @BindView(R.id.fab_tambahKonter)

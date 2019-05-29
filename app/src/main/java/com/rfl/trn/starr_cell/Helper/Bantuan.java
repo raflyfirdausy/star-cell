@@ -5,7 +5,9 @@ import android.content.Context;
 import android.graphics.Color;
 import android.widget.Toast;
 
+import com.google.firebase.FirebaseOptions;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+import com.rfl.trn.starr_cell.R;
 
 public class Bantuan {
 
@@ -95,6 +97,15 @@ public class Bantuan {
         SAD.setCancelable(false);
 
         return SAD;
+    }
+
+    public FirebaseOptions getFirebaseOptions(){
+        FirebaseOptions firebaseOptions = new FirebaseOptions.Builder()
+                .setDatabaseUrl(context.getString(R.string.databaseUrl))
+                .setApiKey(context.getString(R.string.apiKey))
+                .setApplicationId(context.getString(R.string.applicationId))
+                .build();
+        return firebaseOptions;
     }
 
 }
