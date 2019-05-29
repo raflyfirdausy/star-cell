@@ -67,7 +67,7 @@ public class TambahKaryawanActivity extends AppCompatActivity {
     //TODO :: Bind(OnCLick dll)
     @OnClick(R.id.btn_daftar)
     void tambahKaryawan() {
-        if(cekInput()){
+        if (cekInput()) {
             String idKaryawan = databaseReference.push().getKey();
             int selectedId = radioGroupJenisKelamin.getCheckedRadioButtonId();
             radioButtonSex = (RadioButton) findViewById(selectedId);
@@ -81,27 +81,25 @@ public class TambahKaryawanActivity extends AppCompatActivity {
 
             databaseReference.child("karyawan")
                     .child(idKaryawan)
-                    .setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()){
-                        new Bantuan(context).swal_sukses("Berhasil Menambahkan ");
-                    }
-                }
-            });
-        }else {
+                    .setValue(model)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                new Bantuan(context).swal_sukses("Berhasil Menambahkan ");
+                            }
+                        }
+                    });
+        } else {
             new Bantuan(context).swal_error("Ada data yang belum diisi !!");
         }
-
-
-
     }
 
     private boolean cekInput() {
         if (TextUtils.isEmpty(myetNamaKaryawan.getText()) ||
-                TextUtils.isEmpty( myetNoHpKaryawan.getText())){
+                TextUtils.isEmpty(myetNoHpKaryawan.getText())) {
             return false;
-        }else {
+        } else {
             return true;
         }
     }
