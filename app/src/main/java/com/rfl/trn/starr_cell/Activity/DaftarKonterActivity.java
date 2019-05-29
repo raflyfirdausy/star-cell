@@ -178,8 +178,7 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
                 .equals(Objects.requireNonNull(myetKonfirmasiPasswordKonter.getText()).toString())) {
             new Bantuan(context).swal_error("Konfirmasi Password Salah !");
             myetKonfirmasiPasswordKonter.setError("Konfirmasi Password Salah !");
-        } else if (ivGambarKonter.getDrawable().getConstantState() ==
-                getResources().getDrawable(R.drawable.bg_take_pict).getConstantState()) {
+        } else if (ivGambarKonter.getDrawable().getConstantState() == getResources().getDrawable(R.drawable.bg_take_pict).getConstantState()) {
             final SweetAlertDialog dialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE);
             dialog.setTitleText("Peringatan");
             dialog.setContentText("Foto konter belum di tambahkan.\nApakah tetap ingin menyimpan data tanpa foto ?");

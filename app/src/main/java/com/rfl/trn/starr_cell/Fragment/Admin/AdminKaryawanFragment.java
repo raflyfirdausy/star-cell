@@ -43,23 +43,22 @@ public class AdminKaryawanFragment extends Fragment {
 
 
     @BindView(R.id.iv_karyawan)
-    ImageView ivKonter;
+    ImageView ivKaryawan;
     @BindView(R.id.tv_namaKonter)
     MyTextView tvNamaKonter;
     @BindView(R.id.tv_detailKaryawan)
-    MyTextView tvDetailKonter;
+    MyTextView tvDetailKaryawan;
     @BindView(R.id.ll_header)
     LinearLayout llHeader;
+    @BindView(R.id.bg_noDataKaryawan)
+    LinearLayout bgNoDataKaryawan;
     @BindView(R.id.ll_belum_da_konter)
     LinearLayout llBelumDaKonter;
-    @BindView(R.id.rv_barang)
-    RecyclerView rvKaryawan;
     @BindView(R.id.fab_tambahKaryawan)
     FloatingActionButton fabTambahKaryawan;
     Unbinder unbinder;
-    @BindView(R.id.bg_noDataKaryawan)
-    LinearLayout bgNoData;
-
+    @BindView(R.id.rv_karyawan)
+    RecyclerView rvKaryawan;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
     private List<KaryawanModel> list = new ArrayList<>();
@@ -90,7 +89,7 @@ public class AdminKaryawanFragment extends Fragment {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
-                            bgNoData.setVisibility(View.GONE);
+                            bgNoDataKaryawan.setVisibility(View.GONE);
                             list.clear();
                             KaryawanModel model;
                             for (DataSnapshot data : dataSnapshot.getChildren()) {
