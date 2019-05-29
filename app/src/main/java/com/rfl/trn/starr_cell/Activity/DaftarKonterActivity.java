@@ -64,6 +64,8 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
     ImageView ivKonter;
     @BindView(R.id.tv_detailKaryawan)
     TextView tvDetailKonter;
+    @BindView(R.id.tv_judul)
+    TextView tvJudul;
     @BindView(R.id.ll_header)
     LinearLayout llHeader;
     @BindView(R.id.iv_gambarKonter)
@@ -121,6 +123,7 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
         myetPasswordKonter.setVisibility(View.GONE);
         myetKonfirmasiPasswordKonter.setVisibility(View.GONE);
         btnDaftar.setText(getString(R.string.simpan));
+        tvJudul.setText(getString(R.string.edit_data_konter));
 
         if (getIntent().hasExtra("urlFoto")) {
             Picasso.get()
@@ -155,16 +158,38 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
     }
 
     private void prosesEdit() {
-        new Bantuan(context).swal_warning("coming soon hehe");
+        if (TextUtils.isEmpty(myetNamaKonter.getText()) ||
+                TextUtils.isEmpty(myetAlamatKonter.getText()) ||
+                TextUtils.isEmpty(myetEmailKonter.getText())) {
+            new Bantuan(context).swal_warning("Masih Ada Data yang belum diisi !");
+        } else if (ivGambarKonter.getDrawable().getConstantState() == getResources().getDrawable(R.drawable.bg_take_pict).getConstantState()) {
+            final SweetAlertDialog dialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE);
+            dialog.setTitleText("Peringatan");
+            dialog.setContentText("Foto konter belum di tambahkan.\nApakah tetap ingin menyimpan data tanpa foto ?");
+            dialog.setConfirmText("Iya, Simpan");
+            dialog.setCancelText("Tambahkan Foto");
+            dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    simpanKeDatabaseEdit(false);
+                    dialog.dismissWithAnimation();
+                }
+            });
+            dialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    ambilFoto();
+                    dialog.dismissWithAnimation();
+                }
+            });
+            dialog.show();
+        } else {
+            simpanKeDatabaseEdit(true);
+        }
     }
 
     private void prosesGantiPassword() {
         new Bantuan(context).swal_warning("coming soon hehe");
-    }
-
-    private void ambilFoto() {
-        BottomSheetDialogFotoKonter bottomSheetDialogFotoKonter = new BottomSheetDialogFotoKonter();
-        bottomSheetDialogFotoKonter.show(getSupportFragmentManager(), "Ambil Foto Konter");
     }
 
     private void prosesDaftar() {
@@ -187,7 +212,7 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
             dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                 @Override
                 public void onClick(SweetAlertDialog sweetAlertDialog) {
-                    simpanKeDatabase();
+                    simpanKeDatabase(false);
                     dialog.dismissWithAnimation();
                 }
             });
@@ -200,11 +225,83 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
             });
             dialog.show();
         } else {
-            simpanKeDatabase();
+            simpanKeDatabase(true);
         }
     }
 
-    private void simpanKeDatabase() {
+    private void simpanKeDatabaseEdit(final boolean isAdaFoto) {
+        final SweetAlertDialog loading = new Bantuan(context).swal_loading("Tunggu beberapa saat, proses mengedit konter");
+        loading.show();
+
+        final String key = getIntent().getStringExtra("key");
+        final KonterModel konterModel = new KonterModel();
+
+        Bitmap bitmap = ((BitmapDrawable) ivGambarKonter.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        final StorageReference ref = storageReference.child("konter")
+                .child(key)
+                .child(key + ".jpeg");
+
+        UploadTask uploadTask = ref.putBytes(data);
+        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw Objects.requireNonNull(task.getException());
+                }
+                return ref.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    downloadURL = task.getResult();
+                    konterModel.setNamaKonter(Objects.requireNonNull(myetNamaKonter.getText()).toString());
+                    konterModel.setAlamatKonter(Objects.requireNonNull(myetAlamatKonter.getText()).toString());
+                    konterModel.setEmailKonter(Objects.requireNonNull(myetEmailKonter.getText()).toString());
+                    if (isAdaFoto) {
+                        konterModel.setUrl_foto(downloadURL.toString());
+                    } else {
+                        konterModel.setUrl_foto(null);
+                    }
+                    databaseReference.child("konter")
+                            .child(key)
+                            .setValue(konterModel)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    loading.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                    loading.showContentText(true);
+                                    loading.setTitleText("Sukses");
+                                    loading.setContentText("Berhasil Edit Data Konter");
+                                    loading.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                            finish();
+                                        }
+                                    });
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    loading.changeAlertType(SweetAlertDialog.WARNING_TYPE);
+                                    loading.showContentText(true);
+                                    loading.setTitleText("Gagal");
+                                    loading.setContentText(e.getMessage());
+                                }
+                            });
+                } else {
+                    new Bantuan(context).swal_error(Objects.requireNonNull(task.getException()).getMessage());
+                }
+            }
+        });
+    }
+
+    private void simpanKeDatabase(final boolean isAdaFoto) {
         final SweetAlertDialog loading = new Bantuan(context).swal_loading("Tunggu beberapa saat, proses pendaftaran konter");
         loading.show();
 
@@ -254,7 +351,11 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
                                     konterModel.setAlamatKonter(Objects.requireNonNull(myetAlamatKonter.getText()).toString());
                                     konterModel.setEmailKonter(Objects.requireNonNull(myetEmailKonter.getText()).toString());
                                     konterModel.setPassword(Objects.requireNonNull(myetPasswordKonter.getText()).toString());
-                                    konterModel.setUrl_foto(downloadURL.toString());
+                                    if (isAdaFoto) {
+                                        konterModel.setUrl_foto(downloadURL.toString());
+                                    } else {
+                                        konterModel.setUrl_foto(null);
+                                    }
                                     databaseReference.child("konter")
                                             .child(key)
                                             .setValue(konterModel)
@@ -299,6 +400,11 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
                         loading.setContentText(e.getMessage());
                     }
                 });
+    }
+
+    private void ambilFoto() {
+        BottomSheetDialogFotoKonter bottomSheetDialogFotoKonter = new BottomSheetDialogFotoKonter();
+        bottomSheetDialogFotoKonter.show(getSupportFragmentManager(), "Ambil Foto Konter");
     }
 
     @Override

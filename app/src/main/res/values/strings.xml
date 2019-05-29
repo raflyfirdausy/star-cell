@@ -64,4 +64,5 @@
     <string name="belum_ada_barang">Belum ada barang yang ditambahkan</string>
     <string name="tambah_data_barang">Tambah Data Barang</string>
     <string name="tambah_data_karyawan">Tambah Data Karyawan</string>
+    <string name="edit_data_konter">Edit Data Konter</string>
 </resources>

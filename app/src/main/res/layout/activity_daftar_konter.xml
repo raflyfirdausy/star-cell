@@ -35,6 +35,7 @@
                 android:padding="10dp">
 
                 <com.rfl.trn.starr_cell.Custom.MyTextView
+                    android:id="@+id/tv_judul"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="monospace"
