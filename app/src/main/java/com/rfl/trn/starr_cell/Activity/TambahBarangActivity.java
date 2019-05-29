@@ -269,10 +269,10 @@ public class TambahBarangActivity extends AppCompatActivity {
                     myetStokBarang.getText().toString(),
                     myetHarga1.getText().toString(),
                     myetHarga2.getText().toString(),
-                    myetHarga3.getText().toString());
+                    myetHarga3.getText().toString(),
+                    idKonter,
+                    idKategori);
             databaseReference.child("barang")
-                    .child(idKonter)
-                    .child(idKategori)
                     .push()
                     .setValue(model)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
