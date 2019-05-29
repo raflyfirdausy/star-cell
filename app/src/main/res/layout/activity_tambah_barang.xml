@@ -37,7 +37,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="monospace"
-                    android:text="@string/tambah_konter"
+                    android:text="Tambah Barang"
                     android:textColor="@color/colorPrimary"
                     android:textSize="23sp"
                     android:textStyle="bold" />
@@ -68,9 +68,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
-
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -78,50 +75,7 @@
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
                 android:paddingBottom="20dp">
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:theme="@style/daftar">
 
-                    <com.rfl.trn.starr_cell.Custom.MyEditText
-                        android:id="@+id/myet_kategori"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_store"
-                        android:drawablePadding="15dp"
-                        android:drawableTint="@color/colorPrimaryDark"
-                        android:hint="kategori"
-                        android:inputType="text"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textColorHint="@color/colorPrimaryDark"
-                        tools:targetApi="m" />
-
-                </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:theme="@style/daftar">
-
-                    <com.rfl.trn.starr_cell.Custom.MyEditText
-                        android:id="@+id/myet_konter"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_store"
-                        android:drawablePadding="15dp"
-                        android:drawableTint="@color/colorPrimaryDark"
-                        android:hint="kategori"
-                        android:inputType="text"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textColorHint="@color/colorPrimaryDark"
-                        tools:targetApi="m" />
-
-                </android.support.design.widget.TextInputLayout>
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -135,7 +89,56 @@
                         android:drawableStart="@drawable/ic_store"
                         android:drawablePadding="15dp"
                         android:drawableTint="@color/colorPrimaryDark"
-                        android:hint="nama barang"
+                        android:hint="Nama Barang"
+                        android:inputType="text"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textColorHint="@color/colorPrimaryDark"
+                        tools:targetApi="m" />
+
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_kategori"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:theme="@style/daftar">
+
+                    <com.rfl.trn.starr_cell.Custom.MyEditText
+                        android:id="@+id/myet_kategori"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_store"
+                        android:drawablePadding="15dp"
+                        android:drawableTint="@color/colorPrimaryDark"
+                        android:hint="Kategori Barang"
+                        android:inputType="text"
+                        android:focusable="false"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textColorHint="@color/colorPrimaryDark"
+                        tools:targetApi="m" />
+
+
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_konter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:theme="@style/daftar">
+
+                    <com.rfl.trn.starr_cell.Custom.MyEditText
+                        android:id="@+id/myet_konter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_store"
+                        android:drawablePadding="15dp"
+                        android:drawableTint="@color/colorPrimaryDark"
+                        android:hint="Pilih Konter"
+                        android:focusable="false"
                         android:inputType="text"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
@@ -148,6 +151,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
                     android:theme="@style/daftar">
 
                     <com.rfl.trn.starr_cell.Custom.MyEditText
@@ -157,13 +161,14 @@
                         android:drawableStart="@drawable/ic_store"
                         android:drawablePadding="15dp"
                         android:drawableTint="@color/colorPrimaryDark"
-                        android:hint="stok barang"
+                        android:hint="Stok Barang"
                         android:inputType="text"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
                         android:textColor="@color/colorPrimaryDark"
                         android:textColorHint="@color/colorPrimaryDark"
                         tools:targetApi="m" />
+
 
                 </android.support.design.widget.TextInputLayout>
                 <android.support.design.widget.TextInputLayout
@@ -179,13 +184,13 @@
                         android:drawableStart="@drawable/ic_store"
                         android:drawablePadding="15dp"
                         android:drawableTint="@color/colorPrimaryDark"
-                        android:hint="harga 1"
-                        android:inputType="text"
+                        android:inputType="number"
+                        android:hint="Harga 1"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
                         android:textColor="@color/colorPrimaryDark"
                         android:textColorHint="@color/colorPrimaryDark"
-                        tools:targetApi="m" />
+ />
 
                 </android.support.design.widget.TextInputLayout>
                 <android.support.design.widget.TextInputLayout
@@ -234,7 +239,7 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <com.rfl.trn.starr_cell.Custom.MyTextView
-                    android:id="@+id/btn_daftar"
+                    android:id="@+id/btn_tambahBarang"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
@@ -246,7 +251,7 @@
                     android:fontFamily="monospace"
                     android:gravity="center"
                     android:padding="12dp"
-                    android:text="@string/daftar"
+                    android:text="Tambahkan"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold" />

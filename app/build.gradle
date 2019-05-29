@@ -86,6 +86,9 @@ dependencies {
     //TODO : https://github.com/janishar/ParaCamera
     implementation 'com.mindorks:paracamera:0.2.2'
 
+    //TODO : https://github.com/AbhinayMe/currency-edittext
+    implementation 'me.abhinay.input:currency-edittext:1.1'
+
 
 }
 apply plugin: 'com.google.gms.google-services'

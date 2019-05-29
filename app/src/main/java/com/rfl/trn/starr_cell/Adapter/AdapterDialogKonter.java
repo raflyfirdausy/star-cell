@@ -21,12 +21,15 @@ import butterknife.ButterKnife;
 public class AdapterDialogKonter extends RecyclerView.Adapter<AdapterDialogKonter.MyViewHolder> {
     Context context;
     List<KonterModel> data;
+    List<String> idKOnter ;
     IDialog listener;
 
 
-    public AdapterDialogKonter(Context context, List<KonterModel> data, IDialog IDialog) {
+
+    public AdapterDialogKonter(Context context, List<KonterModel> data, List<String> listIdKonter, IDialog IDialog) {
         this.context = context;
         this.data = data;
+        this.idKOnter = listIdKonter;
         this.listener = IDialog;
 
     }
@@ -34,18 +37,18 @@ public class AdapterDialogKonter extends RecyclerView.Adapter<AdapterDialogKonte
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_list_kategori, viewGroup, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_list_dialog_kategori_konter, viewGroup, false);
         return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-        myViewHolder.setData(data.get(i));
+        myViewHolder.setData(data.get(i),idKOnter.get(i));
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return data.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -58,8 +61,14 @@ public class AdapterDialogKonter extends RecyclerView.Adapter<AdapterDialogKonte
             ButterKnife.bind(this,itemView);
         }
 
-        public void setData(KonterModel konterModel) {
+        public void setData(final KonterModel konterModel, final String s) {
             tvNamaKategori.setText(konterModel.getNamaKonter());
+            llParent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(s,konterModel.getNamaKonter(),true);
+                }
+            });
         }
     }
 

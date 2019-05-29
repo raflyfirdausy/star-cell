@@ -33,7 +33,7 @@ public class AdapterKategori extends RecyclerView.Adapter<AdapterKategori.MyView
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(context).inflate(R.layout.item_list_kategori, viewGroup, false);
+        View v = LayoutInflater.from(context).inflate(R.layout.item_list_dialog_kategori_konter, viewGroup, false);
 
         return new MyViewHolder(v);
     }
