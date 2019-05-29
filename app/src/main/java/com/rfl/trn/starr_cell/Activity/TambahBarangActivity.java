@@ -26,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.rfl.trn.starr_cell.Adapter.AdapterDialogKonter;
 import com.rfl.trn.starr_cell.Adapter.AdapterKategori;
+import com.rfl.trn.starr_cell.Custom.EditTextWatcher;
 import com.rfl.trn.starr_cell.Custom.MyEditText;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
@@ -34,6 +35,7 @@ import com.rfl.trn.starr_cell.Model.BarangModel;
 import com.rfl.trn.starr_cell.Model.KategoriModel;
 import com.rfl.trn.starr_cell.Model.KonterModel;
 import com.rfl.trn.starr_cell.R;
+import com.wajahatkarim3.easymoneywidgets.EasyMoneyEditText;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -63,7 +65,7 @@ public class TambahBarangActivity extends AppCompatActivity {
     @BindView(R.id.myet_stokBarang)
     MyEditText myetStokBarang;
     @BindView(R.id.myet_harga1)
-    MyEditText myetHarga1;
+    EasyMoneyEditText myetHarga1;
     @BindView(R.id.myet_harga2)
     MyEditText myetHarga2;
     @BindView(R.id.myet_harga3)
@@ -102,123 +104,7 @@ public class TambahBarangActivity extends AppCompatActivity {
     }
 
     private void bindEditText() {
-        myetHarga1.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                myetHarga1.removeTextChangedListener(this);
-
-                try{
-
-                    String originalString = s.toString();
-                    Long longval;
-                    if(originalString.length()==4&& 0 <originalString.length()){//len check for backspace
-                        myetHarga1.append(",");
-                    }
-                    longval = Long.parseLong(originalString);
-
-                    DecimalFormat formater = (DecimalFormat) NumberFormat.getInstance(Locale.US);
-                    formater.applyPattern("#,###,###,###");
-                    String formattedString = formater.format(longval);
-
-                    myetHarga1.setText("Rp."+formattedString);
-                    myetHarga1.setSelection(myetHarga1.getText().length());
-                    myetHarga1.setTextKeepState("Rp."+formattedString);
-                    harga1 = String.valueOf(originalString);
-                }catch (NumberFormatException e){
-                    e.printStackTrace();
-                }
-                myetHarga1.addTextChangedListener(this);
-            }
-
-        });
-        myetHarga2.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                myetHarga2.removeTextChangedListener(this);
-
-                try{
-
-                    String originalString = s.toString();
-                    Long longval;
-                    if(originalString.length()==4&& 0 <originalString.length()){//len check for backspace
-                        myetHarga2.append(",");
-                    }
-                    longval = Long.parseLong(originalString);
-
-                    DecimalFormat formater = (DecimalFormat) NumberFormat.getInstance(Locale.US);
-                    formater.applyPattern("#,###,###,###");
-                    String formattedString = formater.format(longval);
-
-                    myetHarga2.setText("Rp."+formattedString);
-                    myetHarga2.setSelection(myetHarga2.getText().length());
-                    myetHarga2.setTextKeepState("Rp."+formattedString);
-                    harga2 = String.valueOf(originalString);
-                }catch (NumberFormatException e){
-                    e.printStackTrace();
-                }
-                myetHarga2.addTextChangedListener(this);
-            }
-
-        });
-        myetHarga3.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                myetHarga3.removeTextChangedListener(this);
-
-                try{
-
-                    String originalString = s.toString();
-                    Long longval;
-                    if(originalString.length()==4&& 0 <originalString.length()){//len check for backspace
-                        myetHarga3.append(",");
-                    }
-                    longval = Long.parseLong(originalString);
-
-                    DecimalFormat formater = (DecimalFormat) NumberFormat.getInstance(Locale.US);
-                    formater.applyPattern("#,###,###,###");
-                    String formattedString = formater.format(longval);
-
-                    myetHarga3.setText("Rp."+formattedString);
-                    myetHarga3.setSelection(myetHarga3.getText().length());
-                    myetHarga3.setTextKeepState("Rp."+formattedString);
-                    harga3 = String.valueOf(originalString);
-                }catch (NumberFormatException e){
-                    e.printStackTrace();
-                }
-                myetHarga3.addTextChangedListener(this);
-            }
-
-        });
 
     }
 
@@ -378,7 +264,7 @@ public class TambahBarangActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_tambahBarang)
     void tambahBarang() {
-        if (cekInput()){
+        if (cekInput()) {
             BarangModel model = new BarangModel(
                     myetNamaBarang.getText().toString(),
                     myetStokBarang.getText().toString(),
@@ -400,21 +286,29 @@ public class TambahBarangActivity extends AppCompatActivity {
                             }
                         }
                     });
-        }else {
+            bersihInput();
+        } else {
             new Bantuan(context).swal_error("Masih ada data yang belum diinput . !");
         }
 
     }
 
+    private void bersihInput() {
+        myetNamaBarang.setText("");
+        myetHarga1.setText("");
+        myetHarga2.setText("");
+        myetHarga3.setText("");
+    }
+
     private boolean cekInput() {
         if (TextUtils.isEmpty(myetNamaBarang.getText()) ||
                 TextUtils.isEmpty(myetStokBarang.getText()) ||
-                TextUtils.isEmpty(myetKategori.getText())||
+                TextUtils.isEmpty(myetKategori.getText()) ||
                 TextUtils.isEmpty(myetKonter.getText()) ||
-                harga1.isEmpty() ){
+                harga1.isEmpty()) {
             return false;
 
-        }else {
+        } else {
             return true;
         }
     }
