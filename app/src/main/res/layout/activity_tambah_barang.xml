@@ -89,6 +89,7 @@
                         android:drawableStart="@drawable/ic_store"
                         android:drawablePadding="15dp"
                         android:drawableTint="@color/colorPrimaryDark"
+                        android:focusable="true"
                         android:hint="Nama Barang"
                         android:inputType="text"
                         android:paddingTop="10dp"
@@ -98,6 +99,7 @@
                         tools:targetApi="m" />
 
                 </android.support.design.widget.TextInputLayout>
+
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_kategori"
                     android:layout_width="match_parent"
@@ -112,9 +114,9 @@
                         android:drawableStart="@drawable/ic_store"
                         android:drawablePadding="15dp"
                         android:drawableTint="@color/colorPrimaryDark"
+                        android:focusable="false"
                         android:hint="Kategori Barang"
                         android:inputType="text"
-                        android:focusable="false"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
                         android:textColor="@color/colorPrimaryDark"
@@ -123,6 +125,7 @@
 
 
                 </android.support.design.widget.TextInputLayout>
+
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_konter"
                     android:layout_width="match_parent"
@@ -137,8 +140,8 @@
                         android:drawableStart="@drawable/ic_store"
                         android:drawablePadding="15dp"
                         android:drawableTint="@color/colorPrimaryDark"
-                        android:hint="Pilih Konter"
                         android:focusable="false"
+                        android:hint="Pilih Konter"
                         android:inputType="text"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
@@ -147,6 +150,7 @@
                         tools:targetApi="m" />
 
                 </android.support.design.widget.TextInputLayout>
+
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -171,6 +175,7 @@
 
 
                 </android.support.design.widget.TextInputLayout>
+
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -184,25 +189,26 @@
                         android:drawableStart="@drawable/ic_store"
                         android:drawablePadding="15dp"
                         android:drawableTint="@color/colorPrimaryDark"
-                        android:inputType="numberDecimal"
                         android:hint="Harga 1"
+                        android:inputType="numberDecimal"
                         android:paddingTop="10dp"
-                        app:show_currency="true"
-                        app:show_commas="true"
-                        app:currency_symbol="$"
                         android:paddingBottom="10dp"
                         android:textColor="@color/colorPrimaryDark"
                         android:textColorHint="@color/colorPrimaryDark"
- />
+                        app:currency_symbol="Rp "
+                        app:show_commas="true"
+                        app:show_currency="true"
+                        tools:targetApi="m" />
 
                 </android.support.design.widget.TextInputLayout>
+
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:theme="@style/daftar">
 
-                    <com.rfl.trn.starr_cell.Custom.MyEditText
+                    <com.wajahatkarim3.easymoneywidgets.EasyMoneyEditText
                         android:id="@+id/myet_harga2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -215,16 +221,20 @@
                         android:paddingBottom="10dp"
                         android:textColor="@color/colorPrimaryDark"
                         android:textColorHint="@color/colorPrimaryDark"
+                        app:currency_symbol="Rp "
+                        app:show_commas="true"
+                        app:show_currency="true"
                         tools:targetApi="m" />
 
                 </android.support.design.widget.TextInputLayout>
+
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:theme="@style/daftar">
 
-                    <com.rfl.trn.starr_cell.Custom.MyEditText
+                    <com.wajahatkarim3.easymoneywidgets.EasyMoneyEditText
                         android:id="@+id/myet_harga3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -237,6 +247,9 @@
                         android:paddingBottom="10dp"
                         android:textColor="@color/colorPrimaryDark"
                         android:textColorHint="@color/colorPrimaryDark"
+                        app:currency_symbol="Rp "
+                        app:show_commas="true"
+                        app:show_currency="true"
                         tools:targetApi="m" />
 
                 </android.support.design.widget.TextInputLayout>

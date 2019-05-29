@@ -47,7 +47,6 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import me.abhinay.input.CurrencyEditText;
 
 public class TambahBarangActivity extends AppCompatActivity {
 
