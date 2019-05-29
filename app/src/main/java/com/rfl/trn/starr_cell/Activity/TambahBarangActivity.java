@@ -89,6 +89,15 @@ public class TambahBarangActivity extends AppCompatActivity {
     private String harga1 = null;
     private String harga2 = null;
     private String harga3 = null;
+
+    RecyclerView rvDialog;
+    ImageButton tambahItemDialog;
+    MyEditText namaDialog;
+    LinearLayout layoutTambahItemDialog;
+    ImageButton buttonTambahItem;
+    MyTextView judulDialog, dialogKosong;
+
+    Dialog dialog;
     Context context;
 
     @Override
@@ -99,45 +108,35 @@ public class TambahBarangActivity extends AppCompatActivity {
         context = TambahBarangActivity.this;
         databaseReference = FirebaseDatabase.getInstance().getReference();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        bindEditText();
+
+        dialog = new Dialog(context);
+        dialog.setContentView(R.layout.dialog_kategori_konter);
+        rvDialog = (RecyclerView) dialog.findViewById(R.id.rv_kategori);
+        tambahItemDialog = (ImageButton) dialog.findViewById(R.id.btn_add_kategori);
+        namaDialog = (MyEditText) dialog.findViewById(R.id.myet_namaKategori);
+        layoutTambahItemDialog = (LinearLayout) dialog.findViewById(R.id.ll_tambah);
+        buttonTambahItem = (ImageButton) dialog.findViewById(R.id.btn_add_act);
+        judulDialog = (MyTextView) dialog.findViewById(R.id.mytv_judulDialog);
+        dialogKosong = (MyTextView) dialog.findViewById(R.id.mytv_rvKosong);
+
+
     }
 
-    private void bindEditText() {
-
-
-    }
 
     //TODO :: Fetch Data
     public void DialogKategori() {
         listKategori = new ArrayList<>();
         listKategori.clear();
-
-        final Dialog dialog = new Dialog(context);
-
-        dialog.setContentView(R.layout.dialog_kategori_konter);
-
-        final RecyclerView rv = (RecyclerView) dialog.findViewById(R.id.rv_kategori);
-        final ImageButton buttonTambah = (ImageButton) dialog.findViewById(R.id.btn_add_kategori);
-        final MyEditText namaKategori = (MyEditText) dialog.findViewById(R.id.myet_namaKategori);
-        final LinearLayout tambah = (LinearLayout) dialog.findViewById(R.id.ll_tambah);
-        final ImageButton add = (ImageButton) dialog.findViewById(R.id.btn_add_act);
-        final MyTextView judul = (MyTextView) dialog.findViewById(R.id.mytv_judulDialog);
-        final MyTextView kosong = (MyTextView) dialog.findViewById(R.id.mytv_rvKosong);
-
-        judul.setText("Pilih Kategori");
-
-        tambah.setVisibility(View.GONE);
-
+        layoutTambahItemDialog.setVisibility(View.GONE);
         dialog.show();
-        add.setOnClickListener(new View.OnClickListener() {
+        buttonTambahItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (tambahKategori) {
-                    tambah.setVisibility(View.GONE);
+                    layoutTambahItemDialog.setVisibility(View.GONE);
                     tambahKategori = false;
                 } else {
-                    tambah.setVisibility(View.VISIBLE);
+                    layoutTambahItemDialog.setVisibility(View.VISIBLE);
                     tambahKategori = true;
                 }
             }
@@ -148,7 +147,7 @@ public class TambahBarangActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
                             listKategori.clear();
-                            kosong.setVisibility(View.GONE);
+                            dialogKosong.setVisibility(View.GONE);
                             for (DataSnapshot data : dataSnapshot.getChildren()) {
                                 KategoriModel model;
                                 model = data.getValue(KategoriModel.class);
@@ -167,8 +166,8 @@ public class TambahBarangActivity extends AppCompatActivity {
                                 }
                             });
                             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
-                            rv.setLayoutManager(layoutManager);
-                            rv.setAdapter(adapterKategori);
+                            rvDialog.setLayoutManager(layoutManager);
+                            rvDialog.setAdapter(adapterKategori);
 
                         }
                     }
@@ -179,15 +178,15 @@ public class TambahBarangActivity extends AppCompatActivity {
                     }
                 });
 
-        buttonTambah.setOnClickListener(new View.OnClickListener() {
+        tambahItemDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String idKategori = databaseReference.push().getKey();
-                KategoriModel model = new KategoriModel(idKategori, namaKategori.getText().toString());
+                KategoriModel model = new KategoriModel(idKategori, namaDialog.getText().toString());
                 databaseReference.child("kategori")
                         .child(idKategori)
                         .setValue(model);
-                namaKategori.setText("");
+                namaDialog.setText("");
             }
         });
     }
@@ -197,20 +196,11 @@ public class TambahBarangActivity extends AppCompatActivity {
         listIdKonter = new ArrayList<>();
         listKonter.clear();
         listIdKonter.clear();
-        final Dialog dialog = new Dialog(context);
 
-        dialog.setContentView(R.layout.dialog_kategori_konter);
-        final RecyclerView rv = (RecyclerView) dialog.findViewById(R.id.rv_kategori);
-        final ImageButton buttonTambah = (ImageButton) dialog.findViewById(R.id.btn_add_kategori);
-        final MyEditText namaKategori = (MyEditText) dialog.findViewById(R.id.myet_namaKategori);
-        final LinearLayout tambah = (LinearLayout) dialog.findViewById(R.id.ll_tambah);
-        final ImageButton add = (ImageButton) dialog.findViewById(R.id.btn_add_act);
-        final MyTextView judul = (MyTextView) dialog.findViewById(R.id.mytv_judulDialog);
-        final MyTextView kosong = (MyTextView) dialog.findViewById(R.id.mytv_rvKosong);
 
-        judul.setText("Pilih Konter");
-        tambah.setVisibility(View.GONE);
-        add.setVisibility(View.GONE);
+        judulDialog.setText("Pilih Konter");
+        layoutTambahItemDialog.setVisibility(View.GONE);
+        tambahItemDialog.setVisibility(View.GONE);
         dialog.show();
 
 
@@ -219,7 +209,7 @@ public class TambahBarangActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
-                            kosong.setVisibility(View.GONE);
+                            dialogKosong.setVisibility(View.GONE);
                             for (DataSnapshot data : dataSnapshot.getChildren()) {
                                 KonterModel model;
                                 String idKonter = data.getKey();
@@ -238,8 +228,8 @@ public class TambahBarangActivity extends AppCompatActivity {
                                 }
                             });
                             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
-                            rv.setLayoutManager(layoutManager);
-                            rv.setAdapter(adapterDialogKonter);
+                            rvDialog.setLayoutManager(layoutManager);
+                            rvDialog.setAdapter(adapterDialogKonter);
                         }
                     }
 
@@ -267,9 +257,9 @@ public class TambahBarangActivity extends AppCompatActivity {
             BarangModel model = new BarangModel(
                     myetNamaBarang.getText().toString(),
                     myetStokBarang.getText().toString(),
-                    myetHarga1.getText().toString(),
-                    myetHarga2.getText().toString(),
-                    myetHarga3.getText().toString(),
+                    myetHarga1.getValueString(),
+                    myetHarga2.getValueString(),
+                    myetHarga3.getValueString(),
                     idKonter,
                     idKategori);
             databaseReference.child("barang")

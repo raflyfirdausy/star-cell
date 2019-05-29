@@ -49,7 +49,7 @@ public class AdminBarangFragment extends Fragment {
     LinearLayout llHeader;
     @BindView(R.id.bg_noData)
     LinearLayout bgNoData;
-    @BindView(R.id.ll_belum_da_konter)
+    @BindView(R.id.ll_belum_ada_konter)
     LinearLayout llBelumDaKonter;
     @BindView(R.id.rv_barang)
     RecyclerView rvBarang;
@@ -86,6 +86,7 @@ public class AdminBarangFragment extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         list = new ArrayList<>();
                         if (dataSnapshot.exists()) {
+                            llBelumDaKonter.setVisibility(View.GONE);
                             for (DataSnapshot data : dataSnapshot.getChildren()) {
                                 BarangModel model ;
 

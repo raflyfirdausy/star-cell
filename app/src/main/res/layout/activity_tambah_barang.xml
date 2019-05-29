@@ -194,7 +194,7 @@
                         android:paddingBottom="10dp"
                         android:textColor="@color/colorPrimaryDark"
                         android:textColorHint="@color/colorPrimaryDark"
-                        app:currency_symbol="Rp "
+                        app:currency_symbol="Rp"
                         app:show_commas="true"
                         app:show_currency="true"
                         tools:targetApi="m" />
@@ -220,7 +220,7 @@
                         android:paddingBottom="10dp"
                         android:textColor="@color/colorPrimaryDark"
                         android:textColorHint="@color/colorPrimaryDark"
-                        app:currency_symbol="Rp "
+                        app:currency_symbol="Rp"
                         app:show_commas="true"
                         app:show_currency="true"
                         tools:targetApi="m" />
@@ -246,7 +246,7 @@
                         android:paddingBottom="10dp"
                         android:textColor="@color/colorPrimaryDark"
                         android:textColorHint="@color/colorPrimaryDark"
-                        app:currency_symbol="Rp "
+                        app:currency_symbol="Rp"
                         app:show_commas="true"
                         app:show_currency="true"
                         tools:targetApi="m" />
