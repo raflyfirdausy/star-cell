@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ImageButton;
@@ -84,6 +85,9 @@ public class TambahBarangActivity extends AppCompatActivity {
     private boolean tambahKategori = false;
     private String idKonter = null;
     private String idKategori = null;
+    private String harga1 = null;
+    private String harga2 = null;
+    private String harga3 = null;
     Context context;
 
     @Override
@@ -114,25 +118,108 @@ public class TambahBarangActivity extends AppCompatActivity {
                 myetHarga1.removeTextChangedListener(this);
 
                 try{
+
                     String originalString = s.toString();
                     Long longval;
-                    if (originalString.contains(",")){
-                        originalString = originalString.replaceAll(",","");
-
+                    if(originalString.length()==4&& 0 <originalString.length()){//len check for backspace
+                        myetHarga1.append(",");
                     }
                     longval = Long.parseLong(originalString);
 
-                    DecimalFormat formater = (DecimalFormat) NumberFormat.getInstance(Locale.ENGLISH);
+                    DecimalFormat formater = (DecimalFormat) NumberFormat.getInstance(Locale.US);
                     formater.applyPattern("#,###,###,###");
                     String formattedString = formater.format(longval);
 
-                    myetHarga1.setText(formattedString);
+                    myetHarga1.setText("Rp."+formattedString);
                     myetHarga1.setSelection(myetHarga1.getText().length());
+                    myetHarga1.setTextKeepState("Rp."+formattedString);
+                    harga1 = String.valueOf(originalString);
                 }catch (NumberFormatException e){
                     e.printStackTrace();
                 }
+                myetHarga1.addTextChangedListener(this);
             }
+
         });
+        myetHarga2.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                myetHarga2.removeTextChangedListener(this);
+
+                try{
+
+                    String originalString = s.toString();
+                    Long longval;
+                    if(originalString.length()==4&& 0 <originalString.length()){//len check for backspace
+                        myetHarga2.append(",");
+                    }
+                    longval = Long.parseLong(originalString);
+
+                    DecimalFormat formater = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+                    formater.applyPattern("#,###,###,###");
+                    String formattedString = formater.format(longval);
+
+                    myetHarga2.setText("Rp."+formattedString);
+                    myetHarga2.setSelection(myetHarga2.getText().length());
+                    myetHarga2.setTextKeepState("Rp."+formattedString);
+                    harga2 = String.valueOf(originalString);
+                }catch (NumberFormatException e){
+                    e.printStackTrace();
+                }
+                myetHarga2.addTextChangedListener(this);
+            }
+
+        });
+        myetHarga3.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                myetHarga3.removeTextChangedListener(this);
+
+                try{
+
+                    String originalString = s.toString();
+                    Long longval;
+                    if(originalString.length()==4&& 0 <originalString.length()){//len check for backspace
+                        myetHarga3.append(",");
+                    }
+                    longval = Long.parseLong(originalString);
+
+                    DecimalFormat formater = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+                    formater.applyPattern("#,###,###,###");
+                    String formattedString = formater.format(longval);
+
+                    myetHarga3.setText("Rp."+formattedString);
+                    myetHarga3.setSelection(myetHarga3.getText().length());
+                    myetHarga3.setTextKeepState("Rp."+formattedString);
+                    harga3 = String.valueOf(originalString);
+                }catch (NumberFormatException e){
+                    e.printStackTrace();
+                }
+                myetHarga3.addTextChangedListener(this);
+            }
+
+        });
+
     }
 
     //TODO :: Fetch Data
@@ -291,29 +378,45 @@ public class TambahBarangActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_tambahBarang)
     void tambahBarang() {
-
-        BarangModel model = new BarangModel(
-                myetNamaBarang.getText().toString(),
-                myetStokBarang.getText().toString(),
-                myetHarga1.getText().toString(),
-                myetHarga2.getText().toString(),
-                myetHarga3.getText().toString());
-//new Bantuan(context).swal_warning("Kategori "+idKategori+" konter "+idKonter);
-        databaseReference.child("barang")
-                .child(idKonter)
-                .child(idKategori)
-                .push()
-                .setValue(model)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            new Bantuan(context).swal_sukses("Sukses menambahkan");
-                        } else {
-                            new Bantuan(context).swal_error("Gagal");
+        if (cekInput()){
+            BarangModel model = new BarangModel(
+                    myetNamaBarang.getText().toString(),
+                    myetStokBarang.getText().toString(),
+                    myetHarga1.getText().toString(),
+                    myetHarga2.getText().toString(),
+                    myetHarga3.getText().toString());
+            databaseReference.child("barang")
+                    .child(idKonter)
+                    .child(idKategori)
+                    .push()
+                    .setValue(model)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                new Bantuan(context).swal_sukses("Sukses menambahkan");
+                            } else {
+                                new Bantuan(context).swal_error("Gagal");
+                            }
                         }
-                    }
-                });
+                    });
+        }else {
+            new Bantuan(context).swal_error("Masih ada data yang belum diinput . !");
+        }
+
+    }
+
+    private boolean cekInput() {
+        if (TextUtils.isEmpty(myetNamaBarang.getText()) ||
+                TextUtils.isEmpty(myetStokBarang.getText()) ||
+                TextUtils.isEmpty(myetKategori.getText())||
+                TextUtils.isEmpty(myetKonter.getText()) ||
+                harga1.isEmpty() ){
+            return false;
+
+        }else {
+            return true;
+        }
     }
 
     //TODO :: LifeCycle
