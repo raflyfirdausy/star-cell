@@ -159,7 +159,7 @@ public class AdminBarangFragment extends Fragment {
 
             @Override
             public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
-                Snackbar.make(view, "Clicked " + " " + position + " " + item, Snackbar.LENGTH_LONG).show();
+                //Snackbar.make(view, "Clicked " + " " + position + " " + item, Snackbar.LENGTH_LONG).show();
                 if (position == 0) {
                     getAllBarang("semua", 0);
                 } else {
@@ -171,7 +171,7 @@ public class AdminBarangFragment extends Fragment {
 
             @Override
             public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
-                Snackbar.make(view, "Clicked " + " " + position + " " + item, Snackbar.LENGTH_LONG).show();
+              //  Snackbar.make(view, "Clicked " + " " + position + " " + item, Snackbar.LENGTH_LONG).show();
                 if (position == 0) {
                     getAllBarang("semua", 0);
                 } else {
