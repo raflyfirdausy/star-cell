@@ -4,10 +4,12 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 
 import com.rfl.trn.starr_cell.Custom.MyTextView;
 import com.rfl.trn.starr_cell.Model.BarangModel;
@@ -17,8 +19,10 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.MyViewHolder> {
+
 
     private Context context;
     private List<BarangModel> data;
@@ -57,15 +61,35 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
         MyTextView tvHargaBarang;
         @BindView(R.id.ll_parent)
         LinearLayout llParent;
+        @BindView(R.id.iv_optionMenu)
+        ImageView ivOptionMenu;
+
+        final PopupMenu popupMenu = new PopupMenu(context,ivOptionMenu);
+
+
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
+            popupMenu.inflate(R.menu.menu_pilihan_barang);
+
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    return false;
+                }
+            });
         }
 
         void setDataKewView(BarangModel isiData) {
             tvNamaBarang.setText(isiData.getNamaBarang());
-            tvHargaBarang.setText(String.valueOf("Rp."+isiData.getHarga1()));
+            tvHargaBarang.setText(String.valueOf("Rp." + isiData.getHarga1()));
+        }
+        @OnClick(R.id.iv_optionMenu)
+        void inflateMenu(){
+           popupMenu.show();
+
         }
 
     }
