@@ -96,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void pindahActivity() {
         databaseReference.child("admin")
-                .child(firebaseAuth.getCurrentUser().getUid())
+                .child(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid())
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
