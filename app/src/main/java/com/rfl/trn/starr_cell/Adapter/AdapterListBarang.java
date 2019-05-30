@@ -1,5 +1,6 @@
 package com.rfl.trn.starr_cell.Adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -95,9 +96,10 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
 
         }
 
+        @SuppressLint("SetTextI18n")
         void setDataKewView(BarangModel isiData) {
             tvNamaBarang.setText(isiData.getNamaBarang());
-            tvHargaBarang.setText(String.valueOf("Rp." + isiData.getHarga1()));
+            tvHargaBarang.setText("Rp " + isiData.getHarga1());
 
         }
 
