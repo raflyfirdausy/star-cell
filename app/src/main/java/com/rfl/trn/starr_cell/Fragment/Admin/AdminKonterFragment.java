@@ -73,10 +73,8 @@ public class AdminKonterFragment extends Fragment {
         //firebase
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        getDataKonter();
         return view;
     }
-
 
     //TODO :: Fetch Data
     private void getDataKonter() {
@@ -123,7 +121,7 @@ public class AdminKonterFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        getDataKonter();
     }
 
     @Override

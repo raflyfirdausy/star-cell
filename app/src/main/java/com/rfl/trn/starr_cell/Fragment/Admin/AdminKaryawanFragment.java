@@ -84,7 +84,6 @@ public class AdminKaryawanFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        getKaryawan();
         return view;
     }
 
@@ -121,7 +120,6 @@ public class AdminKaryawanFragment extends Fragment {
 
     }
 
-
     //TODO :: Bind(OnCLick dll)
     @OnClick(R.id.fab_tambahKaryawan)
     void tambahKaryawan() {
@@ -132,7 +130,7 @@ public class AdminKaryawanFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        getKaryawan();
     }
 
     @Override
