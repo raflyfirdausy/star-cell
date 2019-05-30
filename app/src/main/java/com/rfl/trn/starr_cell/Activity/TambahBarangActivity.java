@@ -2,6 +2,7 @@ package com.rfl.trn.starr_cell.Activity;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
@@ -24,6 +25,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rfl.trn.starr_cell.Adapter.AdapterDialogKonter;
 import com.rfl.trn.starr_cell.Adapter.AdapterKategori;
 import com.rfl.trn.starr_cell.Custom.EditTextWatcher;
@@ -88,8 +90,10 @@ public class TambahBarangActivity extends AppCompatActivity {
     private boolean tambahKategori = false;
     private String idKonter = null;
     private String idKategori = null;
+    private String idBarang = null;
     private Date date = new Date();
-    private Long timestamp = date.getTime();
+    private Long timestamp ;
+
     RecyclerView rvDialog;
     ImageButton tambahItemDialog;
     MyEditText namaDialog;
@@ -97,15 +101,16 @@ public class TambahBarangActivity extends AppCompatActivity {
     ImageButton buttonTambahItem;
     MyTextView judulDialog, dialogKosong;
 
+
     Dialog dialog;
-    Context context;
+    Context context = TambahBarangActivity.this;
+    ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tambah_barang);
         ButterKnife.bind(this);
-        context = TambahBarangActivity.this;
         databaseReference = FirebaseDatabase.getInstance().getReference();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.app_name);
@@ -122,6 +127,74 @@ public class TambahBarangActivity extends AppCompatActivity {
         judulDialog = (MyTextView) dialog.findViewById(R.id.mytv_judulDialog);
         dialogKosong = (MyTextView) dialog.findViewById(R.id.mytv_rvKosong);
 
+        Intent intent = getIntent();
+        if (intent.getExtras() == null) {
+            idBarang = databaseReference.push().getKey();
+            timestamp = date.getTime();
+        } else {
+            String id = intent.getStringExtra("id");
+            idBarang = id;
+            setField(id);
+        }
+    }
+
+    private void setField(String id) {
+        databaseReference.child("barang")
+                .child(id)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            BarangModel model = dataSnapshot.getValue(BarangModel.class);
+                            myetNamaBarang.setText(model.getNamaBarang());
+                            myetStokBarang.setText(model.getStokBarang());
+                            myetHarga1.setText(String.valueOf(model.getHarga1()));
+                            myetHarga2.setText(String.valueOf(model.getHarga2()));
+                            myetHarga3.setText(String.valueOf(model.getHarga3()));
+                            idKategori = model.getIdKategori();
+                            idKonter = model.getIdKonter();
+                            timestamp = model.getTanggalDiubah();
+
+                            databaseReference.child("konter")
+                                    .child(model.getIdKonter())
+                                    .addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            if (dataSnapshot.exists()) {
+                                                String namaKonter = dataSnapshot.child("namaKonter").getValue(String.class);
+                                                myetKonter.setText(namaKonter);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
+                            databaseReference.child("kategori")
+                                    .child(model.getIdKategori())
+                                    .addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            if (dataSnapshot.exists()) {
+                                                String namaKategori = dataSnapshot.child("namaKategori").getValue(String.class);
+                                                myetKategori.setText(namaKategori);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
 
     }
 
@@ -163,11 +236,17 @@ public class TambahBarangActivity extends AppCompatActivity {
                                 public void onItemClick(String id, String nama, boolean isDismiss) {
                                     myetKategori.setText(nama);
                                     idKategori = id;
+
                                     if (isDismiss) {
                                         {
                                             dialog.dismiss();
                                         }
                                     }
+                                }
+
+                                @Override
+                                public void onItemPopUpMenu(String id, int menu) {
+
                                 }
                             });
                             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
@@ -233,6 +312,11 @@ public class TambahBarangActivity extends AppCompatActivity {
                                         dialog.dismiss();
                                     }
                                 }
+
+                                @Override
+                                public void onItemPopUpMenu(String id, int menu) {
+
+                                }
                             });
                             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
                             rvDialog.setLayoutManager(layoutManager);
@@ -261,6 +345,8 @@ public class TambahBarangActivity extends AppCompatActivity {
     @OnClick(R.id.btn_tambahBarang)
     void tambahBarang() {
         if (cekInput()) {
+            final SweetAlertDialog loading = new Bantuan(context).swal_loading("Tunggu beberapa saat, proses menyimpan barang");
+            loading.show();
             BarangModel model = new BarangModel(
                     myetNamaBarang.getText().toString(),
                     myetStokBarang.getText().toString(),
@@ -269,16 +355,26 @@ public class TambahBarangActivity extends AppCompatActivity {
                     myetHarga3.getValueString(),
                     idKonter,
                     idKategori,
-                    new Bantuan(context).getDayTimestamp(timestamp)
-                    );
+                    timestamp
+            );
             databaseReference.child("barang")
-                    .push()
+                    .child(idBarang)
                     .setValue(model)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                new Bantuan(context).swal_sukses("Sukses menambahkan");
+                                loading.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                loading.showContentText(true);
+                                loading.setTitleText("Sukses");
+                                loading.setContentText("Berhasil menambahkan");
+                                loading.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                        finish();
+                                    }
+                                });
+
                             } else {
                                 new Bantuan(context).swal_error("Gagal");
                             }

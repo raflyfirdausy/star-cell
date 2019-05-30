@@ -60,11 +60,38 @@
         </RelativeLayout>
 
     </LinearLayout>
-
+    <LinearLayout
+        android:id="@+id/ll_filter"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/ll_header"
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:orientation="horizontal">
+        <com.rfl.trn.starr_cell.Custom.MyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Konter"
+            android:gravity="center"/>
+        <com.jaredrummler.materialspinner.MaterialSpinner
+            android:id="@+id/spinner_konter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <com.rfl.trn.starr_cell.Custom.MyTextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Kategori"
+            android:gravity="center"/>
+        <com.jaredrummler.materialspinner.MaterialSpinner
+            android:id="@+id/spinner_kategori"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/ll_header"
+        android:layout_below="@+id/ll_filter"
         android:orientation="vertical">
 
         <FrameLayout
