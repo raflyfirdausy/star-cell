@@ -12,9 +12,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.SearchView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
@@ -102,16 +104,42 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.dashboard, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+
+
+
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //TODO : Action ketika tombol submit :v
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //TODO : Action ketika textnya berubah seperti dia yang sekarang bukan lagi yang dulu :(
+                if (TextUtils.isEmpty(newText)) {
+//                    ibuAdapter.cariPesan("");
+//                    lv_konten.clearTextFilter();
+                } else {
+//                    ibuAdapter.cariPesan(newText);
+                }
+                return true;
+            }
+        });
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
 
