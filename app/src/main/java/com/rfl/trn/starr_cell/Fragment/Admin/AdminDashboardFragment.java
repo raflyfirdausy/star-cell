@@ -45,11 +45,4 @@ public class AdminDashboardFragment extends Fragment {
         menu.clear();
     }
 
-//    @Override
-//    public void onPrepareOptionsMenu(Menu menu) {
-//        super.onPrepareOptionsMenu(menu);
-//        MenuItem item = menu.findItem(R.id.action_search);
-//        item.setVisible(false);
-//    }
-
 }

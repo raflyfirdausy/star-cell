@@ -5,8 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -39,11 +37,9 @@ import com.rfl.trn.starr_cell.Helper.Bantuan;
 import com.rfl.trn.starr_cell.Model.KonterModel;
 import com.rfl.trn.starr_cell.R;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -61,6 +57,7 @@ public class AdapterListKonter extends RecyclerView.Adapter<AdapterListKonter.My
     CardView llParent;
     private Context context;
     private List<KonterModel> data;
+    private List<KonterModel> dataSementara;
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     private StorageReference storageReference = FirebaseStorage.getInstance().getReference();
     private FirebaseAuth firebaseAuth, firebaseAuth2;
@@ -69,21 +66,8 @@ public class AdapterListKonter extends RecyclerView.Adapter<AdapterListKonter.My
     public AdapterListKonter(Context context, List<KonterModel> data) {
         this.context = context;
         this.data = data;
-    }
-
-    public static Bitmap getBitmapFromURL(String src) {
-        try {
-            URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
-        } catch (IOException e) {
-            // Log exception
-            return null;
-        }
+        this.dataSementara = new ArrayList<>();
+        this.dataSementara.addAll(data);
     }
 
     @NonNull
@@ -174,42 +158,42 @@ public class AdapterListKonter extends RecyclerView.Adapter<AdapterListKonter.My
                                 .getCredential(konterModel.getEmailKonter(), konterModel.getPassword());
                         Objects.requireNonNull(firebaseUser).reauthenticate(credential)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                firebaseUser.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        //TODO : hapus di database
-                                        databaseReference.child("konter")
-                                                .child(konterModel.getKey())
-                                                .setValue(null)
-                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        firebaseUser.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                //TODO : hapus di database
+                                                databaseReference.child("konter")
+                                                        .child(konterModel.getKey())
+                                                        .setValue(null)
+                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void aVoid) {
+                                                                //TODO : hapus data neng firebase storage e urung :v erorr nek hapus folder
+                                                                loading.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                                                loading.showContentText(true);
+                                                                loading.setTitleText("Sukses");
+                                                                loading.setContentText("Berhasil menghapus data konter");
+                                                                firebaseAuth2.signOut();
+                                                            }
+                                                        }).addOnFailureListener(new OnFailureListener() {
                                                     @Override
-                                                    public void onSuccess(Void aVoid) {
-                                                        //TODO : hapus data neng firebase storage e urung :v erorr nek hapus folder
-                                                        loading.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-                                                        loading.showContentText(true);
-                                                        loading.setTitleText("Sukses");
-                                                        loading.setContentText("Berhasil menghapus data konter");
-                                                        firebaseAuth2.signOut();
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        new Bantuan(context).swal_error(e.getMessage());
+                                                        loading.dismissWithAnimation();
                                                     }
-                                                }).addOnFailureListener(new OnFailureListener() {
+                                                });
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-                                                new Bantuan(context).swal_error(e.getMessage());
+                                                new Bantuan(context).swal_error("Error hapus akun : " + e.getMessage());
                                                 loading.dismissWithAnimation();
                                             }
                                         });
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        new Bantuan(context).swal_error("Error hapus akun : " + e.getMessage());
-                                        loading.dismissWithAnimation();
-                                    }
-                                });
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
                                 new Bantuan(context).swal_error("Error reauthenticate : " + e.getMessage());
@@ -224,6 +208,21 @@ public class AdapterListKonter extends RecyclerView.Adapter<AdapterListKonter.My
                 loading.dismissWithAnimation();
             }
         });
+    }
+
+    public void cariKonter(String text) {
+        text = text.toLowerCase(Locale.getDefault());
+        data.clear();
+        if (text.length() == 0) {
+            data.addAll(dataSementara);
+        } else {
+            for (int i = 0; i < dataSementara.size(); i++) {
+                if (dataSementara.get(i).getNamaKonter().toLowerCase(Locale.getDefault()).contains(text)) {
+                    data.add(dataSementara.get(i));
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

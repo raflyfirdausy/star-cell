@@ -21,10 +21,4 @@ public class AdminAbsensiFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_admin_absensi, container, false);
     }
-
-    //TODO :: Fetch Data
-
-    //TODO :: Bind(OnCLick dll)
-
-    //TODO :: LifeCycle
 }

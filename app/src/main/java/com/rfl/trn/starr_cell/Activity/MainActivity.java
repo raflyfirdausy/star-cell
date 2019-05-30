@@ -12,7 +12,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
@@ -49,20 +48,20 @@ public class MainActivity extends AppCompatActivity
     NavigationView navView;
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
-
-    boolean tekanKembaliUntukKeluar = false;
+    private String posisiFragment = null;
+    private boolean tekanKembaliUntukKeluar = false;
 
     private Context context = MainActivity.this;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     private FirebaseAnalytics mFirebaseAnalytics;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle("Star Cell");
         getSupportActionBar().setSubtitle(getString(R.string.dashboard));
@@ -104,11 +103,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.dashboard, menu);
-
         MenuItem menuItem = menu.findItem(R.id.action_search);
-
-
-
         SearchView searchView = (SearchView) menuItem.getActionView();
         searchView.setMaxWidth(Integer.MAX_VALUE);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -121,12 +116,6 @@ public class MainActivity extends AppCompatActivity
             @Override
             public boolean onQueryTextChange(String newText) {
                 //TODO : Action ketika textnya berubah seperti dia yang sekarang bukan lagi yang dulu :(
-                if (TextUtils.isEmpty(newText)) {
-//                    ibuAdapter.cariPesan("");
-//                    lv_konten.clearTextFilter();
-                } else {
-//                    ibuAdapter.cariPesan(newText);
-                }
                 return true;
             }
         });
@@ -152,16 +141,22 @@ public class MainActivity extends AppCompatActivity
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 
         if (id == R.id.nav_dashboard) {
+            posisiFragment = "admin_dashboard";
             FT.replace(R.id.fl_content, new AdminDashboardFragment(), "admin_dashboard").commit();
         } else if (id == R.id.nav_konter) {
+            posisiFragment = "admin_konter";
             FT.replace(R.id.fl_content, new AdminKonterFragment(), "admin_konter").commit();
         } else if (id == R.id.nav_karyawan) {
+            posisiFragment = "admin_karyawan";
             FT.replace(R.id.fl_content, new AdminKaryawanFragment(), "admin_karyawan").commit();
         } else if (id == R.id.nav_barang) {
+            posisiFragment = "admin_barang";
             FT.replace(R.id.fl_content, new AdminBarangFragment(), "admin_barang").commit();
         } else if (id == R.id.nav_absensi) {
+            posisiFragment = "admin_absensi";
             FT.replace(R.id.fl_content, new AdminAbsensiFragment(), "admin_absensi").commit();
         } else if (id == R.id.nav_transaksi) {
+            posisiFragment = "admin_transaksi";
             FT.replace(R.id.fl_content, new AdminTransaksiFragment(), "admin_transaksi").commit();
         } else if (id == R.id.nav_logout) {
 //            new Bantuan(context).alertDialogInformasi("Coming Soon !");
