@@ -2,6 +2,7 @@ package com.rfl.trn.starr_cell.Activity;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
@@ -122,7 +123,16 @@ public class TambahBarangActivity extends AppCompatActivity {
         judulDialog = (MyTextView) dialog.findViewById(R.id.mytv_judulDialog);
         dialogKosong = (MyTextView) dialog.findViewById(R.id.mytv_rvKosong);
 
+        Intent intent = getIntent();
+        if (intent.getExtras() == null){
 
+        }else {
+            setField();
+        }
+    }
+
+    private void setField() {
+        new Bantuan(context).swal_warning("ada");
     }
 
 
@@ -168,6 +178,11 @@ public class TambahBarangActivity extends AppCompatActivity {
                                             dialog.dismiss();
                                         }
                                     }
+                                }
+
+                                @Override
+                                public void onItemPopUpMenu(String id, int menu) {
+
                                 }
                             });
                             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
@@ -232,6 +247,11 @@ public class TambahBarangActivity extends AppCompatActivity {
                                         idKonter = id;
                                         dialog.dismiss();
                                     }
+                                }
+
+                                @Override
+                                public void onItemPopUpMenu(String id, int menu) {
+
                                 }
                             });
                             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);

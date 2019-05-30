@@ -1,6 +1,7 @@
 package com.rfl.trn.starr_cell.Fragment.Admin;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.rfl.trn.starr_cell.Activity.TambahBarangActivity;
 import com.rfl.trn.starr_cell.Adapter.AdapterListBarang;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
+import com.rfl.trn.starr_cell.Interface.IDialog;
 import com.rfl.trn.starr_cell.Model.BarangModel;
 import com.rfl.trn.starr_cell.R;
 
@@ -58,6 +60,7 @@ public class AdminBarangFragment extends Fragment {
     Unbinder unbinder;
 
     private List<BarangModel> list;
+    private List<String> lisKey;
     private AdapterListBarang adapterListBarang;
     private DatabaseReference databaseReference;
 
@@ -85,16 +88,39 @@ public class AdminBarangFragment extends Fragment {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         list = new ArrayList<>();
+                        lisKey = new ArrayList<>();
+                        list.clear();
+                        lisKey.clear();
                         if (dataSnapshot.exists()) {
                             layoutBelumAdaBarang.setVisibility(View.GONE);
                             for (DataSnapshot data : dataSnapshot.getChildren()) {
                                 BarangModel model ;
+                                String key = data.getKey();
 
                                 model = data.getValue(BarangModel.class);
                                 list.add(model);
+                                lisKey.add(key);
                             }
 
-                            adapterListBarang = new AdapterListBarang(getActivity(), list);
+                            adapterListBarang = new AdapterListBarang(getActivity(), list,lisKey, new IDialog() {
+                                @Override
+                                public void onItemClick(String id, String nama, boolean isDismiss) {
+
+                                }
+
+                                @Override
+                                public void onItemPopUpMenu(String id, int menu) {
+                                        if (menu == 1){
+                                            //ke edit
+                                            startActivity(new Intent(getActivity(),TambahBarangActivity.class)
+                                            .putExtra("id",id));
+
+                                        }else if(menu == 2){
+                                            //ke detail
+
+                                        }
+                                }
+                            });
                             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
                             rvBarang.setLayoutManager(layoutManager);
                             rvBarang.setAdapter(adapterListBarang);
