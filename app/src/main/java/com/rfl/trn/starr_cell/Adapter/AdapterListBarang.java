@@ -143,9 +143,9 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
                                 BarangModel model = dataSnapshot.getValue(BarangModel.class);
                                 myetDialogNamaBarang.setText(model.getNamaBarang());
                                 myetDialogStokBarang.setText(model.getStokBarang());
-                                myetDialogHarga1Barang.setText(String.valueOf("Rp."+model.getHarga1()));
-                                myetDialogHarga2Barang.setText(String.valueOf("Rp."+model.getHarga2()));
-                                myetDialogHarga3Barang.setText(String.valueOf("Rp."+model.getHarga3()));
+                                myetDialogHarga1Barang.setText("Rp."+String.valueOf(model.getHarga1()));
+                                myetDialogHarga2Barang.setText("Rp."+String.valueOf(model.getHarga2()));
+                                myetDialogHarga3Barang.setText("Rp."+String.valueOf(model.getHarga3()));
                                 myetDialogTanggalBarang.setText(String.valueOf(new Bantuan(context).getDatePretty(model.getTanggalDiubah(),false)));
 
                                 databaseReference.child("konter")
