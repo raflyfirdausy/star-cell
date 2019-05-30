@@ -4,6 +4,9 @@ package com.rfl.trn.starr_cell.Fragment.Admin;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -30,10 +33,23 @@ public class AdminDashboardFragment extends Fragment {
         return view;
     }
 
-    //TODO :: Fetch Data
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
-    //TODO :: Bind(OnCLick dll)
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+    }
 
-    //TODO :: LifeCycle
+//    @Override
+//    public void onPrepareOptionsMenu(Menu menu) {
+//        super.onPrepareOptionsMenu(menu);
+//        MenuItem item = menu.findItem(R.id.action_search);
+//        item.setVisible(false);
+//    }
 
 }
