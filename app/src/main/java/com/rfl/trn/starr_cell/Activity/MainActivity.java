@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity
     NavigationView navView;
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
-    private String posisiFragment = null;
     private boolean tekanKembaliUntukKeluar = false;
 
     private Context context = MainActivity.this;
@@ -141,22 +140,22 @@ public class MainActivity extends AppCompatActivity
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 
         if (id == R.id.nav_dashboard) {
-            posisiFragment = "admin_dashboard";
+            Objects.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.dashboard));
             FT.replace(R.id.fl_content, new AdminDashboardFragment(), "admin_dashboard").commit();
         } else if (id == R.id.nav_konter) {
-            posisiFragment = "admin_konter";
+            Objects.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.konter));
             FT.replace(R.id.fl_content, new AdminKonterFragment(), "admin_konter").commit();
         } else if (id == R.id.nav_karyawan) {
-            posisiFragment = "admin_karyawan";
+            Objects.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.karyawan));
             FT.replace(R.id.fl_content, new AdminKaryawanFragment(), "admin_karyawan").commit();
         } else if (id == R.id.nav_barang) {
-            posisiFragment = "admin_barang";
+            Objects.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.barang));
             FT.replace(R.id.fl_content, new AdminBarangFragment(), "admin_barang").commit();
         } else if (id == R.id.nav_absensi) {
-            posisiFragment = "admin_absensi";
+            Objects.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.absensi));
             FT.replace(R.id.fl_content, new AdminAbsensiFragment(), "admin_absensi").commit();
         } else if (id == R.id.nav_transaksi) {
-            posisiFragment = "admin_transaksi";
+            Objects.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.transaksi));
             FT.replace(R.id.fl_content, new AdminTransaksiFragment(), "admin_transaksi").commit();
         } else if (id == R.id.nav_logout) {
 //            new Bantuan(context).alertDialogInformasi("Coming Soon !");

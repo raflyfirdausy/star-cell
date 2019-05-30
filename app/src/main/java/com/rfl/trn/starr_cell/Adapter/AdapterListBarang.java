@@ -25,7 +25,9 @@ import com.rfl.trn.starr_cell.Model.BarangModel;
 import com.rfl.trn.starr_cell.R;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,6 +38,7 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
 
     private Context context;
     private List<BarangModel> data;
+    private List<BarangModel> dataSementara;
     private List<String> key;
     private IDialog listener;
     private BarangModel model;
@@ -47,6 +50,8 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
         this.data = data;
         this.listener = iDialog;
         this.key = lisKey;
+        this.dataSementara = new ArrayList<>();
+        this.dataSementara.addAll(data);
     }
 
     @NonNull
@@ -192,5 +197,20 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
 
         }
 
+    }
+
+    public void cariBarang(String text) {
+        text = text.toLowerCase(Locale.getDefault());
+        data.clear();
+        if (text.length() == 0) {
+            data.addAll(dataSementara);
+        } else {
+            for (int i = 0; i < dataSementara.size(); i++) {
+                if (dataSementara.get(i).getNamaBarang().toLowerCase(Locale.getDefault()).contains(text)) {
+                    data.add(dataSementara.get(i));
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 }
