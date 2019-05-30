@@ -64,7 +64,7 @@ public class AdapterKategori extends RecyclerView.Adapter<AdapterKategori.MyView
             llParent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClick(s.getIdKategroi(),s.getNamaKategori(),true);
+                    listener.onItemClick(s.getIdKategori(),s.getNamaKategori(),true);
                 }
             });
         }

@@ -3,24 +3,24 @@ package com.rfl.trn.starr_cell.Model;
 import java.io.Serializable;
 
 public class KategoriModel implements Serializable {
-    String idKategroi,namaKategori;
+    String idKategori,namaKategori;
     Long waktuDiubah;
 
     public KategoriModel() {
     }
 
-    public KategoriModel(String idKategroi, String namaKategori, Long waktuDiubah) {
-        this.idKategroi = idKategroi;
+    public KategoriModel(String idKategori, String namaKategori, Long waktuDiubah) {
+        this.idKategori = idKategori;
         this.namaKategori = namaKategori;
         this.waktuDiubah = waktuDiubah;
     }
 
-    public String getIdKategroi() {
-        return idKategroi;
+    public String getIdKategori() {
+        return idKategori;
     }
 
-    public void setIdKategroi(String idKategroi) {
-        this.idKategroi = idKategroi;
+    public void setIdKategori(String idKategori) {
+        this.idKategori = idKategori;
     }
 
     public String getNamaKategori() {

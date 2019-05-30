@@ -70,8 +70,6 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.iv_barang)
-        ImageView ivBarang;
         @BindView(R.id.tv_namaBarang)
         MyTextView tvNamaBarang;
         @BindView(R.id.tv_hargaBarang)
