@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -28,8 +29,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -82,6 +86,12 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
     MyEditText myetKonfirmasiPasswordKonter;
     @BindView(R.id.btn_daftar)
     MyTextView btnDaftar;
+    @BindView(R.id.layoutPasswordSaatIni)
+    TextInputLayout layoutPasswordSaatIni;
+    @BindView(R.id.myet_passwordKonterSaatIni)
+    MyEditText myetPasswordKonterSaatIni;
+    @BindView(R.id.tvTambahkanGambarKonter)
+    TextView tvTambahkanGambarKonter;
     private Context context = DaftarKonterActivity.this;
     private FirebaseAuth firebaseAuth, firebaseAuth2;
     private DatabaseReference databaseReference;
@@ -114,8 +124,22 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
         if (getIntent().hasExtra("jenis")) {
             if (getIntent().getStringExtra("jenis").equalsIgnoreCase("edit")) {
                 setAndGetTampilanEdit();
+            } else if(getIntent().getStringExtra("jenis").equalsIgnoreCase("password")){
+                setAndGetTampilanPassword();
             }
         }
+    }
+
+    private void setAndGetTampilanPassword() {
+        ivGambarKonter.setVisibility(View.GONE);
+        tvTambahkanGambarKonter.setVisibility(View.GONE);
+        layoutPasswordSaatIni.setVisibility(View.VISIBLE);
+        myetNamaKonter.setVisibility(View.GONE);
+        myetAlamatKonter.setVisibility(View.GONE);
+        myetEmailKonter.setEnabled(false);
+        btnDaftar.setText(getString(R.string.ubah_password));
+        tvJudul.setText(getString(R.string.ubah_password_konter));
+        myetEmailKonter.setText(getIntent().getStringExtra("emailKonter"));
     }
 
     private void setAndGetTampilanEdit() {
@@ -135,7 +159,6 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
         myetAlamatKonter.setText(getIntent().getStringExtra("alamatKonter"));
         myetEmailKonter.setText(getIntent().getStringExtra("emailKonter"));
     }
-
 
     @OnClick({R.id.iv_gambarKonter, R.id.btn_daftar})
     public void onViewClicked(View view) {
@@ -189,7 +212,16 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
     }
 
     private void prosesGantiPassword() {
-        new Bantuan(context).swal_warning("coming soon hehe");
+        if (TextUtils.isEmpty(myetPasswordKonterSaatIni.getText()) ||
+                TextUtils.isEmpty(myetPasswordKonter.getText()) ||
+                TextUtils.isEmpty(myetKonfirmasiPasswordKonter.getText())) {
+            new Bantuan(context).swal_warning("Masih Ada Data yang belum diisi !");
+        } else if (!Objects.requireNonNull(myetPasswordKonter.getText()).toString()
+                .equals(Objects.requireNonNull(myetKonfirmasiPasswordKonter.getText()).toString())) {
+            new Bantuan(context).swal_error("Konfirmasi Password Salah !");
+        } else {
+            simpanKeDatabasePassword(getIntent().getStringExtra("key"));
+        }
     }
 
     private void prosesDaftar() {
@@ -202,7 +234,6 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
         } else if (!Objects.requireNonNull(myetPasswordKonter.getText()).toString()
                 .equals(Objects.requireNonNull(myetKonfirmasiPasswordKonter.getText()).toString())) {
             new Bantuan(context).swal_error("Konfirmasi Password Salah !");
-            myetKonfirmasiPasswordKonter.setError("Konfirmasi Password Salah !");
         } else if (ivGambarKonter.getDrawable().getConstantState() == getResources().getDrawable(R.drawable.bg_take_pict).getConstantState()) {
             final SweetAlertDialog dialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE);
             dialog.setTitleText("Peringatan");
@@ -227,78 +258,6 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
         } else {
             simpanKeDatabase(true);
         }
-    }
-
-    private void simpanKeDatabaseEdit(final boolean isAdaFoto) {
-        final SweetAlertDialog loading = new Bantuan(context).swal_loading("Tunggu beberapa saat, proses mengedit konter");
-        loading.show();
-
-        final String key = getIntent().getStringExtra("key");
-        final KonterModel konterModel = new KonterModel();
-
-        Bitmap bitmap = ((BitmapDrawable) ivGambarKonter.getDrawable()).getBitmap();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] data = baos.toByteArray();
-
-        final StorageReference ref = storageReference.child("konter")
-                .child(key)
-                .child(key + ".jpeg");
-
-        UploadTask uploadTask = ref.putBytes(data);
-        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-            @Override
-            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                if (!task.isSuccessful()) {
-                    throw Objects.requireNonNull(task.getException());
-                }
-                return ref.getDownloadUrl();
-            }
-        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-            @Override
-            public void onComplete(@NonNull Task<Uri> task) {
-                if (task.isSuccessful()) {
-                    downloadURL = task.getResult();
-                    konterModel.setNamaKonter(Objects.requireNonNull(myetNamaKonter.getText()).toString());
-                    konterModel.setAlamatKonter(Objects.requireNonNull(myetAlamatKonter.getText()).toString());
-                    konterModel.setEmailKonter(Objects.requireNonNull(myetEmailKonter.getText()).toString());
-                    if (isAdaFoto) {
-                        konterModel.setUrl_foto(downloadURL.toString());
-                    } else {
-                        konterModel.setUrl_foto(null);
-                    }
-                    databaseReference.child("konter")
-                            .child(key)
-                            .setValue(konterModel)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    loading.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-                                    loading.showContentText(true);
-                                    loading.setTitleText("Sukses");
-                                    loading.setContentText("Berhasil Edit Data Konter");
-                                    loading.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                        @Override
-                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                            finish();
-                                        }
-                                    });
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    loading.changeAlertType(SweetAlertDialog.WARNING_TYPE);
-                                    loading.showContentText(true);
-                                    loading.setTitleText("Gagal");
-                                    loading.setContentText(e.getMessage());
-                                }
-                            });
-                } else {
-                    new Bantuan(context).swal_error(Objects.requireNonNull(task.getException()).getMessage());
-                }
-            }
-        });
     }
 
     private void simpanKeDatabase(final boolean isAdaFoto) {
@@ -400,6 +359,160 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
                         loading.setContentText(e.getMessage());
                     }
                 });
+    }
+
+    private void simpanKeDatabaseEdit(final boolean isAdaFoto) {
+        final SweetAlertDialog loading = new Bantuan(context).swal_loading("Tunggu beberapa saat, proses mengedit konter");
+        loading.show();
+
+        final String key = getIntent().getStringExtra("key");
+        final KonterModel konterModel = new KonterModel();
+
+        Bitmap bitmap = ((BitmapDrawable) ivGambarKonter.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        final StorageReference ref = storageReference.child("konter")
+                .child(key)
+                .child(key + ".jpeg");
+
+        UploadTask uploadTask = ref.putBytes(data);
+        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw Objects.requireNonNull(task.getException());
+                }
+                return ref.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    downloadURL = task.getResult();
+                    konterModel.setNamaKonter(Objects.requireNonNull(myetNamaKonter.getText()).toString());
+                    konterModel.setAlamatKonter(Objects.requireNonNull(myetAlamatKonter.getText()).toString());
+                    konterModel.setEmailKonter(Objects.requireNonNull(myetEmailKonter.getText()).toString());
+                    konterModel.setPassword(Objects.requireNonNull(getIntent().getStringExtra("passwordKonter")));
+                    if (isAdaFoto) {
+                        konterModel.setUrl_foto(downloadURL.toString());
+                    } else {
+                        konterModel.setUrl_foto(null);
+                    }
+                    databaseReference.child("konter")
+                            .child(key)
+                            .setValue(konterModel)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    loading.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                    loading.showContentText(true);
+                                    loading.setTitleText("Sukses");
+                                    loading.setContentText("Berhasil Edit Data Konter");
+                                    loading.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                            finish();
+                                        }
+                                    });
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    loading.changeAlertType(SweetAlertDialog.WARNING_TYPE);
+                                    loading.showContentText(true);
+                                    loading.setTitleText("Gagal");
+                                    loading.setContentText(e.getMessage());
+                                }
+                            });
+                } else {
+                    new Bantuan(context).swal_error(Objects.requireNonNull(task.getException()).getMessage());
+                }
+            }
+        });
+    }
+
+    private void simpanKeDatabasePassword(final String key){
+        final SweetAlertDialog loading = new Bantuan(context).swal_loading("Tunggu beberapa saat, proses ubah password");
+        loading.show();
+
+        FirebaseOptions firebaseOptions = new Bantuan(context).getFirebaseOptions();
+
+        try {
+            FirebaseApp firebaseApp = FirebaseApp.initializeApp(getApplicationContext(),
+                    firebaseOptions,
+                    getString(R.string.app_name));
+            firebaseAuth2 = FirebaseAuth.getInstance(firebaseApp);
+        } catch (IllegalStateException e) {
+            firebaseAuth2 = FirebaseAuth.getInstance(FirebaseApp.getInstance(getString(R.string.app_name)));
+        }
+
+        firebaseAuth2.signInWithEmailAndPassword(Objects.requireNonNull(myetEmailKonter.getText()).toString(),
+                Objects.requireNonNull(myetPasswordKonterSaatIni.getText()).toString())
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        final FirebaseUser firebaseUser = firebaseAuth2.getCurrentUser();
+                        AuthCredential credential = EmailAuthProvider
+                                .getCredential(myetEmailKonter.getText().toString(),
+                                        myetPasswordKonterSaatIni.getText().toString());
+                        Objects.requireNonNull(firebaseUser).reauthenticate(credential)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()){
+                                            firebaseUser.updatePassword(Objects.requireNonNull(
+                                                    myetPasswordKonter.getText()).toString())
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            databaseReference.child("konter")
+                                                                    .child(key)
+                                                                    .child("password")
+                                                                    .setValue(myetPasswordKonter.getText().toString())
+                                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                        @Override
+                                                                        public void onSuccess(Void aVoid) {
+                                                                            loading.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                                                            loading.showContentText(true);
+                                                                            loading.setTitleText("Sukses");
+                                                                            loading.setContentText("Berhasil mengganti password konter");
+                                                                            loading.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                                                @Override
+                                                                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                                                    finish();
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    }).addOnFailureListener(new OnFailureListener() {
+                                                                @Override
+                                                                public void onFailure(@NonNull Exception e) {
+                                                                    new Bantuan(context).swal_error(e.getMessage());
+                                                                    loading.dismissWithAnimation();
+                                                                }
+                                                            });
+                                                        }
+                                                    }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    new Bantuan(context).swal_error("Erorr mengganti password baru\n" + e.getMessage());
+                                                    loading.dismissWithAnimation();
+                                                }
+                                            });
+                                            firebaseAuth2.signOut();
+                                        }
+                                    }
+                                });
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                 new Bantuan(context).swal_error("Error : Password yang anda masukan salah\n" + e.getMessage());
+                 loading.dismissWithAnimation();
+            }
+        });
     }
 
     private void ambilFoto() {
