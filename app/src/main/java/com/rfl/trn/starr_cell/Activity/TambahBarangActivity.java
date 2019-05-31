@@ -9,9 +9,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -28,7 +26,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rfl.trn.starr_cell.Adapter.AdapterDialogKonter;
 import com.rfl.trn.starr_cell.Adapter.AdapterKategori;
-import com.rfl.trn.starr_cell.Custom.EditTextWatcher;
 import com.rfl.trn.starr_cell.Custom.MyEditText;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
@@ -39,13 +36,9 @@ import com.rfl.trn.starr_cell.Model.KonterModel;
 import com.rfl.trn.starr_cell.R;
 import com.wajahatkarim3.easymoneywidgets.EasyMoneyEditText;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -81,7 +74,14 @@ public class TambahBarangActivity extends AppCompatActivity {
     TextInputLayout inputKategori;
     @BindView(R.id.input_konter)
     TextInputLayout inputKonter;
-
+    RecyclerView rvDialog;
+    ImageButton tambahItemDialog;
+    MyEditText namaDialog;
+    LinearLayout layoutTambahItemDialog;
+    ImageButton buttonTambahItem;
+    MyTextView judulDialog, dialogKosong;
+    Dialog dialog;
+    Context context = TambahBarangActivity.this;
     private FirebaseAnalytics mFirebaseAnalytics;
     private DatabaseReference databaseReference;
     private List<KategoriModel> listKategori;
@@ -92,19 +92,7 @@ public class TambahBarangActivity extends AppCompatActivity {
     private String idKategori = null;
     private String idBarang = null;
     private Date date = new Date();
-    private Long timestamp ;
-
-    RecyclerView rvDialog;
-    ImageButton tambahItemDialog;
-    MyEditText namaDialog;
-    LinearLayout layoutTambahItemDialog;
-    ImageButton buttonTambahItem;
-    MyTextView judulDialog, dialogKosong;
-
-
-    Dialog dialog;
-    Context context = TambahBarangActivity.this;
-    ;
+    private Long timestamp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,13 +107,13 @@ public class TambahBarangActivity extends AppCompatActivity {
 
         dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_kategori_konter);
-        rvDialog = (RecyclerView) dialog.findViewById(R.id.rv_kategori);
-        tambahItemDialog = (ImageButton) dialog.findViewById(R.id.btn_add_kategori);
-        namaDialog = (MyEditText) dialog.findViewById(R.id.myet_namaKategori);
-        layoutTambahItemDialog = (LinearLayout) dialog.findViewById(R.id.ll_tambah);
-        buttonTambahItem = (ImageButton) dialog.findViewById(R.id.btn_add_act);
-        judulDialog = (MyTextView) dialog.findViewById(R.id.mytv_judulDialog);
-        dialogKosong = (MyTextView) dialog.findViewById(R.id.mytv_rvKosong);
+        rvDialog = dialog.findViewById(R.id.rv_kategori);
+        tambahItemDialog = dialog.findViewById(R.id.btn_add_kategori);
+        namaDialog = dialog.findViewById(R.id.myet_namaKategori);
+        layoutTambahItemDialog = dialog.findViewById(R.id.ll_tambah);
+        buttonTambahItem = dialog.findViewById(R.id.btn_add_act);
+        judulDialog = dialog.findViewById(R.id.mytv_judulDialog);
+        dialogKosong = dialog.findViewById(R.id.mytv_rvKosong);
 
         Intent intent = getIntent();
         if (intent.getExtras() == null) {
@@ -395,16 +383,11 @@ public class TambahBarangActivity extends AppCompatActivity {
     }
 
     private boolean cekInput() {
-        if (TextUtils.isEmpty(myetNamaBarang.getText()) ||
-                TextUtils.isEmpty(myetStokBarang.getText()) ||
-                TextUtils.isEmpty(myetKategori.getText()) ||
-                TextUtils.isEmpty(myetKonter.getText()) ||
-                TextUtils.isEmpty(myetHarga1.getText())) {
-            return false;
-
-        } else {
-            return true;
-        }
+        return !TextUtils.isEmpty(myetNamaBarang.getText()) &&
+                !TextUtils.isEmpty(myetStokBarang.getText()) &&
+                !TextUtils.isEmpty(myetKategori.getText()) &&
+                !TextUtils.isEmpty(myetKonter.getText()) &&
+                !TextUtils.isEmpty(myetHarga1.getText());
     }
 
     //TODO :: LifeCycle

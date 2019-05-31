@@ -1,5 +1,6 @@
 package com.rfl.trn.starr_cell.Adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -30,7 +31,6 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.MyViewHolder> {
 
@@ -64,12 +64,27 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
 
 
-        myViewHolder.setDataKewView(data.get(i),key.get(i));
+        myViewHolder.setDataKewView(data.get(i), key.get(i));
     }
 
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    public void cariBarang(String text) {
+        text = text.toLowerCase(Locale.getDefault());
+        data.clear();
+        if (text.length() == 0) {
+            data.addAll(dataSementara);
+        } else {
+            for (int i = 0; i < dataSementara.size(); i++) {
+                if (dataSementara.get(i).getNamaBarang().toLowerCase(Locale.getDefault()).contains(text)) {
+                    data.add(dataSementara.get(i));
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -96,6 +111,7 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
 
         }
 
+        @SuppressLint("SetTextI18n")
         void setDataKewView(BarangModel isiData, final String s) {
             databaseReference = FirebaseDatabase.getInstance().getReference();
             tvNamaBarang.setText(isiData.getNamaBarang());
@@ -172,9 +188,9 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
                                 BarangModel model = dataSnapshot.getValue(BarangModel.class);
                                 myetDialogNamaBarang.setText(model.getNamaBarang());
                                 myetDialogStokBarang.setText(model.getStokBarang());
-                                myetDialogHarga1Barang.setText("Rp." + String.valueOf(model.getHarga1()));
-                                myetDialogHarga2Barang.setText("Rp." + String.valueOf(model.getHarga2()));
-                                myetDialogHarga3Barang.setText("Rp." + String.valueOf(model.getHarga3()));
+                                myetDialogHarga1Barang.setText("Rp." + model.getHarga1());
+                                myetDialogHarga2Barang.setText("Rp." + model.getHarga2());
+                                myetDialogHarga3Barang.setText("Rp." + model.getHarga3());
 
                                 myetDialogTanggalBarang.setText(String.valueOf(new Bantuan(context).getDatePretty(model.getTanggalDiubah(), false)));
 
@@ -250,22 +266,5 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
         }
 
 
-
-    }
-
-
-    public void cariBarang(String text) {
-        text = text.toLowerCase(Locale.getDefault());
-        data.clear();
-        if (text.length() == 0) {
-            data.addAll(dataSementara);
-        } else {
-            for (int i = 0; i < dataSementara.size(); i++) {
-                if (dataSementara.get(i).getNamaBarang().toLowerCase(Locale.getDefault()).contains(text)) {
-                    data.add(dataSementara.get(i));
-                }
-            }
-        }
-        notifyDataSetChanged();
     }
 }

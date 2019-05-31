@@ -36,6 +36,10 @@
     <item android:title="@string/lain_lain">
         <menu>
             <item
+                android:id="@+id/nav_ubahKataSandi"
+                android:title="@string/ubah_kata_sandi"
+                android:icon="@drawable/ic_pass"/>
+            <item
                 android:id="@+id/nav_logout"
                 android:title="@string/log_out"
                 android:icon="@drawable/ic_logout"/>
