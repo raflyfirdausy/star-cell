@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -77,8 +76,8 @@ public class AdminBarangFragment extends Fragment {
     private List<String> listKeyKonter;
     private List<String> listNamaKonter;
     private List<String> listNamaKategori;
-    private String idKategori   = "semua";
-    private String idKonter     = "semua";
+    private String idKategori = "semua";
+    private String idKonter = "semua";
     private AdapterListBarang adapterListBarang;
     private DatabaseReference databaseReference;
 
@@ -171,17 +170,16 @@ public class AdminBarangFragment extends Fragment {
 
             @Override
             public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
-               // Snackbar.make(view, "Clicked " + " " +listKeyKonter.get(position) + " " + item, Snackbar.LENGTH_LONG).show();
+                // Snackbar.make(view, "Clicked " + " " +listKeyKonter.get(position) + " " + item, Snackbar.LENGTH_LONG).show();
                 idKonter = listKeyKonter.get(position);
-                if (idKategori.equalsIgnoreCase("semua")){
-                    if (item.equalsIgnoreCase("semua")){
+                if (idKategori.equalsIgnoreCase("semua")) {
+                    if (item.equalsIgnoreCase("semua")) {
 
                         getAllBarang();
                     }
-                        getFilterKonter();
-                }else {
-                    if (item.equalsIgnoreCase("semua"))
-                    {
+                    getFilterKonter();
+                } else {
+                    if (item.equalsIgnoreCase("semua")) {
                         getFilterKategori();
                     }
                     getFilterKonterAndKategori();
@@ -192,25 +190,24 @@ public class AdminBarangFragment extends Fragment {
 
             @Override
             public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
-             //  Snackbar.make(view, "Clicked " + " " + position + " " + item, Snackbar.LENGTH_LONG).show();
+                //  Snackbar.make(view, "Clicked " + " " + position + " " + item, Snackbar.LENGTH_LONG).show();
                 idKategori = listKeyKategori.get(position);
-               if (idKonter.equalsIgnoreCase("semua")){
-                   if (item.equalsIgnoreCase("semua")){
+                if (idKonter.equalsIgnoreCase("semua")) {
+                    if (item.equalsIgnoreCase("semua")) {
 
-                       getAllBarang();
-                   }
-                   getFilterKategori();
-               }else {
-                    if (item.equalsIgnoreCase("semua")){
+                        getAllBarang();
+                    }
+                    getFilterKategori();
+                } else {
+                    if (item.equalsIgnoreCase("semua")) {
                         getFilterKonter();
                     }
-                   getFilterKonterAndKategori();
-               }
+                    getFilterKonterAndKategori();
+                }
 
             }
         });
     }
-
 
 
     /* TODO :: Fetch Data */
@@ -263,169 +260,178 @@ public class AdminBarangFragment extends Fragment {
             }
         });
     }
-    private void getFilterKategori(){databaseReference.child("barang").orderByChild("idKategori").startAt(idKategori).endAt(idKategori).addValueEventListener(new ValueEventListener() {
-        @Override
-        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            list = new ArrayList<>();
-            listKey = new ArrayList<>();
-            list.clear();
-            listKey.clear();
-            if (dataSnapshot.exists()){
-                layoutBelumAdaBarang.setVisibility(View.GONE);
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    BarangModel model;
-                    String key = data.getKey();
 
-                    model = data.getValue(BarangModel.class);
-                    list.add(model);
-                    listKey.add(key);
-                }
-                adapterListBarang = new AdapterListBarang(getActivity(), list, listKey, new IDialog() {
-                    @Override
-                    public void onItemClick(String id, String nama, boolean isDismiss) {
-
-                    }
-
-                    @Override
-                    public void onItemPopUpMenu(String id, int menu) {
-                        if (menu == 1) {
-                            //ke edit
-                            startActivity(new Intent(getActivity(), TambahBarangActivity.class)
-                                    .putExtra("id", id));
-
-                        } else if (menu == 2) {
-                            //ke detail
-
-                        }
-                    }
-                });
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                rvBarang.setLayoutManager(layoutManager);
-                rvBarang.setAdapter(adapterListBarang);
-            }
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-        }
-    });}
-    private void getFilterKonter(){databaseReference.child("barang").orderByChild("idKonter").startAt(idKonter).endAt(idKonter).addValueEventListener(new ValueEventListener() {
-        @Override
-        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            list = new ArrayList<>();
-            listKey = new ArrayList<>();
-            list.clear();
-            listKey.clear();
-            if (dataSnapshot.exists()){
-                layoutBelumAdaBarang.setVisibility(View.GONE);
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    BarangModel model;
-                    String key = data.getKey();
-
-                    model = data.getValue(BarangModel.class);
-                    list.add(model);
-                    listKey.add(key);
-                }
-                adapterListBarang = new AdapterListBarang(getActivity(), list, listKey, new IDialog() {
-                    @Override
-                    public void onItemClick(String id, String nama, boolean isDismiss) {
-
-                    }
-
-                    @Override
-                    public void onItemPopUpMenu(String id, int menu) {
-                        if (menu == 1) {
-                            //ke edit
-                            startActivity(new Intent(getActivity(), TambahBarangActivity.class)
-                                    .putExtra("id", id));
-
-                        } else if (menu == 2) {
-                            //ke detail
-
-                        }
-                    }
-                });
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                rvBarang.setLayoutManager(layoutManager);
-                rvBarang.setAdapter(adapterListBarang);
-            }
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-        }
-    });}
-    private void getFilterKonterAndKategori(){databaseReference.child("barang").orderByChild("idKonter").equalTo(idKonter).addValueEventListener(new ValueEventListener() {
-        @Override
-        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            list = new ArrayList<>();
-            listKey = new ArrayList<>();
-            list.clear();
-            listKey.clear();
-            if (dataSnapshot.exists()){
-                layoutBelumAdaBarang.setVisibility(View.GONE);
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    BarangModel model;
-
-
-                    if (Objects.requireNonNull(data.child("idKategori").getValue(String.class)).equalsIgnoreCase(idKategori)){
-
+    private void getFilterKategori() {
+        databaseReference.child("barang").orderByChild("idKategori").startAt(idKategori).endAt(idKategori).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                list = new ArrayList<>();
+                listKey = new ArrayList<>();
+                list.clear();
+                listKey.clear();
+                if (dataSnapshot.exists()) {
+                    layoutBelumAdaBarang.setVisibility(View.GONE);
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        BarangModel model;
                         String key = data.getKey();
+
                         model = data.getValue(BarangModel.class);
                         list.add(model);
                         listKey.add(key);
+                    }
+                    adapterListBarang = new AdapterListBarang(getActivity(), list, listKey, new IDialog() {
+                        @Override
+                        public void onItemClick(String id, String nama, boolean isDismiss) {
 
-                    }else if(idKategori.equalsIgnoreCase("semua")) {
+                        }
+
+                        @Override
+                        public void onItemPopUpMenu(String id, int menu) {
+                            if (menu == 1) {
+                                //ke edit
+                                startActivity(new Intent(getActivity(), TambahBarangActivity.class)
+                                        .putExtra("id", id));
+
+                            } else if (menu == 2) {
+                                //ke detail
+
+                            }
+                        }
+                    });
+                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                    rvBarang.setLayoutManager(layoutManager);
+                    rvBarang.setAdapter(adapterListBarang);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void getFilterKonter() {
+        databaseReference.child("barang").orderByChild("idKonter").startAt(idKonter).endAt(idKonter).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                list = new ArrayList<>();
+                listKey = new ArrayList<>();
+                list.clear();
+                listKey.clear();
+                if (dataSnapshot.exists()) {
+                    layoutBelumAdaBarang.setVisibility(View.GONE);
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        BarangModel model;
                         String key = data.getKey();
+
                         model = data.getValue(BarangModel.class);
                         list.add(model);
                         listKey.add(key);
+                    }
+                    adapterListBarang = new AdapterListBarang(getActivity(), list, listKey, new IDialog() {
+                        @Override
+                        public void onItemClick(String id, String nama, boolean isDismiss) {
 
-                    }else {
-                        model = data.getValue(BarangModel.class);
-                        if (model == null ){
-                            layoutBelumAdaBarang.setVisibility(View.VISIBLE);
-                        }else {
-                            layoutBelumAdaBarang.setVisibility(View.GONE);
                         }
 
+                        @Override
+                        public void onItemPopUpMenu(String id, int menu) {
+                            if (menu == 1) {
+                                //ke edit
+                                startActivity(new Intent(getActivity(), TambahBarangActivity.class)
+                                        .putExtra("id", id));
 
-                    }
+                            } else if (menu == 2) {
+                                //ke detail
 
+                            }
+                        }
+                    });
+                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                    rvBarang.setLayoutManager(layoutManager);
+                    rvBarang.setAdapter(adapterListBarang);
                 }
-                adapterListBarang = new AdapterListBarang(getActivity(), list, listKey, new IDialog() {
-                    @Override
-                    public void onItemClick(String id, String nama, boolean isDismiss) {
+            }
 
-                    }
-
-                    @Override
-                    public void onItemPopUpMenu(String id, int menu) {
-                        if (menu == 1) {
-                            //ke edit
-                            startActivity(new Intent(getActivity(), TambahBarangActivity.class)
-                                    .putExtra("id", id));
-
-                        } else if (menu == 2) {
-                            //ke detail
-
-                        }
-                    }
-                });
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                rvBarang.setLayoutManager(layoutManager);
-                rvBarang.setAdapter(adapterListBarang);
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        }
+        });
+    }
 
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
+    private void getFilterKonterAndKategori() {
+        databaseReference.child("barang").orderByChild("idKonter").equalTo(idKonter).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                list = new ArrayList<>();
+                listKey = new ArrayList<>();
+                list.clear();
+                listKey.clear();
+                if (dataSnapshot.exists()) {
+                    layoutBelumAdaBarang.setVisibility(View.GONE);
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        BarangModel model;
 
-        }
-    });}
+
+                        if (Objects.requireNonNull(data.child("idKategori").getValue(String.class)).equalsIgnoreCase(idKategori)) {
+
+                            String key = data.getKey();
+                            model = data.getValue(BarangModel.class);
+                            list.add(model);
+                            listKey.add(key);
+
+                        } else if (idKategori.equalsIgnoreCase("semua")) {
+                            String key = data.getKey();
+                            model = data.getValue(BarangModel.class);
+                            list.add(model);
+                            listKey.add(key);
+
+                        } else {
+                            model = data.getValue(BarangModel.class);
+                            if (model == null) {
+                                layoutBelumAdaBarang.setVisibility(View.VISIBLE);
+                            } else {
+                                layoutBelumAdaBarang.setVisibility(View.GONE);
+                            }
+
+
+                        }
+
+                    }
+                    adapterListBarang = new AdapterListBarang(getActivity(), list, listKey, new IDialog() {
+                        @Override
+                        public void onItemClick(String id, String nama, boolean isDismiss) {
+
+                        }
+
+                        @Override
+                        public void onItemPopUpMenu(String id, int menu) {
+                            if (menu == 1) {
+                                //ke edit
+                                startActivity(new Intent(getActivity(), TambahBarangActivity.class)
+                                        .putExtra("id", id));
+
+                            } else if (menu == 2) {
+                                //ke detail
+
+                            }
+                        }
+                    });
+                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                    rvBarang.setLayoutManager(layoutManager);
+                    rvBarang.setAdapter(adapterListBarang);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     //TODO :: Bind(OnCLick dll)
     @OnClick(R.id.fab_tambahBarang)

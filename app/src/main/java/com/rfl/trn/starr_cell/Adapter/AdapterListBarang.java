@@ -1,5 +1,6 @@
 package com.rfl.trn.starr_cell.Adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -27,6 +28,7 @@ import com.rfl.trn.starr_cell.R;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -93,10 +95,9 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-
-
         }
 
+        @SuppressLint("SetTextI18n")
         void setDataKewView(BarangModel isiData) {
             databaseReference = FirebaseDatabase.getInstance().getReference();
             tvNamaBarang.setText(isiData.getNamaBarang());
@@ -113,7 +114,7 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
                                 BarangModel model = dataSnapshot.getValue(BarangModel.class);
 
                                 databaseReference.child("konter")
-                                        .child(model.getIdKonter())
+                                        .child(Objects.requireNonNull(model).getIdKonter())
                                         .addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
