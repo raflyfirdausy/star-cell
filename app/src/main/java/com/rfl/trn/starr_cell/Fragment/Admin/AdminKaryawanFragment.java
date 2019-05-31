@@ -55,15 +55,14 @@ public class AdminKaryawanFragment extends Fragment {
     MyTextView tvDetailKaryawan;
     @BindView(R.id.ll_header)
     LinearLayout llHeader;
-    @BindView(R.id.bg_noDataKaryawan)
-    LinearLayout bgNoDataKaryawan;
-    @BindView(R.id.ll_belum_da_konter)
-    LinearLayout llBelumDaKonter;
     @BindView(R.id.fab_tambahKaryawan)
     FloatingActionButton fabTambahKaryawan;
     Unbinder unbinder;
     @BindView(R.id.rv_karyawan)
     RecyclerView rvKaryawan;
+    @BindView(R.id.ll_belumAdaKaryawan)
+    LinearLayout llBelumAdaKaryawan;
+
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
     private List<KaryawanModel> list = new ArrayList<>();
@@ -94,7 +93,7 @@ public class AdminKaryawanFragment extends Fragment {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
-                            bgNoDataKaryawan.setVisibility(View.GONE);
+                            llBelumAdaKaryawan.setVisibility(View.GONE);
                             list.clear();
                             listKey.clear();
                             KaryawanModel model;
@@ -105,6 +104,7 @@ public class AdminKaryawanFragment extends Fragment {
                                 listKey.add(key);
 
                             }
+
                             adapterListKaryawan = new AdapterListKaryawan(getActivity(), list, listKey);
                             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
                             rvKaryawan.setLayoutManager(layoutManager);
