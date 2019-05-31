@@ -73,19 +73,11 @@
             android:background="#ffff">
 
             <LinearLayout
-                android:id="@+id/ll_belum_da_konter"
+                android:id="@+id/ll_belumAdaKaryawan"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:id="@+id/bg_noDataKaryawan"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:orientation="vertical"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp">
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -116,8 +108,6 @@
                         android:textSize="14sp"
                         android:textStyle="normal" />
 
-
-                </LinearLayout>
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView

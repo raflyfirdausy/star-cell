@@ -12,8 +12,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rfl.trn.starr_cell.Activity.DaftarKonterActivity;
 import com.rfl.trn.starr_cell.Activity.DetailKaryawanActivity;
+import com.rfl.trn.starr_cell.Activity.TambahKaryawanActivity;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
 import com.rfl.trn.starr_cell.Model.KaryawanModel;
 import com.rfl.trn.starr_cell.Model.KonterModel;
@@ -73,16 +77,23 @@ public class AdapterListKaryawan extends RecyclerView.Adapter<AdapterListKaryawa
             ButterKnife.bind(this, itemView);
 
         }
-        private void pindahActivity(KonterModel konterModel, String jenis) {
-            Intent intent = new Intent(context, DaftarKonterActivity.class);
+        private void pindahActivity(KaryawanModel karyawanModel,String id, String jenis) {
+            int sex ;
+            Intent intent = new Intent(context, TambahKaryawanActivity.class);
             intent.putExtra("jenis", jenis);
-            intent.putExtra("key", konterModel.getKey());
-            intent.putExtra("namaKonter", konterModel.getNamaKonter());
-            intent.putExtra("alamatKonter", konterModel.getAlamatKonter());
-            intent.putExtra("emailKonter", konterModel.getEmailKonter());
-            intent.putExtra("passwordKonter", konterModel.getPassword());
-            if (konterModel.getUrl_foto() != null) {
-                intent.putExtra("urlFoto", konterModel.getUrl_foto());
+            intent.putExtra("key", karyawanModel.getIdKaryawan());
+            intent.putExtra("namaKaryawan", karyawanModel.getNamaKarywan());
+            intent.putExtra("alamatKaryawan", karyawanModel.getAlamatKaryawan());
+            intent.putExtra("noHpKaryawan", String.valueOf(karyawanModel.getNomerHp()));
+            if (karyawanModel.getJenisKelamin().equalsIgnoreCase("Laki-Laki")){
+                sex = 1;
+            }else {
+                sex = 2;
+            }
+            intent.putExtra("sexKaryawan", sex);
+
+            if (karyawanModel.getPhotoUrl() != null) {
+                intent.putExtra("urlFoto", karyawanModel.getPhotoUrl());
             }
             context.startActivity(intent);
         }
@@ -101,7 +112,8 @@ public class AdapterListKaryawan extends RecyclerView.Adapter<AdapterListKaryawa
             llParent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    final String[] listItem = new String[]{"Lihat Data Konter", "Edit Data Konter", "Ubah Password", "Hapus konter " , "Batal"};
+                    final String[] listItem = new String[]{"Lihat Data Karyawan",
+                            "Edit Data Karyawan", "Hapus Karyawan " , "Batal"};
                     AlertDialog.Builder builder;
                     builder = new AlertDialog.Builder(context);
                     builder.setTitle("Pilih Aksi Untuk " + isiData.getNamaKarywan())
@@ -109,13 +121,11 @@ public class AdapterListKaryawan extends RecyclerView.Adapter<AdapterListKaryawa
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     if (which == 0) {
-
+                                        lihatDataKonter(isiData);
                                     } else if (which == 1) {
-                                       // pindahActivity(konterModel, "edit");
+                                        pindahActivity(isiData, isiData.getIdKaryawan(),"edit");
                                     } else if (which == 2) {
-                                        //pindahActivity(konterModel, "password");
-                                    } else if (which == 3) {
-                                       // hapusKonter(konterModel);
+                                        hapusKonter(isiData);
                                     }
                                 }
                             })
@@ -124,6 +134,41 @@ public class AdapterListKaryawan extends RecyclerView.Adapter<AdapterListKaryawa
                             .show();
                 }
             });
+        }
+
+        private void hapusKonter(final KaryawanModel isiData) {
+            final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+            SweetAlertDialog tanya = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
+                    .setTitleText("Peringatan")
+                    .setContentText("Apakah kamu yakin akan menghapus " +
+                            isiData.getNamaKarywan()
+                            + " ?\nSemua Data pada konter tersebut akan di hapus secara permanent. " +
+                            "Data yang telah di hapus tidak dapat di kembalikan")
+                    .setConfirmText("Ya, Hapus")
+                    .setCancelText("Batal")
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            //TODO : hapus konter
+                            sweetAlertDialog.dismissWithAnimation();
+                            databaseReference.child("karyawan")
+                                    .child(isiData.getIdKaryawan())
+                                    .removeValue();
+                            notifyDataSetChanged();
+                        }
+                    });
+            tanya.show();
+
+
+        }
+        private void lihatDataKonter(KaryawanModel karyawanModel) {
+            final SweetAlertDialog detail = new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
+                    .setTitleText("Detail Data " + karyawanModel.getNamaKarywan())
+                    .setContentText(
+                            "Nama Konter : " + karyawanModel.getNamaKarywan() + "\n" +
+                                    "Alamat Konter : " + karyawanModel.getAlamatKaryawan()
+                    );
+            detail.show();
         }
     }
 
