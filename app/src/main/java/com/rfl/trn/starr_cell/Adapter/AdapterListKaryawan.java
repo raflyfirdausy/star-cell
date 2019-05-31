@@ -1,6 +1,8 @@
 package com.rfl.trn.starr_cell.Adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -10,9 +12,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.rfl.trn.starr_cell.Activity.DaftarKonterActivity;
 import com.rfl.trn.starr_cell.Activity.DetailKaryawanActivity;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
 import com.rfl.trn.starr_cell.Model.KaryawanModel;
+import com.rfl.trn.starr_cell.Model.KonterModel;
 import com.rfl.trn.starr_cell.R;
 
 import java.util.ArrayList;
@@ -69,8 +73,21 @@ public class AdapterListKaryawan extends RecyclerView.Adapter<AdapterListKaryawa
             ButterKnife.bind(this, itemView);
 
         }
+        private void pindahActivity(KonterModel konterModel, String jenis) {
+            Intent intent = new Intent(context, DaftarKonterActivity.class);
+            intent.putExtra("jenis", jenis);
+            intent.putExtra("key", konterModel.getKey());
+            intent.putExtra("namaKonter", konterModel.getNamaKonter());
+            intent.putExtra("alamatKonter", konterModel.getAlamatKonter());
+            intent.putExtra("emailKonter", konterModel.getEmailKonter());
+            intent.putExtra("passwordKonter", konterModel.getPassword());
+            if (konterModel.getUrl_foto() != null) {
+                intent.putExtra("urlFoto", konterModel.getUrl_foto());
+            }
+            context.startActivity(intent);
+        }
 
-        void setDataKeView(KaryawanModel isiData, final String s) {
+        void setDataKeView(final KaryawanModel isiData, final String s) {
             tvNamaKaryawan.setText(isiData.getNamaKarywan());
             tvNoHpKaryawan.setText(String.valueOf(isiData.getNomerHp()));
             llParent.setOnClickListener(new View.OnClickListener() {
@@ -78,6 +95,33 @@ public class AdapterListKaryawan extends RecyclerView.Adapter<AdapterListKaryawa
                 public void onClick(View v) {
                     context.startActivity(new Intent(context, DetailKaryawanActivity.class)
                             .putExtra("id", s));
+
+                }
+            });
+            llParent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final String[] listItem = new String[]{"Lihat Data Konter", "Edit Data Konter", "Ubah Password", "Hapus konter " , "Batal"};
+                    AlertDialog.Builder builder;
+                    builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Pilih Aksi Untuk " + isiData.getNamaKarywan())
+                            .setItems(listItem, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (which == 0) {
+
+                                    } else if (which == 1) {
+                                       // pindahActivity(konterModel, "edit");
+                                    } else if (which == 2) {
+                                        //pindahActivity(konterModel, "password");
+                                    } else if (which == 3) {
+                                       // hapusKonter(konterModel);
+                                    }
+                                }
+                            })
+                            .setCancelable(true)
+                            .create()
+                            .show();
                 }
             });
         }

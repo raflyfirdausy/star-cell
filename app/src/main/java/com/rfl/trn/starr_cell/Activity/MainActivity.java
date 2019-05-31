@@ -28,6 +28,7 @@ import com.rfl.trn.starr_cell.Fragment.Admin.AdminDashboardFragment;
 import com.rfl.trn.starr_cell.Fragment.Admin.AdminKaryawanFragment;
 import com.rfl.trn.starr_cell.Fragment.Admin.AdminKonterFragment;
 import com.rfl.trn.starr_cell.Fragment.Admin.AdminTransaksiFragment;
+import com.rfl.trn.starr_cell.Fragment.Admin.AdminUbahKataSandiFragment;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
 import com.rfl.trn.starr_cell.R;
 
@@ -158,7 +159,6 @@ public class MainActivity extends AppCompatActivity
             Objects.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.transaksi));
             FT.replace(R.id.fl_content, new AdminTransaksiFragment(), "admin_transaksi").commit();
         } else if (id == R.id.nav_logout) {
-//            new Bantuan(context).alertDialogInformasi("Coming Soon !");
             new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
                     .setTitleText("Peringatan")
                     .setContentText("Apakah kamu ingin logout dari aplikasi ?")
@@ -185,6 +185,9 @@ public class MainActivity extends AppCompatActivity
                         }
                     })
                     .show();
+        } else if(id == R.id.nav_ubahKataSandi){
+            Objects.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.ubah_kata_sandi));
+            FT.replace(R.id.fl_content, new AdminUbahKataSandiFragment(), "admin_ubahKataSandi").commit();
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);

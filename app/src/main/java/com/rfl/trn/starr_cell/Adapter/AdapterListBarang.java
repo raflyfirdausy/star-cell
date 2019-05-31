@@ -28,11 +28,9 @@ import com.rfl.trn.starr_cell.R;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.MyViewHolder> {
 
@@ -43,7 +41,6 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
     private List<String> key;
     private IDialog listener;
     private BarangModel model;
-    private String keyBarang;
     private DatabaseReference databaseReference;
 
     public AdapterListBarang(Context context, List<BarangModel> data, List<String> lisKey, IDialog iDialog) {
@@ -65,14 +62,29 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-        keyBarang = key.get(i);
 
-        myViewHolder.setDataKewView(data.get(i));
+
+        myViewHolder.setDataKewView(data.get(i), key.get(i));
     }
 
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    public void cariBarang(String text) {
+        text = text.toLowerCase(Locale.getDefault());
+        data.clear();
+        if (text.length() == 0) {
+            data.addAll(dataSementara);
+        } else {
+            for (int i = 0; i < dataSementara.size(); i++) {
+                if (dataSementara.get(i).getNamaBarang().toLowerCase(Locale.getDefault()).contains(text)) {
+                    data.add(dataSementara.get(i));
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -95,10 +107,12 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
+
         }
 
         @SuppressLint("SetTextI18n")
-        void setDataKewView(BarangModel isiData) {
+        void setDataKewView(BarangModel isiData, final String s) {
             databaseReference = FirebaseDatabase.getInstance().getReference();
             tvNamaBarang.setText(isiData.getNamaBarang());
             tvKategoriBarang.setText(isiData.getIdKategori());
@@ -106,7 +120,7 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
             tvHargaBarang.setText("Rp " + isiData.getHarga1());
 
             databaseReference.child("barang")
-                    .child(keyBarang)
+                    .child(s)
                     .addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -114,7 +128,7 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
                                 BarangModel model = dataSnapshot.getValue(BarangModel.class);
 
                                 databaseReference.child("konter")
-                                        .child(Objects.requireNonNull(model).getIdKonter())
+                                        .child(model.getIdKonter())
                                         .addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -166,7 +180,7 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
             final MyTextView myetDialogHarga3Barang = dialog.findViewById(R.id.myet_dialogHarga3Barang);
             final MyTextView myetDialogTanggalBarang = dialog.findViewById(R.id.myet_dialogTanggalBarang);
             databaseReference.child("barang")
-                    .child(keyBarang)
+                    .child(s)
                     .addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -174,9 +188,9 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
                                 BarangModel model = dataSnapshot.getValue(BarangModel.class);
                                 myetDialogNamaBarang.setText(model.getNamaBarang());
                                 myetDialogStokBarang.setText(model.getStokBarang());
-                                myetDialogHarga1Barang.setText("Rp." + String.valueOf(model.getHarga1()));
-                                myetDialogHarga2Barang.setText("Rp." + String.valueOf(model.getHarga2()));
-                                myetDialogHarga3Barang.setText("Rp." + String.valueOf(model.getHarga3()));
+                                myetDialogHarga1Barang.setText("Rp." + model.getHarga1());
+                                myetDialogHarga2Barang.setText("Rp." + model.getHarga2());
+                                myetDialogHarga3Barang.setText("Rp." + model.getHarga3());
 
                                 myetDialogTanggalBarang.setText(String.valueOf(new Bantuan(context).getDatePretty(model.getTanggalDiubah(), false)));
 
@@ -226,10 +240,6 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
                     dialog.show();
                 }
             });
-
-        }
-        @OnClick(R.id.iv_optionMenu)
-        void inflateMenu() {
             final PopupMenu popupMenu = new PopupMenu(context, ivOptionMenu);
             popupMenu.inflate(R.menu.menu_pilihan_barang);
 
@@ -237,35 +247,24 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     if (item.getItemId() == R.id.menu_EditBarang) {
-                        listener.onItemPopUpMenu(keyBarang, 1);
+                        listener.onItemPopUpMenu(s, 1);
                     } else if (item.getItemId() == R.id.menu_DetailBarang_) {
-                        listener.onItemPopUpMenu(keyBarang, 2);
+                        listener.onItemPopUpMenu(s, 2);
                     }
                     return true;
                 }
             });
-            popupMenu.show();
-
-        }
-
-    }
 
 
-
-
-
-    public void cariBarang(String text) {
-        text = text.toLowerCase(Locale.getDefault());
-        data.clear();
-        if (text.length() == 0) {
-            data.addAll(dataSementara);
-        } else {
-            for (int i = 0; i < dataSementara.size(); i++) {
-                if (dataSementara.get(i).getNamaBarang().toLowerCase(Locale.getDefault()).contains(text)) {
-                    data.add(dataSementara.get(i));
+            ivOptionMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popupMenu.show();
                 }
-            }
+            });
+
         }
-        notifyDataSetChanged();
+
+
     }
 }
