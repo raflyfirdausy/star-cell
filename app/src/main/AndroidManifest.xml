@@ -26,7 +26,9 @@
         android:theme="@style/AppTheme"
         tool:ignore="GoogleAppIndexingWarning"
         tool:replace="android:icon">
-        <activity android:name=".Activity.DetailKaryawanActivity"></activity>
+        <activity
+            android:name=".Activity.DetailKaryawanActivity"
+            tool:ignore="InnerclassSeparator" />
         <!-- suppress AndroidDomInspection -->
         <activity
             android:name=".Activity.CetakStrukActivity"
