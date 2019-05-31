@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity
                             sDialog
                                     .setTitleText("Berhasil Logout !")
                                     .setConfirmText("OK")
-                                    .showContentText(false)
+                                    .setContentText("Klik OK Untuk ke halaman login")
                                     .setConfirmClickListener(null)
                                     .showCancelButton(false)
                                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {

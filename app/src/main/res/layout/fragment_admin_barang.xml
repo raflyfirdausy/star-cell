@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -60,34 +59,57 @@
         </RelativeLayout>
 
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/ll_filter"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_below="@+id/ll_header"
+        android:layout_marginStart="@dimen/dp_8"
+        android:layout_marginEnd="@dimen/dp_8"
         android:layout_marginBottom="5dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:orientation="horizontal">
-        <com.rfl.trn.starr_cell.Custom.MyTextView
-            android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="Konter"
-            android:gravity="center"/>
-        <com.jaredrummler.materialspinner.MaterialSpinner
-            android:id="@+id/spinner_konter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <com.rfl.trn.starr_cell.Custom.MyTextView
-            android:layout_width="wrap_content"
+            android:layout_weight="50"
+            android:orientation="horizontal">
+
+            <com.rfl.trn.starr_cell.Custom.MyTextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Konter" />
+
+            <com.jaredrummler.materialspinner.MaterialSpinner
+                android:id="@+id/spinner_konter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="Kategori"
-            android:gravity="center"/>
-        <com.jaredrummler.materialspinner.MaterialSpinner
-            android:id="@+id/spinner_kategori"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_weight="50"
+            android:orientation="horizontal">
+
+            <com.rfl.trn.starr_cell.Custom.MyTextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Kategori" />
+
+            <com.jaredrummler.materialspinner.MaterialSpinner
+                android:id="@+id/spinner_kategori"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -118,7 +140,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="400dp"
                         android:layout_gravity="center"
-                        app:srcCompat="@drawable/undraw_savings_hjfl"/>
+                        app:srcCompat="@drawable/undraw_savings_hjfl" />
 
                     <com.rfl.trn.starr_cell.Custom.MyTextView
                         android:layout_width="wrap_content"
@@ -150,7 +172,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_barang"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
         </FrameLayout>
 

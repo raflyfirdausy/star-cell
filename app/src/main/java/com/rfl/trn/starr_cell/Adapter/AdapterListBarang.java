@@ -73,20 +73,17 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
         return data.size();
     }
 
-
-
     public class MyViewHolder extends RecyclerView.ViewHolder {
-
+        @BindView(R.id.tv_namaBarang)
+        MyTextView tvNamaBarang;
+        @BindView(R.id.tv_hargaBarang)
+        MyTextView tvHargaBarang;
         @BindView(R.id.ll_parent)
         LinearLayout llParent;
         @BindView(R.id.iv_optionMenu)
         ImageView ivOptionMenu;
         @BindView(R.id.rl_parent)
         RelativeLayout rlParent;
-        @BindView(R.id.tv_namaBarang)
-        MyTextView tvNamaBarang;
-        @BindView(R.id.tv_hargaBarang)
-        MyTextView tvHargaBarang;
         @BindView(R.id.tv_konterBarang)
         MyTextView tvKonterBarang;
         @BindView(R.id.tv_kategoriBarang)
@@ -103,10 +100,9 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
         void setDataKewView(BarangModel isiData) {
             databaseReference = FirebaseDatabase.getInstance().getReference();
             tvNamaBarang.setText(isiData.getNamaBarang());
-            tvHargaBarang.setText(String.valueOf("Rp." + isiData.getHarga1()));
             tvKategoriBarang.setText(isiData.getIdKategori());
             tvKonterBarang.setText(isiData.getIdKonter());
-
+            tvHargaBarang.setText("Rp " + isiData.getHarga1());
 
             databaseReference.child("barang")
                     .child(keyBarang)
@@ -229,9 +225,8 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
                     dialog.show();
                 }
             });
+
         }
-
-
         @OnClick(R.id.iv_optionMenu)
         void inflateMenu() {
             final PopupMenu popupMenu = new PopupMenu(context, ivOptionMenu);
@@ -252,10 +247,12 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
 
         }
 
-
-
-
     }
+
+
+
+
+
     public void cariBarang(String text) {
         text = text.toLowerCase(Locale.getDefault());
         data.clear();

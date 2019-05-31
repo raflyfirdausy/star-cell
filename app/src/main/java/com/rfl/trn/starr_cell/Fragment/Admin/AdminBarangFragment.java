@@ -4,6 +4,7 @@ package com.rfl.trn.starr_cell.Fragment.Admin;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -92,15 +93,15 @@ public class AdminBarangFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_admin_barang, container, false);
         unbinder = ButterKnife.bind(this, view);
-
         databaseReference = FirebaseDatabase.getInstance().getReference();
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         getAllBarang();
         getFilter();
-
-
-
-
-        return view;
     }
 
     private void getFilter() {
@@ -118,6 +119,7 @@ public class AdminBarangFragment extends Fragment {
         listKeyKonter.add("semua");
         listNamaKategori.add("Semua");
         listKeyKategori.add("semua");
+
 
         databaseReference.child("kategori")
                 .addValueEventListener(new ValueEventListener() {
@@ -185,8 +187,6 @@ public class AdminBarangFragment extends Fragment {
                     getFilterKonterAndKategori();
                 }
             }
-
-
         });
         spinnerKategori.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
 
@@ -213,56 +213,56 @@ public class AdminBarangFragment extends Fragment {
 
 
 
-    //TODO :: Fetch Data
+    /* TODO :: Fetch Data */
     private void getAllBarang() {
-            databaseReference.child("barang").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("barang").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                list = new ArrayList<>();
+                listKey = new ArrayList<>();
+                list.clear();
+                listKey.clear();
+                if (dataSnapshot.exists()) {
+                    layoutBelumAdaBarang.setVisibility(View.GONE);
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        BarangModel model;
+                        String key = data.getKey();
+
+                        model = data.getValue(BarangModel.class);
+                        list.add(model);
+                        listKey.add(key);
+                    }
+                    adapterListBarang = new AdapterListBarang(getActivity(), list, listKey, new IDialog() {
                         @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            list = new ArrayList<>();
-                            listKey = new ArrayList<>();
-                            list.clear();
-                            listKey.clear();
-                            if (dataSnapshot.exists()) {
-                                layoutBelumAdaBarang.setVisibility(View.GONE);
-                                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                                    BarangModel model;
-                                    String key = data.getKey();
+                        public void onItemClick(String id, String nama, boolean isDismiss) {
 
-                                    model = data.getValue(BarangModel.class);
-                                    list.add(model);
-                                    listKey.add(key);
-                                }
-                                adapterListBarang = new AdapterListBarang(getActivity(), list, listKey, new IDialog() {
-                                    @Override
-                                    public void onItemClick(String id, String nama, boolean isDismiss) {
+                        }
 
-                                    }
+                        @Override
+                        public void onItemPopUpMenu(String id, int menu) {
+                            if (menu == 1) {
+                                //ke edit
+                                startActivity(new Intent(getActivity(), TambahBarangActivity.class)
+                                        .putExtra("id", id));
 
-                                    @Override
-                                    public void onItemPopUpMenu(String id, int menu) {
-                                        if (menu == 1) {
-                                            //ke edit
-                                            startActivity(new Intent(getActivity(), TambahBarangActivity.class)
-                                                    .putExtra("id", id));
+                            } else if (menu == 2) {
+                                //ke detail
 
-                                        } else if (menu == 2) {
-                                            //ke detail
-
-                                        }
-                                    }
-                                });
-                                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                                rvBarang.setLayoutManager(layoutManager);
-                                rvBarang.setAdapter(adapterListBarang);
                             }
                         }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
                     });
-        }
+                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                    rvBarang.setLayoutManager(layoutManager);
+                    rvBarang.setAdapter(adapterListBarang);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
     private void getFilterKategori(){databaseReference.child("barang").orderByChild("idKategori").startAt(idKategori).endAt(idKategori).addValueEventListener(new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -370,29 +370,29 @@ public class AdminBarangFragment extends Fragment {
                     BarangModel model;
 
 
-                        if (Objects.requireNonNull(data.child("idKategori").getValue(String.class)).equalsIgnoreCase(idKategori)){
+                    if (Objects.requireNonNull(data.child("idKategori").getValue(String.class)).equalsIgnoreCase(idKategori)){
 
-                            String key = data.getKey();
-                            model = data.getValue(BarangModel.class);
-                            list.add(model);
-                            listKey.add(key);
+                        String key = data.getKey();
+                        model = data.getValue(BarangModel.class);
+                        list.add(model);
+                        listKey.add(key);
 
-                        }else if(idKategori.equalsIgnoreCase("semua")) {
-                            String key = data.getKey();
-                            model = data.getValue(BarangModel.class);
-                            list.add(model);
-                            listKey.add(key);
+                    }else if(idKategori.equalsIgnoreCase("semua")) {
+                        String key = data.getKey();
+                        model = data.getValue(BarangModel.class);
+                        list.add(model);
+                        listKey.add(key);
 
+                    }else {
+                        model = data.getValue(BarangModel.class);
+                        if (model == null ){
+                            layoutBelumAdaBarang.setVisibility(View.VISIBLE);
                         }else {
-                            model = data.getValue(BarangModel.class);
-                            if (model == null ){
-                                layoutBelumAdaBarang.setVisibility(View.VISIBLE);
-                            }else {
-                                layoutBelumAdaBarang.setVisibility(View.GONE);
-                            }
-
-
+                            layoutBelumAdaBarang.setVisibility(View.GONE);
                         }
+
+
+                    }
 
                 }
                 adapterListBarang = new AdapterListBarang(getActivity(), list, listKey, new IDialog() {
@@ -426,8 +426,6 @@ public class AdminBarangFragment extends Fragment {
 
         }
     });}
-
-
 
     //TODO :: Bind(OnCLick dll)
     @OnClick(R.id.fab_tambahBarang)
