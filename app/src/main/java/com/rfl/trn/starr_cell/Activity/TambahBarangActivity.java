@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.github.clans.fab.FloatingActionButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -75,10 +76,10 @@ public class TambahBarangActivity extends AppCompatActivity {
     @BindView(R.id.input_konter)
     TextInputLayout inputKonter;
     RecyclerView rvDialog;
-    ImageButton tambahItemDialog;
+    FloatingActionButton tambahItemDialog;
     MyEditText namaDialog;
     LinearLayout layoutTambahItemDialog;
-    ImageButton buttonTambahItem;
+    FloatingActionButton buttonTambahItem;
     MyTextView judulDialog, dialogKosong;
     Dialog dialog;
     Context context = TambahBarangActivity.this;

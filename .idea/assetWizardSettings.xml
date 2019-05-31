@@ -28,8 +28,9 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_option_menu" />
-                            <entry key="sourceFile" value="D:\Users\RAFLY\Downloads\map.svg" />
+                            <entry key="assetSourceType" value="FILE" />
+                            <entry key="outputName" value="ic_price_tag" />
+                            <entry key="sourceFile" value="D:\Users\RAFLY\Downloads\price-tag.svg" />
                           </map>
                         </option>
                       </PersistentState>
