@@ -41,7 +41,6 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
     private List<String> key;
     private IDialog listener;
     private BarangModel model;
-    private String keyBarang;
     private DatabaseReference databaseReference;
 
     public AdapterListBarang(Context context, List<BarangModel> data, List<String> lisKey, IDialog iDialog) {
@@ -63,9 +62,9 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-        keyBarang = key.get(i);
 
-        myViewHolder.setDataKewView(data.get(i));
+
+        myViewHolder.setDataKewView(data.get(i),key.get(i));
     }
 
     @Override
@@ -97,7 +96,7 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
 
         }
 
-        void setDataKewView(BarangModel isiData) {
+        void setDataKewView(BarangModel isiData, final String s) {
             databaseReference = FirebaseDatabase.getInstance().getReference();
             tvNamaBarang.setText(isiData.getNamaBarang());
             tvKategoriBarang.setText(isiData.getIdKategori());
@@ -105,7 +104,7 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
             tvHargaBarang.setText("Rp " + isiData.getHarga1());
 
             databaseReference.child("barang")
-                    .child(keyBarang)
+                    .child(s)
                     .addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -165,7 +164,7 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
             final MyTextView myetDialogHarga3Barang = dialog.findViewById(R.id.myet_dialogHarga3Barang);
             final MyTextView myetDialogTanggalBarang = dialog.findViewById(R.id.myet_dialogTanggalBarang);
             databaseReference.child("barang")
-                    .child(keyBarang)
+                    .child(s)
                     .addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -225,10 +224,6 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
                     dialog.show();
                 }
             });
-
-        }
-        @OnClick(R.id.iv_optionMenu)
-        void inflateMenu() {
             final PopupMenu popupMenu = new PopupMenu(context, ivOptionMenu);
             popupMenu.inflate(R.menu.menu_pilihan_barang);
 
@@ -236,21 +231,27 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     if (item.getItemId() == R.id.menu_EditBarang) {
-                        listener.onItemPopUpMenu(keyBarang, 1);
+                        listener.onItemPopUpMenu(s, 1);
                     } else if (item.getItemId() == R.id.menu_DetailBarang_) {
-                        listener.onItemPopUpMenu(keyBarang, 2);
+                        listener.onItemPopUpMenu(s, 2);
                     }
                     return true;
                 }
             });
-            popupMenu.show();
+
+
+            ivOptionMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popupMenu.show();
+                }
+            });
 
         }
 
+
+
     }
-
-
-
 
 
     public void cariBarang(String text) {

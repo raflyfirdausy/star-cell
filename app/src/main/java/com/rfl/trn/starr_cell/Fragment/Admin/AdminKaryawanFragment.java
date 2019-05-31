@@ -105,7 +105,7 @@ public class AdminKaryawanFragment extends Fragment {
                                 listKey.add(key);
 
                             }
-                            adapterListKaryawan = new AdapterListKaryawan(getActivity(), list,listKey);
+                            adapterListKaryawan = new AdapterListKaryawan(getActivity(), list, listKey);
                             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
                             rvKaryawan.setLayoutManager(layoutManager);
                             rvKaryawan.setAdapter(adapterListKaryawan);
