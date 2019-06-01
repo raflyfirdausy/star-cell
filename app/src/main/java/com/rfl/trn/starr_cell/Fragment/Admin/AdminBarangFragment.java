@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 
+import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -61,7 +62,7 @@ public class AdminBarangFragment extends Fragment {
     @BindView(R.id.ll_belum_ada_barang)
     LinearLayout layoutBelumAdaBarang;
     @BindView(R.id.rv_barang)
-    RecyclerView rvBarang;
+    ShimmerRecyclerView rvBarang;
     @BindView(R.id.fab_tambahBarang)
     FloatingActionButton fabTambahBarang;
     Unbinder unbinder;
@@ -93,12 +94,14 @@ public class AdminBarangFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_admin_barang, container, false);
         unbinder = ButterKnife.bind(this, view);
         databaseReference = FirebaseDatabase.getInstance().getReference();
+        rvBarang.showShimmerAdapter();
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        rvBarang.showShimmerAdapter();
         getAllBarang();
         getFilter();
     }
@@ -171,6 +174,7 @@ public class AdminBarangFragment extends Fragment {
             @Override
             public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
                 // Snackbar.make(view, "Clicked " + " " +listKeyKonter.get(position) + " " + item, Snackbar.LENGTH_LONG).show();
+                rvBarang.showShimmerAdapter();
                 idKonter = listKeyKonter.get(position);
                 if (idKategori.equalsIgnoreCase("semua")) {
                     if (item.equalsIgnoreCase("semua")) {
@@ -191,6 +195,7 @@ public class AdminBarangFragment extends Fragment {
             @Override
             public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
                 //  Snackbar.make(view, "Clicked " + " " + position + " " + item, Snackbar.LENGTH_LONG).show();
+                rvBarang.showShimmerAdapter();
                 idKategori = listKeyKategori.get(position);
                 if (idKonter.equalsIgnoreCase("semua")) {
                     if (item.equalsIgnoreCase("semua")) {
@@ -248,9 +253,11 @@ public class AdminBarangFragment extends Fragment {
                             }
                         }
                     });
+
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
                     rvBarang.setLayoutManager(layoutManager);
                     rvBarang.setAdapter(adapterListBarang);
+
                 }
             }
 
@@ -298,9 +305,11 @@ public class AdminBarangFragment extends Fragment {
                             }
                         }
                     });
+
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
                     rvBarang.setLayoutManager(layoutManager);
                     rvBarang.setAdapter(adapterListBarang);
+
                 }
             }
 
@@ -348,9 +357,11 @@ public class AdminBarangFragment extends Fragment {
                             }
                         }
                     });
+
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
                     rvBarang.setLayoutManager(layoutManager);
                     rvBarang.setAdapter(adapterListBarang);
+
                 }
             }
 
@@ -422,6 +433,7 @@ public class AdminBarangFragment extends Fragment {
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
                     rvBarang.setLayoutManager(layoutManager);
                     rvBarang.setAdapter(adapterListBarang);
+
 
                 }
             }

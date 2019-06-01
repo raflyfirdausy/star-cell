@@ -16,4 +16,6 @@
     <color name="red_dark">#B92929</color>
     <color name="red_accent">#EB5F5F</color>
 
+    <color name="background">#dddddd</color>
+
 </resources>
