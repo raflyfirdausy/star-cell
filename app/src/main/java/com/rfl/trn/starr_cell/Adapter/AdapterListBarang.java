@@ -115,9 +115,10 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
         void setDataKewView(BarangModel isiData, final String s) {
             databaseReference = FirebaseDatabase.getInstance().getReference();
             tvNamaBarang.setText(isiData.getNamaBarang());
-            tvKategoriBarang.setText(isiData.getIdKategori());
-            tvKonterBarang.setText(isiData.getIdKonter());
             tvHargaBarang.setText("Rp " + isiData.getHarga1());
+            tvKategoriBarang.setText("");
+            tvKonterBarang.setText("");
+
 
             databaseReference.child("barang")
                     .child(s)
@@ -143,6 +144,7 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
 
                                             }
                                         });
+
                                 databaseReference.child("kategori")
                                         .child(model.getIdKategori())
                                         .addValueEventListener(new ValueEventListener() {

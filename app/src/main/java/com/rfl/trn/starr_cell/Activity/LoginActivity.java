@@ -3,10 +3,15 @@ package com.rfl.trn.starr_cell.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,6 +28,7 @@ import com.rfl.trn.starr_cell.Custom.MyEditText;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
 import com.rfl.trn.starr_cell.R;
+import com.scwang.wave.MultiWaveHeader;
 
 import java.util.Objects;
 
@@ -37,6 +43,33 @@ public class LoginActivity extends AppCompatActivity {
     MyEditText myetPassword;
     @BindView(R.id.btn_login)
     MyTextView btnLogin;
+    @BindView(R.id.frame)
+    ImageView frame;
+    @BindView(R.id.head)
+    MyTextView head;
+    @BindView(R.id.tv_login)
+    MyTextView tvLogin;
+    @BindView(R.id.email1)
+    TextInputLayout email1;
+    @BindView(R.id.password)
+    TextInputLayout password;
+    @BindView(R.id.remember)
+    CheckBox remember;
+    @BindView(R.id.forgotpass)
+    MyTextView forgotpass;
+    @BindView(R.id.linear4)
+    LinearLayout linear4;
+    @BindView(R.id.linear)
+    LinearLayout linear;
+    @BindView(R.id.waveHeader)
+    MultiWaveHeader waveHeader;
+    @BindView(R.id.tv_loginKaryawan)
+    TextView tvLoginKaryawan;
+    @BindView(R.id.tv_loginAdmin)
+    TextView tvLoginAdmin;
+    @BindView(R.id.layout_login)
+    LinearLayout layoutLogin;
+    private boolean isLoginAdmin = false;
     private Context context = LoginActivity.this;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -62,26 +95,28 @@ public class LoginActivity extends AppCompatActivity {
                     myetPassword.getText().toString())
                     .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                         @Override
-                        public void onSuccess(AuthResult authResult) {
-                            loading.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-                            loading.showContentText(false);
-                            loading.setTitleText("Berhasil Login");
-                            loading.setContentText("Selamat Datang kembali " + authResult.getUser().getEmail());
-                            loading.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                    sweetAlertDialog.dismissWithAnimation();
-                                    pindahActivity();
-                                }
-                            });
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    loading.dismissWithAnimation();
-                                    //TODO : pindah activity ke main
-                                    pindahActivity();
-                                }
-                            }, 1500);
+                        public void onSuccess(final AuthResult authResult) {
+                            loading.dismissWithAnimation();
+                            pindahActivity(authResult);
+//                            loading.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+//                            loading.showContentText(false);
+//                            loading.setTitleText("Berhasil Login");
+//                            loading.setContentText("Selamat Datang kembali " + authResult.getUser().getEmail());
+//                            loading.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                                @Override
+//                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+//                                    sweetAlertDialog.dismissWithAnimation();
+//                                    pindahActivity(authResult);
+//                                }
+//                            });
+//                            new Handler().postDelayed(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    loading.dismissWithAnimation();
+//                                    //TODO : pindah activity ke main
+//                                    pindahActivity(authResult);
+//                                }
+//                            }, 1500);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -94,63 +129,103 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void pindahActivity() {
-        databaseReference.child("admin")
-                .child(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid())
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            startActivity(new Intent(context, MainActivity.class));
-                            finish();
-                        } else {
-                            databaseReference.child("konter")
-                                    .child(firebaseAuth.getCurrentUser().getUid())
-                                    .addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                            if (dataSnapshot.exists()) {
-                                                //TODO : MainActivity Konter
-                                                SweetAlertDialog dialog = new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
-                                                        .setTitleText("Peringatan")
-                                                        .setContentText("MainActivityKonter Coming Soon :p")
-                                                        .setConfirmText("BODO AMAAT")
-                                                        .setCancelText("YA TERUUS ??")
-                                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                                            @Override
-                                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                                firebaseAuth.signOut();
-                                                                startActivity(new Intent(context, SplashActivity.class));
-                                                                sweetAlertDialog.dismissWithAnimation();
-                                                                finish();
-                                                            }
-                                                        }).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                                            @Override
-                                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                                firebaseAuth.signOut();
-                                                                startActivity(new Intent(context, SplashActivity.class));
-                                                                sweetAlertDialog.dismissWithAnimation();
-                                                                finish();
-                                                            }
-                                                        });
-                                                dialog.show();
-                                            } else {
-                                                new Bantuan(context).swal_error(firebaseAuth.getCurrentUser().getUid() + "\nTidak ada dalam database");
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                                            new Bantuan(context).swal_error(databaseError.getMessage());
-                                        }
-                                    });
+    private void pindahActivity(AuthResult authResult) {
+        if (isLoginAdmin) {
+            databaseReference.child("admin")
+                    .child(authResult.getUser().getUid())
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                startActivity(new Intent(context, MainActivity.class));
+                                finish();
+                            } else {
+                                new Bantuan(context).swal_error("Admin tidak ditemukan!");
+                                firebaseAuth.signOut();
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        new Bantuan(context).swal_error(databaseError.getMessage());
-                    }
-                });
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            new Bantuan(context).swal_error(databaseError.getMessage());
+                        }
+                    });
+        } else {
+            databaseReference.child("konter")
+                    .child(authResult.getUser().getUid())
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                //TODO : MainActivity Konter
+                                SweetAlertDialog dialog = new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
+                                        .setTitleText("Peringatan")
+                                        .setContentText("MainActivityKonter Coming Soon :p")
+                                        .setConfirmText("BODO AMAAT")
+                                        .setCancelText("YA TERUUS ??")
+                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                            @Override
+                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                firebaseAuth.signOut();
+                                                startActivity(new Intent(context, SplashActivity.class));
+                                                sweetAlertDialog.dismissWithAnimation();
+                                                finish();
+                                            }
+                                        }).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                            @Override
+                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                firebaseAuth.signOut();
+                                                startActivity(new Intent(context, SplashActivity.class));
+                                                sweetAlertDialog.dismissWithAnimation();
+                                                finish();
+                                            }
+                                        });
+                                dialog.show();
+                            } else {
+                                firebaseAuth.signOut();
+                                new Bantuan(context).swal_error("Karyawan tidak ditemukan!");
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            new Bantuan(context).swal_error(databaseError.getMessage());
+                        }
+                    });
+        }
+    }
+
+    @OnClick({R.id.tv_loginKaryawan, R.id.tv_loginAdmin})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_loginKaryawan:
+                setLoginKaryawan();
+                break;
+            case R.id.tv_loginAdmin:
+                setLoginAdmin();
+                break;
+        }
+    }
+
+    private void setLoginKaryawan() {
+        isLoginAdmin = false;
+        animateLayout();
+        frame.setImageResource(R.drawable.ic_karyawan);
+        tvLogin.setText(getString(R.string.login_karyawan));
+    }
+
+    private void setLoginAdmin() {
+        isLoginAdmin = true;
+        animateLayout();
+        frame.setImageResource(R.drawable.ic_admin);
+        tvLogin.setText(getString(R.string.login_admin));
+    }
+
+    private void animateLayout() {
+        layoutLogin.setAlpha(0f);
+        layoutLogin.animate()
+                .alpha(1f)
+                .setDuration(1000)
+                .setListener(null);
     }
 }

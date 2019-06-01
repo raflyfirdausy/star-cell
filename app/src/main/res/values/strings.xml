@@ -77,4 +77,8 @@
     <string name="ulangi_kata_sandi_baru">Ulangi Kata Sandi Baru</string>
     <string name="ubah_kata_sandi">Ubah Kata Sandi</string>
     <string name="tambah_item">Tambah Item</string>
+    <string name="login_karyawan">Login Karyawan</string>
+    <string name="login_admin">Login Admin</string>
+    <string name="star_cell">STAR CELL</string>
+    <string name="user_tidak_ditemukan">User tidak di temukan!</string>
 </resources>
