@@ -3,15 +3,19 @@ package com.rfl.trn.starr_cell.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -30,6 +34,7 @@ import com.rfl.trn.starr_cell.Adapter.AdapterKategori;
 import com.rfl.trn.starr_cell.Custom.MyEditText;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
+import com.rfl.trn.starr_cell.Helper.SwipeToDelete;
 import com.rfl.trn.starr_cell.Interface.IDialog;
 import com.rfl.trn.starr_cell.Model.BarangModel;
 import com.rfl.trn.starr_cell.Model.KategoriModel;
@@ -94,6 +99,8 @@ public class TambahBarangActivity extends AppCompatActivity {
     private String idBarang = null;
     private Date date = new Date();
     private Long timestamp;
+    private  AdapterKategori adapterKategori;;
+    private View dialogView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +114,9 @@ public class TambahBarangActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         dialog = new Dialog(context);
-        dialog.setContentView(R.layout.dialog_kategori_konter);
+        LayoutInflater inflater = this.getLayoutInflater();
+        dialogView = inflater.inflate(R.layout.dialog_kategori_konter, null);
+        dialog.setContentView(dialogView);
         rvDialog = dialog.findViewById(R.id.rv_kategori);
         tambahItemDialog = dialog.findViewById(R.id.btn_add_kategori);
         namaDialog = dialog.findViewById(R.id.myet_namaKategori);
@@ -115,6 +124,7 @@ public class TambahBarangActivity extends AppCompatActivity {
         buttonTambahItem = dialog.findViewById(R.id.btn_add_act);
         judulDialog = dialog.findViewById(R.id.mytv_judulDialog);
         dialogKosong = dialog.findViewById(R.id.mytv_rvKosong);
+
 
         Intent intent = getIntent();
         if (intent.getExtras() == null) {
@@ -126,6 +136,8 @@ public class TambahBarangActivity extends AppCompatActivity {
             setField(id);
         }
     }
+
+
 
     private void setField(String id) {
         databaseReference.child("barang")
@@ -196,6 +208,7 @@ public class TambahBarangActivity extends AppCompatActivity {
         dialog.show();
 
 
+
         buttonTambahItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -220,7 +233,7 @@ public class TambahBarangActivity extends AppCompatActivity {
                                 model = data.getValue(KategoriModel.class);
                                 listKategori.add(model);
                             }
-                            AdapterKategori adapterKategori = new AdapterKategori(listKategori, context, new IDialog() {
+                             adapterKategori = new AdapterKategori(listKategori, context, new IDialog() {
                                 @Override
                                 public void onItemClick(String id, String nama, boolean isDismiss) {
                                     myetKategori.setText(nama);
@@ -251,6 +264,38 @@ public class TambahBarangActivity extends AppCompatActivity {
                     }
                 });
 
+        SwipeToDelete swipeToDeleteCallback = new SwipeToDelete(this) {
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+
+
+                final int position = viewHolder.getAdapterPosition();
+                final KategoriModel item = adapterKategori.getData().get(position);
+
+                adapterKategori.removeItem(position);
+
+
+                Snackbar snackbar = (Snackbar) Snackbar
+                        .make(dialogView , "Item was removed from the list.", Snackbar.LENGTH_LONG);
+                snackbar.setAction("UNDO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        adapterKategori.restoreItem(item, position);
+                        rvDialog.scrollToPosition(position);
+                    }
+                });
+
+                snackbar.setActionTextColor(Color.YELLOW);
+                snackbar.show();
+
+
+            }
+        };
+
+        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeToDeleteCallback);
+        itemTouchhelper.attachToRecyclerView(rvDialog);
+
         tambahItemDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -264,6 +309,7 @@ public class TambahBarangActivity extends AppCompatActivity {
                 namaDialog.setText("");
             }
         });
+
     }
 
     public void DialogKonter() {

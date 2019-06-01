@@ -8,12 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
 import com.rfl.trn.starr_cell.Interface.IDialog;
 import com.rfl.trn.starr_cell.Model.KategoriModel;
 import com.rfl.trn.starr_cell.R;
 
 import java.util.List;
+import java.util.logging.Handler;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,6 +25,7 @@ public class AdapterKategori extends RecyclerView.Adapter<AdapterKategori.MyView
     List<KategoriModel> data;
     Context context;
     IDialog listener;
+    DatabaseReference databaseReference;
 
 
     public AdapterKategori(List<KategoriModel> data, Context context, IDialog IDialog) {
@@ -68,5 +72,19 @@ public class AdapterKategori extends RecyclerView.Adapter<AdapterKategori.MyView
                 }
             });
         }
+    }
+    public void removeItem(int position) {
+        data.remove(position);
+
+        notifyItemRemoved(position);
+    }
+
+    public void restoreItem(KategoriModel item, int position) {
+        data.add(position, item);
+        notifyItemInserted(position);
+
+    }
+    public List<KategoriModel> getData(){
+        return  data;
     }
 }
