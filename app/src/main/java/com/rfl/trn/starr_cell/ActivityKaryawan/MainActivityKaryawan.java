@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -16,10 +17,17 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.SearchView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rfl.trn.starr_cell.Activity.LoginActivity;
 import com.rfl.trn.starr_cell.Activity.MainActivity;
@@ -53,6 +61,7 @@ public class MainActivityKaryawan extends AppCompatActivity
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     private FirebaseAnalytics mFirebaseAnalytics;
+    private String instanceId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +82,43 @@ public class MainActivityKaryawan extends AppCompatActivity
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fl_content, new DashboardKaryawanFragment(), "karyawan_dashboard")
                 .commit();
-    }
 
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                instanceId = instanceIdResult.getToken();
+                databaseReference.child("admin")
+                        .child(user.getUid())
+                        .addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()){
+                                    databaseReference
+                                            .child("admin")
+                                            .child(user.getUid())
+                                            .child("instanceId")
+                                            .setValue(instanceId);
+                                }else {
+                                    databaseReference
+                                            .child("konter")
+                                            .child(user.getUid())
+                                            .child("instanceId")
+                                            .setValue(instanceId);
+
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+            }
+        });
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

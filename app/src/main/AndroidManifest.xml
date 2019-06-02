@@ -87,8 +87,6 @@
             </intent-filter>
         </activity>
         <service android:name=".Service.MyFirebaseMessagingService"
-            tool:ignore="InnerclassSeparator"
-            tools:ignore="ExportedService,InnerclassSeparator"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>

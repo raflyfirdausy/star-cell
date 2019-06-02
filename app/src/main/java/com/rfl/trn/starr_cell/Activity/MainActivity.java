@@ -87,7 +87,8 @@ public class MainActivity extends AppCompatActivity
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
             @Override
             public void onSuccess(InstanceIdResult instanceIdResult) {
                 instanceId = instanceIdResult.getToken();
@@ -119,8 +120,6 @@ public class MainActivity extends AppCompatActivity
                         });
             }
         });
-        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
-        FirebaseMessaging.getInstance().subscribeToTopic("StarCell");
     }
 
     @Override
