@@ -26,6 +26,7 @@
     <string name="karyawan">Karyawan</string>
     <string name="barang">Barang</string>
     <string name="dashboard">Dashboard</string>
+    <string name="dashboard_karyawan">Dashboard Karyawan</string>
     <string name="log_out">Log Out</string>
     <string name="lain_lain">Lain-Lain</string>
     <string name="tambah_konter">Tambah Konter</string>
@@ -81,4 +82,15 @@
     <string name="login_admin">Login Admin</string>
     <string name="star_cell">STAR CELL</string>
     <string name="user_tidak_ditemukan">User tidak di temukan!</string>
+    <string name="penjualan">Penjualan</string>
+    <string name="riwayat_transaksi">Riwayat Transaksi</string>
+    <string name="title_activity_main_karyawan">MainActivityKaryawan</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_tools">Tools</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_send">Send</string>
+    <string name="detail_absensi">Silahkan pilih menu di bawah ini. Pastikan nama anda tertera di bawah jika anda sedang bekerja.</string>
 </resources>

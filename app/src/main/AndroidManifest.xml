@@ -28,6 +28,13 @@
         android:theme="@style/AppTheme"
         tool:ignore="GoogleAppIndexingWarning"
         tool:replace="android:icon">
+
+        <activity
+            android:name=".ActivityKaryawan.MainActivityKaryawan"
+            android:label="@string/title_activity_dashboard"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            tool:ignore="InnerclassSeparator"/>
         <activity
             android:name=".Activity.DetailKaryawanActivity"
             tool:ignore="InnerclassSeparator" />
@@ -81,6 +88,7 @@
         </activity>
         <service android:name=".Service.MyFirebaseMessagingService"
             tool:ignore="InnerclassSeparator"
+            tools:ignore="ExportedService,InnerclassSeparator"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>

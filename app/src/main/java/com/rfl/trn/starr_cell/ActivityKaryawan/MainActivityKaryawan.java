@@ -1,10 +1,9 @@
-package com.rfl.trn.starr_cell.Activity;
+package com.rfl.trn.starr_cell.ActivityKaryawan;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -17,26 +16,18 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.SearchView;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
-import com.rfl.trn.starr_cell.Fragment.Admin.AdminAbsensiFragment;
-import com.rfl.trn.starr_cell.Fragment.Admin.AdminBarangFragment;
+import com.rfl.trn.starr_cell.Activity.LoginActivity;
+import com.rfl.trn.starr_cell.Activity.MainActivity;
 import com.rfl.trn.starr_cell.Fragment.Admin.AdminDashboardFragment;
-import com.rfl.trn.starr_cell.Fragment.Admin.AdminKaryawanFragment;
-import com.rfl.trn.starr_cell.Fragment.Admin.AdminKonterFragment;
-import com.rfl.trn.starr_cell.Fragment.Admin.AdminTransaksiFragment;
-import com.rfl.trn.starr_cell.Fragment.Admin.AdminUbahKataSandiFragment;
+import com.rfl.trn.starr_cell.Fragment.Karyawan.AbsensiKaryawanFragment;
+import com.rfl.trn.starr_cell.Fragment.Karyawan.BarangKaryawanFragment;
+import com.rfl.trn.starr_cell.Fragment.Karyawan.DashboardKaryawanFragment;
+import com.rfl.trn.starr_cell.Fragment.Karyawan.PenjualanKaryawanFragment;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
 import com.rfl.trn.starr_cell.R;
 
@@ -45,8 +36,7 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
-public class MainActivity extends AppCompatActivity
+public class MainActivityKaryawan extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R.id.toolbar)
@@ -59,21 +49,20 @@ public class MainActivity extends AppCompatActivity
     DrawerLayout drawerLayout;
     private boolean tekanKembaliUntukKeluar = false;
 
-    private Context context = MainActivity.this;
+    private Context context = MainActivityKaryawan.this;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     private FirebaseAnalytics mFirebaseAnalytics;
-    private String instanceId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_karyawan);
         ButterKnife.bind(this);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle("Star Cell");
-        getSupportActionBar().setSubtitle(getString(R.string.dashboard_karyawan));
+        getSupportActionBar().setSubtitle(getString(R.string.dashboard));
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -82,45 +71,8 @@ public class MainActivity extends AppCompatActivity
         navView.setNavigationItemSelectedListener(this);
         navView.getMenu().getItem(0).setChecked(true);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fl_content, new AdminDashboardFragment(), "dasboard_admin")
+                .replace(R.id.fl_content, new DashboardKaryawanFragment(), "karyawan_dashboard")
                 .commit();
-
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
-            @Override
-            public void onSuccess(InstanceIdResult instanceIdResult) {
-                instanceId = instanceIdResult.getToken();
-                databaseReference.child("admin")
-                        .child(user.getUid())
-                        .addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.exists()){
-                                    databaseReference
-                                            .child("admin")
-                                            .child(user.getUid())
-                                            .child("instanceId")
-                                            .setValue(instanceId);
-                                }else {
-                                    databaseReference
-                                            .child("konter")
-                                            .child(user.getUid())
-                                            .child("instanceId")
-                                            .setValue(instanceId);
-
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-            }
-        });
-        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
-        FirebaseMessaging.getInstance().subscribeToTopic("StarCell");
     }
 
     @Override
@@ -177,9 +129,8 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+    public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         FragmentTransaction FT = getSupportFragmentManager()
@@ -187,23 +138,17 @@ public class MainActivity extends AppCompatActivity
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 
         if (id == R.id.nav_dashboard) {
-            Objects.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.dashboard));
-            FT.replace(R.id.fl_content, new AdminDashboardFragment(), "admin_dashboard").commit();
-        } else if (id == R.id.nav_konter) {
-            Objects.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.konter));
-            FT.replace(R.id.fl_content, new AdminKonterFragment(), "admin_konter").commit();
-        } else if (id == R.id.nav_karyawan) {
-            Objects.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.karyawan));
-            FT.replace(R.id.fl_content, new AdminKaryawanFragment(), "admin_karyawan").commit();
-        } else if (id == R.id.nav_barang) {
-            Objects.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.barang));
-            FT.replace(R.id.fl_content, new AdminBarangFragment(), "admin_barang").commit();
+            Objects.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.dashboard_karyawan));
+            FT.replace(R.id.fl_content, new DashboardKaryawanFragment(), "karyawan_dashboard").commit();
         } else if (id == R.id.nav_absensi) {
             Objects.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.absensi));
-            FT.replace(R.id.fl_content, new AdminAbsensiFragment(), "admin_absensi").commit();
-        } else if (id == R.id.nav_transaksi) {
-            Objects.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.transaksi));
-            FT.replace(R.id.fl_content, new AdminTransaksiFragment(), "admin_transaksi").commit();
+            FT.replace(R.id.fl_content, new AbsensiKaryawanFragment(), "karyawan_absensi").commit();
+        } else if (id == R.id.nav_barang) {
+            Objects.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.barang));
+            FT.replace(R.id.fl_content, new BarangKaryawanFragment(), "karyawan_barang").commit();
+        } else if (id == R.id.nav_penjualan) {
+            Objects.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.penjualan));
+            FT.replace(R.id.fl_content, new PenjualanKaryawanFragment(), "karyawan_penjualan").commit();
         } else if (id == R.id.nav_logout) {
             new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
                     .setTitleText("Peringatan")
@@ -231,9 +176,6 @@ public class MainActivity extends AppCompatActivity
                         }
                     })
                     .show();
-        } else if(id == R.id.nav_ubahKataSandi){
-            Objects.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.ubah_kata_sandi));
-            FT.replace(R.id.fl_content, new AdminUbahKataSandiFragment(), "admin_ubahKataSandi").commit();
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
