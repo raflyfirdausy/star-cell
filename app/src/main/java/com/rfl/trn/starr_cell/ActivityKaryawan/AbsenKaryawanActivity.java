@@ -4,16 +4,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,18 +29,23 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.mindorks.paracamera.Camera;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rfl.trn.starr_cell.Custom.MyEditText;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
 import com.rfl.trn.starr_cell.Helper.Permissions;
+import com.rfl.trn.starr_cell.Model.AbsenModel;
 import com.rfl.trn.starr_cell.R;
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -61,6 +73,7 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
     private String keyKaryawan = null;
+    private Uri downloadURL;
 
 
     @Override
@@ -158,12 +171,18 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Camera.REQUEST_TAKE_PHOTO) {
-            Uri imageUri = new Bantuan(context).getImageUri(camera.getCameraBitmap());
-            if (imageUri != null) {
-                startCrop(imageUri);
-            } else {
-                new Bantuan(context).swal_error("Gagal mengambil gambar !");
-            }
+            ivTakeFoto.setImageBitmap(camera.getCameraBitmap());
+//            Uri imageUri = new Bantuan(context).getImageUri(camera.getCameraBitmap());
+//            if (imageUri != null) {
+////                startCrop(imageUri);
+////                ivTakeFoto.setImageURI(imageUri);
+////                Picasso.get()
+////                        .load(imageUri)
+////                        .into(ivTakeFoto);
+//                ivTakeFoto.setImageBitmap(camera.getCameraBitmap());
+//            } else {
+//                new Bantuan(context).swal_error("Gagal mengambil gambar !");
+//            }
         } else if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
             Uri hasilCrop = UCrop.getOutput(Objects.requireNonNull(data));
             if (hasilCrop != null) {
@@ -233,6 +252,110 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
     }
 
     private void prosesAbsen() {
+        if (ivTakeFoto.getDrawable().getConstantState() == getResources().getDrawable(R.drawable.bg_take_pict).getConstantState()) {
+            final SweetAlertDialog dialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE);
+            dialog.setTitleText("Peringatan");
+            dialog.setContentText("Foto Diri belum di tambahkan.\nSilahkan foto diri terlebih dahulu untuk bukti absen");
+            dialog.setConfirmText("Ambil Foto");
+            dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    ambilFoto();
+                    dialog.dismissWithAnimation();
+                }
+            });
+            dialog.show();
+        } else {
+            simpanKeDatabase();
+        }
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (camera != null) {
+            camera.deleteImage();
+        }
+    }
+
+    private void simpanKeDatabase() {
+        final SweetAlertDialog loading = new Bantuan(context).swal_loading("Tunggu beberapa saat, proses absen");
+        loading.show();
+        String pesanAbsen = null;
+        if (TextUtils.isEmpty(myetPesan.getText())) {
+            pesanAbsen = "Tidak Ada Pesan";
+        } else {
+            pesanAbsen = Objects.requireNonNull(myetPesan.getText()).toString();
+        }
+
+        Bitmap bitmap = ((BitmapDrawable) ivTakeFoto.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        final StorageReference ref = storageReference.child("absen")
+                .child(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid())
+                .child("absen_" + new Date().getTime() + ".jpeg");
+        UploadTask uploadTask = ref.putBytes(data);
+        final String finalPesanAbsen = pesanAbsen;
+        uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw Objects.requireNonNull(task.getException());
+                }
+                return ref.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    downloadURL = task.getResult();
+                    final AbsenModel dataAbsen = new AbsenModel();
+                    dataAbsen.setIdKaryawan(keyKaryawan);
+                    dataAbsen.setTanggal(new Date().getTime());
+                    dataAbsen.setWaktuMasuk(new Date().getTime());
+                    dataAbsen.setWaktuKeluar(null);
+                    dataAbsen.setKonfirmasi("pending");
+                    dataAbsen.setPesan(finalPesanAbsen);
+                    dataAbsen.setUrlFoto(Objects.requireNonNull(downloadURL).toString());
+
+                    String keyAbsen = databaseReference.push().getKey();
+
+                    databaseReference.child("absen")
+                            .child(firebaseAuth.getCurrentUser().getUid())
+                            .child(Objects.requireNonNull(keyAbsen))
+                            .setValue(dataAbsen)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    //TODO : set current karyawan tp ngko lah :v
+                                    loading.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                    loading.showContentText(true);
+                                    loading.setTitleText("Sukses");
+                                    loading.setContentText("Berhasil Absen");
+                                    loading.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                            finish();
+                                        }
+                                    });
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            loading.dismissWithAnimation();
+                            new Bantuan(context).swal_error("Error saat menyimpan ke database : " + e.getMessage());
+                        }
+                    });
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                loading.dismissWithAnimation();
+                new Bantuan(context).swal_error(e.getMessage());
+            }
+        });
     }
 }

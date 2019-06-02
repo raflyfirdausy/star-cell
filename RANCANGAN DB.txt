@@ -14,15 +14,20 @@ karyawan(Ga masuk firebase auth)
  |- status_kerja
  |- tanggalDiubah
 
-absen
+absen (firebaseDatabase)
 |-id_konter(ambil dari key node konter)
  |- {id_absen}(random id)
   |- id_karyawan(ambil dari key node karyawan)
-  |- tanggal
-  |- jam_masuk
-  |- jam_keluar
-  |- konfirmasi 
+  |- tanggal (timestamp)
+  |- waktu_masuk
+  |- waktu_keluar
+  |- konfirmasi (pending, accept, reject)
+  |- pesan
+  |- urlFoto
 
+absen
+|-id_konter (ambil dari key node konter)
+ |- id_foto.jpeg
 
 barang
   |- {id_barang} random
