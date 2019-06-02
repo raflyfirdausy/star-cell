@@ -7,46 +7,46 @@
 
         <item
             android:id="@+id/nav_dashboard"
-            android:title="@string/dashboard"
             android:icon="@drawable/ic_dashboard_black_24dp"
-            />
+            android:title="@string/dashboard" />
 
         <item
             android:id="@+id/nav_konter"
-            android:title="@string/konter"
-            android:icon="@drawable/ic_store"/>
+            android:icon="@drawable/ic_store"
+            android:title="@string/konter" />
         <item
             android:id="@+id/nav_karyawan"
-            android:title="@string/karyawan"
-            android:icon="@drawable/ic_group_add_black_24dp"/>
+            android:icon="@drawable/ic_group_add_black_24dp"
+            android:title="@string/karyawan" />
         <item
             android:id="@+id/nav_barang"
-            android:title="@string/barang"
-            android:icon="@drawable/ic_inventory_lagi"/>
+            android:icon="@drawable/ic_inventory_lagi"
+            android:title="@string/barang" />
         <item
             android:id="@+id/nav_absensi"
-            android:title="@string/absensi"
-            android:icon="@drawable/ic_absensi"/>
-        <item
-            android:id="@+id/nav_transaksi"
-            android:title="@string/transaksi"
-            android:icon="@drawable/ic_transaksi"/>
+            android:icon="@drawable/ic_absensi"
+            android:title="@string/absensi" />
         <item
             android:id="@+id/nav_penjualan"
-            android:title="@string/penjualan"
-            android:icon="@drawable/ic_add_shopping_cart_black_24dp"/>
+            android:icon="@drawable/ic_add_shopping_cart_black_24dp"
+            android:title="@string/penjualan" />
+        <item
+            android:id="@+id/nav_transaksi"
+            android:icon="@drawable/ic_transaksi"
+            android:title="@string/transaksi" />
+
     </group>
 
     <item android:title="@string/lain_lain">
         <menu>
             <item
                 android:id="@+id/nav_ubahKataSandi"
-                android:title="@string/ubah_kata_sandi"
-                android:icon="@drawable/ic_pass"/>
+                android:icon="@drawable/ic_pass"
+                android:title="@string/ubah_kata_sandi" />
             <item
                 android:id="@+id/nav_logout"
-                android:title="@string/log_out"
-                android:icon="@drawable/ic_logout"/>
+                android:icon="@drawable/ic_logout"
+                android:title="@string/log_out" />
         </menu>
     </item>
 
