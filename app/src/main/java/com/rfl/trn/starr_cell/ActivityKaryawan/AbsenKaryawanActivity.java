@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -171,18 +172,12 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Camera.REQUEST_TAKE_PHOTO) {
-            ivTakeFoto.setImageBitmap(camera.getCameraBitmap());
-//            Uri imageUri = new Bantuan(context).getImageUri(camera.getCameraBitmap());
-//            if (imageUri != null) {
-////                startCrop(imageUri);
-////                ivTakeFoto.setImageURI(imageUri);
-////                Picasso.get()
-////                        .load(imageUri)
-////                        .into(ivTakeFoto);
-//                ivTakeFoto.setImageBitmap(camera.getCameraBitmap());
-//            } else {
-//                new Bantuan(context).swal_error("Gagal mengambil gambar !");
-//            }
+            Uri imageUri = getImageUri(context, camera.getCameraBitmap());
+            if (imageUri != null) {
+                startCrop(imageUri);
+            } else {
+                new Bantuan(context).swal_error("Gagal mengambil gambar !");
+            }
         } else if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
             Uri hasilCrop = UCrop.getOutput(Objects.requireNonNull(data));
             if (hasilCrop != null) {
@@ -357,5 +352,12 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
                 new Bantuan(context).swal_error(e.getMessage());
             }
         });
+    }
+
+    private Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 }

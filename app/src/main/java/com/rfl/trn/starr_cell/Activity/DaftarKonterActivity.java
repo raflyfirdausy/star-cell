@@ -625,7 +625,7 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
                 startCrop(imageUri);
             }
         } else if (requestCode == Camera.REQUEST_TAKE_PHOTO) {
-            Uri imageUri = new Bantuan(context).getImageUri(camera.getCameraBitmap());
+            Uri imageUri = getImageUri(context, camera.getCameraBitmap());
             if (imageUri != null) {
                 startCrop(imageUri);
             } else {
@@ -660,6 +660,13 @@ public class DaftarKonterActivity extends AppCompatActivity implements BottomShe
             e.printStackTrace();
             new Bantuan(context).swal_error(e.getMessage());
         }
+    }
+
+    private Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 
     @Override
