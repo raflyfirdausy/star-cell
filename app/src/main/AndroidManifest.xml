@@ -27,10 +27,15 @@
         android:theme="@style/AppTheme"
         tool:ignore="GoogleAppIndexingWarning"
         tool:replace="android:icon">
-        <activity android:name=".ActivityKaryawan.MainActivityKaryawan"></activity>
+        <activity
+            android:name=".ActivityKaryawan.MainActivityKaryawan"
+            android:label="@string/title_activity_dashboard"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            tool:ignore="InnerclassSeparator"/>
         <activity
             android:name=".Activity.DetailKaryawanActivity"
-            tool:ignore="InnerclassSeparator" /> <!-- suppress AndroidDomInspection -->
+            tool:ignore="InnerclassSeparator" />
         <activity
             android:name=".Activity.CetakStrukActivity"
             tool:ignore="InnerclassSeparator" />

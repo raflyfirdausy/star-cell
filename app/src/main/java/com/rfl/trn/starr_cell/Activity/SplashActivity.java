@@ -18,6 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+import com.rfl.trn.starr_cell.ActivityKaryawan.MainActivityKaryawan;
 import com.rfl.trn.starr_cell.BuildConfig;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
 import com.rfl.trn.starr_cell.Helper.Internet;
@@ -127,7 +128,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private void pindahActivity() {
         databaseReference.child("admin")
-                .child(firebaseAuth.getCurrentUser().getUid())
+                .child(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid())
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -142,29 +143,8 @@ public class SplashActivity extends AppCompatActivity {
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                             if (dataSnapshot.exists()) {
                                                 //TODO : MainActivity Konter
-                                                SweetAlertDialog dialog = new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
-                                                        .setTitleText("Peringatan")
-                                                        .setContentText("MainActivityKonter Coming Soon :p")
-                                                        .setConfirmText("BODO AMAAT")
-                                                        .setCancelText("YA TERUUS ??")
-                                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                                            @Override
-                                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                                firebaseAuth.signOut();
-                                                                startActivity(new Intent(context, SplashActivity.class));
-                                                                sweetAlertDialog.dismissWithAnimation();
-                                                                finish();
-                                                            }
-                                                        }).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                                            @Override
-                                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                                firebaseAuth.signOut();
-                                                                startActivity(new Intent(context, SplashActivity.class));
-                                                                sweetAlertDialog.dismissWithAnimation();
-                                                                finish();
-                                                            }
-                                                        });
-                                                dialog.show();
+                                                startActivity(new Intent(context, MainActivityKaryawan.class));
+                                                finish();
                                             } else {
                                                 new Bantuan(context).swal_error(firebaseAuth.getCurrentUser().getUid() + "\nTidak ada dalam database");
                                             }

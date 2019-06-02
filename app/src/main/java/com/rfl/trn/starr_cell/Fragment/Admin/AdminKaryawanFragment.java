@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 
+import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -59,7 +60,7 @@ public class AdminKaryawanFragment extends Fragment {
     FloatingActionButton fabTambahKaryawan;
     Unbinder unbinder;
     @BindView(R.id.rv_karyawan)
-    RecyclerView rvKaryawan;
+    ShimmerRecyclerView rvKaryawan;
     @BindView(R.id.ll_belumAdaKaryawan)
     LinearLayout llBelumAdaKaryawan;
 
@@ -83,6 +84,7 @@ public class AdminKaryawanFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
+        rvKaryawan.showShimmerAdapter();
         return view;
     }
 
@@ -130,6 +132,7 @@ public class AdminKaryawanFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        rvKaryawan.showShimmerAdapter();
         getKaryawan();
     }
 

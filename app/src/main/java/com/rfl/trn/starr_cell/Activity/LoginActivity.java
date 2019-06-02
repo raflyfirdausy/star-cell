@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+import com.rfl.trn.starr_cell.ActivityKaryawan.MainActivityKaryawan;
 import com.rfl.trn.starr_cell.Custom.MyEditText;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
@@ -98,25 +99,6 @@ public class LoginActivity extends AppCompatActivity {
                         public void onSuccess(final AuthResult authResult) {
                             loading.dismissWithAnimation();
                             pindahActivity(authResult);
-//                            loading.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-//                            loading.showContentText(false);
-//                            loading.setTitleText("Berhasil Login");
-//                            loading.setContentText("Selamat Datang kembali " + authResult.getUser().getEmail());
-//                            loading.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-//                                @Override
-//                                public void onClick(SweetAlertDialog sweetAlertDialog) {
-//                                    sweetAlertDialog.dismissWithAnimation();
-//                                    pindahActivity(authResult);
-//                                }
-//                            });
-//                            new Handler().postDelayed(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    loading.dismissWithAnimation();
-//                                    //TODO : pindah activity ke main
-//                                    pindahActivity(authResult);
-//                                }
-//                            }, 1500);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -158,29 +140,8 @@ public class LoginActivity extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
                                 //TODO : MainActivity Konter
-                                SweetAlertDialog dialog = new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
-                                        .setTitleText("Peringatan")
-                                        .setContentText("MainActivityKonter Coming Soon :p")
-                                        .setConfirmText("BODO AMAAT")
-                                        .setCancelText("YA TERUUS ??")
-                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                            @Override
-                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                firebaseAuth.signOut();
-                                                startActivity(new Intent(context, SplashActivity.class));
-                                                sweetAlertDialog.dismissWithAnimation();
-                                                finish();
-                                            }
-                                        }).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                            @Override
-                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                firebaseAuth.signOut();
-                                                startActivity(new Intent(context, SplashActivity.class));
-                                                sweetAlertDialog.dismissWithAnimation();
-                                                finish();
-                                            }
-                                        });
-                                dialog.show();
+                                startActivity(new Intent(context, MainActivityKaryawan.class));
+                                finish();
                             } else {
                                 firebaseAuth.signOut();
                                 new Bantuan(context).swal_error("Karyawan tidak ditemukan!");

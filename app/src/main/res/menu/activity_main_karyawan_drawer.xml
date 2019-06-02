@@ -21,10 +21,7 @@
             android:id="@+id/nav_penjualan"
             android:icon="@drawable/ic_add_shopping_cart_black_24dp"
             android:title="@string/penjualan" />
-        <item
-            android:id="@+id/nav_transaksi"
-            android:icon="@drawable/ic_transaksi"
-            android:title="@string/transaksi" />
+
     </group>
 
     <item android:title="@string/lain_lain">
