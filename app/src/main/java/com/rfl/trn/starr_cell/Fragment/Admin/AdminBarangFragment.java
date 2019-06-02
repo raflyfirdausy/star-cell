@@ -102,12 +102,6 @@ public class AdminBarangFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        rvBarang.showShimmerAdapter();
-        getAllBarang();
-        getFilter();
-    }
-
-    private void getFilter() {
         listKeyKategori = new ArrayList<>();
         listNamaKategori = new ArrayList<>();
         listKeyKonter = new ArrayList<>();
@@ -118,17 +112,20 @@ public class AdminBarangFragment extends Fragment {
         listNamaKategori.clear();
         listKeyKategori.clear();
 
-        listNamaKonter.add("Semua");
-        listKeyKonter.add("semua");
-        listNamaKategori.add("Semua");
-        listKeyKategori.add("semua");
+        rvBarang.showShimmerAdapter();
+        getAllBarang();
+        getFilter();
+    }
 
-
-        databaseReference.child("kategori")
+    private void getFilter() {
+            databaseReference.child("kategori")
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                        listNamaKategori.clear();
+                        listKeyKategori.clear();
+                        listNamaKategori.add("Semua");
+                        listKeyKategori.add("semua");
                         if (dataSnapshot.exists()) {
                             for (DataSnapshot data : dataSnapshot.getChildren()) {
                                 String NamaKategori = data.child("namaKategori").getValue(String.class);
@@ -151,8 +148,11 @@ public class AdminBarangFragment extends Fragment {
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        listNamaKonter.clear();
+                        listKeyKonter.clear();
+                        listNamaKonter.add("Semua");
+                        listKeyKonter.add("semua");
                         if (dataSnapshot.exists()) {
-
                             for (DataSnapshot data : dataSnapshot.getChildren()) {
                                 String NamaKonter = data.child("namaKonter").getValue(String.class);
                                 String KeyKonter = data.getKey();
@@ -179,7 +179,6 @@ public class AdminBarangFragment extends Fragment {
                 idKonter = listKeyKonter.get(position);
                 if (idKategori.equalsIgnoreCase("semua")) {
                     if (item.equalsIgnoreCase("semua")) {
-
                         getAllBarang();
                     }
                     getFilterKonter();

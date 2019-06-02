@@ -3,6 +3,7 @@ package com.rfl.trn.starr_cell.Adapter;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,11 +29,13 @@ import com.rfl.trn.starr_cell.R;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.MyViewHolder> {
+
 
 
     private Context context;
@@ -102,6 +105,8 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
         MyTextView tvKonterBarang;
         @BindView(R.id.tv_kategoriBarang)
         MyTextView tvKategoriBarang;
+        @BindView(R.id.view_rand_color)
+        View viewRandColor;
 
 
         public MyViewHolder(@NonNull View itemView) {
@@ -113,13 +118,19 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
 
         @SuppressLint("SetTextI18n")
         void setDataKewView(BarangModel isiData, final String s) {
+            Random rand = new Random();
+            int r = rand.nextInt(255);
+            int g = rand.nextInt(255);
+            int b = rand.nextInt(255);
+
+            int randomColor = Color.rgb(r, g, b);
+
             databaseReference = FirebaseDatabase.getInstance().getReference();
             tvNamaBarang.setText(isiData.getNamaBarang());
             tvHargaBarang.setText("Rp " + isiData.getHarga1());
             tvKategoriBarang.setText("");
             tvKonterBarang.setText("");
-
-
+            viewRandColor.setBackgroundColor(randomColor);
             databaseReference.child("barang")
                     .child(s)
                     .addValueEventListener(new ValueEventListener() {

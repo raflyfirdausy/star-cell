@@ -1,4 +1,4 @@
-package com.rfl.trn.starr_cell.Fragment.Custom;
+package com.rfl.trn.starr_cell.Custom;
 
 import android.content.Context;
 import android.os.Bundle;
