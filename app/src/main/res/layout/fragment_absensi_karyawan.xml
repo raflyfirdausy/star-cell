@@ -69,56 +69,220 @@
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="120dp"
                 android:layout_marginStart="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_16"
                 android:layout_marginEnd="@dimen/dp_16"
-                android:layout_marginBottom="@dimen/dp_16"
+                android:layout_marginBottom="@dimen/dp_8"
                 android:clickable="true"
-                app:cardElevation="@dimen/dp_0"
                 android:focusable="true"
-                app:cardCornerRadius="@dimen/dp_8">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/gradient_summer" />
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginStart="@dimen/dp_16"
-                android:layout_marginEnd="@dimen/dp_16"
-                android:layout_marginBottom="@dimen/dp_16"
-                android:clickable="true"
-                app:cardElevation="@dimen/dp_0"
-                android:focusable="true"
-                app:cardCornerRadius="@dimen/dp_8">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/gradient_flare" />
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginStart="@dimen/dp_16"
-                android:layout_marginEnd="@dimen/dp_16"
-                android:layout_marginBottom="@dimen/dp_16"
-                android:clickable="true"
-                app:cardElevation="@dimen/dp_0"
-                android:focusable="true"
-                app:cardCornerRadius="@dimen/dp_8">
+                app:cardCornerRadius="@dimen/dp_8"
+                app:cardElevation="@dimen/dp_0">
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="fitXY"
                     android:src="@drawable/gradient_ultraviolet" />
+
+                <LinearLayout
+                    android:id="@+id/layout_karyawanSaatIni"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dp_8">
+
+                    <ImageView
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/dp_8"
+                        android:src="@drawable/ic_karyawan" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:paddingStart="@dimen/dp_8"
+                        android:paddingEnd="@dimen/dp_8">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="@string/karyawan_saat_ini"
+                            android:textColor="@color/white"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_karyawan1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/rafli_firdausy_irawan"
+                            android:textColor="@color/white"
+                            android:textSize="16sp"
+                            android:textStyle="normal"
+                            tools:ignore="SmallSp" />
+
+                        <TextView
+                            android:id="@+id/tv_karyawan2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/trian_damai"
+                            android:textColor="@color/white"
+                            android:textSize="16sp"
+                            android:textStyle="normal"
+                            tools:ignore="SmallSp" />
+
+                        <TextView
+                            android:id="@+id/tv_karyawan3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/karyawan_star_cell_lainya"
+                            android:textColor="@color/white"
+                            android:textSize="16sp"
+                            android:textStyle="normal"
+                            tools:ignore="SmallSp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginStart="@dimen/dp_16"
+                android:layout_marginEnd="@dimen/dp_16"
+                android:layout_marginBottom="@dimen/dp_8"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardCornerRadius="@dimen/dp_8"
+                app:cardElevation="@dimen/dp_0">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/gradient_flare" />
+
+                <RelativeLayout
+                    android:id="@+id/layout_absenMasuk"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="@dimen/dp_8">
+
+                    <ImageView
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:padding="@dimen/dp_8"
+                        android:src="@drawable/ic_karyawan" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:paddingStart="@dimen/dp_8"
+                        android:paddingEnd="@dimen/dp_8"
+                        android:layout_marginEnd="120dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/absen_masuk"
+                            android:gravity="end"
+                            android:textStyle="bold"
+                            android:textSize="24sp"
+                            android:textColor="@color/white"
+                            android:layout_marginBottom="4dp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/silahkan_absen_masuk_jika_anda_akan_mulai_bekerja"
+                            android:gravity="end"
+                            android:textStyle="normal"
+                            android:textSize="16sp"
+                            android:textColor="@color/white"
+                            android:layout_marginBottom="4dp"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginStart="@dimen/dp_16"
+                android:layout_marginEnd="@dimen/dp_16"
+                android:layout_marginBottom="@dimen/dp_8"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardCornerRadius="@dimen/dp_8"
+                app:cardElevation="@dimen/dp_0">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/gradient_scooter" />
+
+                <LinearLayout
+                    android:id="@+id/layout_absenKeluar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dp_8">
+
+                    <ImageView
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/dp_8"
+                        android:src="@drawable/ic_karyawan" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:paddingStart="@dimen/dp_8"
+                        android:paddingEnd="@dimen/dp_8">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/absen_keluar"
+                            android:textStyle="bold"
+                            android:textSize="24sp"
+                            android:textColor="@color/white"
+                            android:layout_marginBottom="4dp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/absen_keluar_deskripsi"
+                            android:textStyle="normal"
+                            android:textSize="16sp"
+                            android:textColor="@color/white"
+                            android:layout_marginBottom="4dp"/>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
             </android.support.v7.widget.CardView>
 
         </LinearLayout>

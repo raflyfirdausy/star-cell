@@ -93,4 +93,12 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
     <string name="detail_absensi">Silahkan pilih menu di bawah ini. Pastikan nama anda tertera di bawah jika anda sedang bekerja.</string>
+    <string name="karyawan_saat_ini">Karyawan Saat Ini</string>
+    <string name="rafli_firdausy_irawan">Rafli Firdausy Irawan</string>
+    <string name="trian_damai">Trian Damai</string>
+    <string name="karyawan_star_cell_lainya">Karyawan Star Cell Lainya</string>
+    <string name="absen_masuk">Absen Masuk</string>
+    <string name="silahkan_absen_masuk_jika_anda_akan_mulai_bekerja">Silahkan absen masuk jika anda akan mulai bekerja. Pastikan foto diri anda sebagai bukti absen</string>
+    <string name="absen_keluar">Absen Keluar</string>
+    <string name="absen_keluar_deskripsi">Silahkan absen keluar jika anda sudah selesai bekerja. Pastikan anda absen sesuai nama anda</string>
 </resources>
