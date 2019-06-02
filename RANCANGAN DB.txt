@@ -22,6 +22,14 @@ absen
   |- jam_masuk
   |- jam_keluar
   |- konfirmasi 
+absen
+|- {id_absen}(random id)
+  |- id_karyawan(ambil dari key node karyawan)
+  |-id_konter(ambil dari key node konter)
+  |- tanggal
+  |- jam_masuk
+  |- jam_keluar
+  |- konfirmasi
 
 
 barang
