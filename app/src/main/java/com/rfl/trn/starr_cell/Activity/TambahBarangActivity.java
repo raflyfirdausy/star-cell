@@ -117,6 +117,7 @@ public class TambahBarangActivity extends AppCompatActivity {
         LayoutInflater inflater = this.getLayoutInflater();
         dialogView = inflater.inflate(R.layout.dialog_kategori_konter, null);
         dialog.setContentView(dialogView);
+        dialog.setCancelable(false);
         rvDialog = dialog.findViewById(R.id.rv_kategori);
         tambahItemDialog = dialog.findViewById(R.id.btn_add_kategori);
         namaDialog = dialog.findViewById(R.id.myet_namaKategori);
@@ -206,9 +207,6 @@ public class TambahBarangActivity extends AppCompatActivity {
         listKategori.clear();
         layoutTambahItemDialog.setVisibility(View.GONE);
         dialog.show();
-
-
-
         buttonTambahItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -270,6 +268,7 @@ public class TambahBarangActivity extends AppCompatActivity {
                 final int position = viewHolder.getAdapterPosition();
                 final KategoriModel item = adapterKategori.getData().get(position);
                 final SweetAlertDialog dialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE);
+
                 adapterKategori.removeItem(position);
                 databaseReference.child("barang")
                         .orderByChild("idKategori")
@@ -336,14 +335,19 @@ public class TambahBarangActivity extends AppCompatActivity {
         tambahItemDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String idKategori = databaseReference.push().getKey();
-                KategoriModel model = new KategoriModel(idKategori,
-                        namaDialog.getText().toString(),
-                        new Bantuan(context).getDayTimestamp(timestamp));
-                databaseReference.child("kategori")
-                        .child(idKategori)
-                        .setValue(model);
-                namaDialog.setText("");
+                if (TextUtils.isEmpty(namaDialog.getText())){
+                    new Bantuan(context).swal_error("Nama kategori tidak boleh Kosong !");
+                }else {
+                    String idKategori = databaseReference.push().getKey();
+                    KategoriModel model = new KategoriModel(idKategori,
+                            namaDialog.getText().toString(),
+                            new Bantuan(context).getDayTimestamp(timestamp));
+                    databaseReference.child("kategori")
+                            .child(idKategori)
+                            .setValue(model);
+                    namaDialog.setText("");
+
+                }
             }
         });
 
