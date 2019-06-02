@@ -85,12 +85,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <service
-            android:name=".Service.MyFirebaseMessagingService"
-            android:exported="false"
+        <service android:name=".Service.MyFirebaseMessagingService"
+            android:stopWithTask="false"
+            tools:ignore="ExportedService,InnerclassSeparator"
             tool:ignore="InnerclassSeparator"
-            tools:ignore="ExportedService,InnerclassSeparator">
+            android:permission="">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
