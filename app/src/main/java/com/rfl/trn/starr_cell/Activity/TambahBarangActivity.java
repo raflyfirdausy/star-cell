@@ -267,29 +267,66 @@ public class TambahBarangActivity extends AppCompatActivity {
         SwipeToDelete swipeToDeleteCallback = new SwipeToDelete(this) {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-
-
                 final int position = viewHolder.getAdapterPosition();
                 final KategoriModel item = adapterKategori.getData().get(position);
-
+                final SweetAlertDialog dialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE);
                 adapterKategori.removeItem(position);
+                databaseReference.child("barang")
+                        .orderByChild("idKategori")
+                        .equalTo(item.getIdKategori())
+                        .addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()){
+                                    dialog.setTitleText("Peringatan");
+                                    dialog.setContentText("Masih ada barang dengan kategori "+item.getNamaKategori()+".\nSilahkan hapus terlebih dahulu barangnya..");
+                                    dialog.setConfirmText("Ke daftar Barang");
+                                    dialog.setCancelText("Ga jadi hapus");
+                                    dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                            adapterKategori.restoreItem(item, position);
+                                            dialog.dismissWithAnimation();
+                                        }
+                                    });
+                                    dialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                            adapterKategori.restoreItem(item, position);
+                                            dialog.dismissWithAnimation();
+                                        }
+                                    });
+                                }else {
+                                    dialog.setTitleText("Peringatan");
+                                    dialog.setContentText("Anda akan menghapus kategori "+item.getNamaKategori()+".\nLanjutkan ?");
+                                    dialog.setConfirmText("Iya, Hapus");
+                                    dialog.setCancelText("Nggak jadi ");
+                                    dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                            databaseReference.child("kategori")
+                                                    .child(item.getIdKategori())
+                                                    .removeValue();
+                                            dialog.dismissWithAnimation();
+                                        }
+                                    });
+                                    dialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                            adapterKategori.restoreItem(item, position);
+                                            dialog.dismissWithAnimation();
+                                        }
+                                    });
+                                }
+                                dialog.show();
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
+                            }
+                        });
 
-                Snackbar snackbar = (Snackbar) Snackbar
-                        .make(dialogView , "Item was removed from the list.", Snackbar.LENGTH_LONG);
-                snackbar.setAction("UNDO", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        adapterKategori.restoreItem(item, position);
                         rvDialog.scrollToPosition(position);
-                    }
-                });
-
-                snackbar.setActionTextColor(Color.YELLOW);
-                snackbar.show();
-
-
             }
         };
 
