@@ -28,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rfl.trn.starr_cell.Activity.LoginActivity;
 import com.rfl.trn.starr_cell.Activity.MainActivity;
@@ -84,38 +85,20 @@ public class MainActivityKaryawan extends AppCompatActivity
                 .commit();
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
+        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
             @Override
             public void onSuccess(InstanceIdResult instanceIdResult) {
                 instanceId = instanceIdResult.getToken();
-                databaseReference.child("admin")
-                        .child(user.getUid())
-                        .addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.exists()){
-                                    databaseReference
-                                            .child("admin")
-                                            .child(user.getUid())
-                                            .child("instanceId")
-                                            .setValue(instanceId);
-                                }else {
+
                                     databaseReference
                                             .child("konter")
                                             .child(user.getUid())
                                             .child("instanceId")
                                             .setValue(instanceId);
 
-                                }
-                            }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
             }
         });
     }
