@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -28,17 +28,16 @@
         android:theme="@style/AppTheme"
         tool:ignore="GoogleAppIndexingWarning"
         tool:replace="android:icon">
-
+        <activity android:name=".ActivityKaryawan.AbsenKaryawanActivity"></activity>
         <activity
             android:name=".ActivityKaryawan.MainActivityKaryawan"
             android:label="@string/title_activity_dashboard"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            tool:ignore="InnerclassSeparator"/>
+            tool:ignore="InnerclassSeparator" />
         <activity
             android:name=".Activity.DetailKaryawanActivity"
-            tool:ignore="InnerclassSeparator" />
-        <!-- suppress AndroidDomInspection -->
+            tool:ignore="InnerclassSeparator" /> <!-- suppress AndroidDomInspection -->
         <activity
             android:name=".Activity.CetakStrukActivity"
             tool:ignore="InnerclassSeparator" />
@@ -86,31 +85,32 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".Service.MyFirebaseMessagingService"
+
+        <service
+            android:name=".Service.MyFirebaseMessagingService"
+            android:exported="false"
             tool:ignore="InnerclassSeparator"
-            tools:ignore="ExportedService,InnerclassSeparator"
-            android:exported="false">
+            tools:ignore="ExportedService,InnerclassSeparator">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
-        </service>
-        <!-- TODO :: META DATA -->
+        </service> <!-- TODO :: META DATA -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_absen"/>
+            android:resource="@drawable/ic_absen" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/colorPrimary"/>
+            android:resource="@color/colorPrimary" />
         <meta-data
             android:name="fontProviderRequests"
-            android:value="Noto Color Emoji Compat"/>
+            android:value="Noto Color Emoji Compat" />
         <meta-data
             android:name="firebase_crash_collection_enabled"
-            android:value="false"/>
+            android:value="false" />
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
-            android:value="true"/>
+            android:value="true" />
     </application>
 
 </manifest>

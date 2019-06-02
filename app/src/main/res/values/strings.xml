@@ -101,4 +101,9 @@
     <string name="silahkan_absen_masuk_jika_anda_akan_mulai_bekerja">Silahkan absen masuk jika anda akan mulai bekerja. Pastikan foto diri anda sebagai bukti absen</string>
     <string name="absen_keluar">Absen Keluar</string>
     <string name="absen_keluar_deskripsi">Silahkan absen keluar jika anda sudah selesai bekerja. Pastikan anda absen sesuai nama anda</string>
+    <string name="pilih_nama_karyawan">Pilih Nama Karyawan</string>
+    <string name="pesan_absen_optional">Pesan Absen (optional)</string>
+    <string name="kirim">Kirim</string>
+    <string name="klik_untuk_mengambil_foto">Klik untuk mengambil foto</string>
+    <string name="tambahkan_anda_untuk_bukti_absen">Tambahkan anda untuk bukti absen</string>
 </resources>

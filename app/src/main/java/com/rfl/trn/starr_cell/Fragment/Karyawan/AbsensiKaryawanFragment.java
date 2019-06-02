@@ -1,6 +1,7 @@
 package com.rfl.trn.starr_cell.Fragment.Karyawan;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,9 +14,17 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.storage.StorageReference;
+import com.rfl.trn.starr_cell.ActivityKaryawan.AbsenKaryawanActivity;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
+import com.rfl.trn.starr_cell.Model.KaryawanModel;
 import com.rfl.trn.starr_cell.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -77,7 +86,7 @@ public class AbsensiKaryawanFragment extends Fragment {
                 new Bantuan(getActivity()).swal_sukses("karyawan");
                 break;
             case R.id.layout_absenMasuk:
-                new Bantuan(getActivity()).swal_sukses("masuk");
+                startActivity(new Intent(getActivity(), AbsenKaryawanActivity.class));
                 break;
             case R.id.layout_absenKeluar:
                 new Bantuan(getActivity()).swal_sukses("keluar");
