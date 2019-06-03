@@ -355,6 +355,7 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
                     dataAbsen.setPesan(finalPesanAbsen);
                     dataAbsen.setUrlFoto(Objects.requireNonNull(downloadURL).toString());
                     dataAbsen.setIdKonter(firebaseAuth.getCurrentUser().getUid());
+                    dataAbsen.setJenisAbsen("masuk");
 
                     String keyAbsen = databaseReference.push().getKey();
 

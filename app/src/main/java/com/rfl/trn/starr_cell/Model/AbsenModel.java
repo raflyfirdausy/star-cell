@@ -3,17 +3,6 @@ package com.rfl.trn.starr_cell.Model;
 import java.io.Serializable;
 
 public class AbsenModel implements Serializable {
-/*
-    absen
-
-     |- {id_absen}(random id)
-      |- idKonter
-      |- id_karyawan(ambil dari key node karyawan)
-      |- tanggal
-      |- waktu_masuk
-      |- waktu_keluar
-      |- konfirmasi (pending, accept, reject)
-*/
 
     private String idKonter;
     private String idAbsen;
@@ -24,11 +13,12 @@ public class AbsenModel implements Serializable {
     private String konfirmasi;
     private String pesan;
     private String urlFoto;
+    private String jenisAbsen;
 
     public AbsenModel() {
     }
 
-    public AbsenModel(String idKonter, String idAbsen, String idKaryawan, Long tanggal, Long waktuMasuk, Long waktuKeluar, String konfirmasi, String pesan, String urlFoto) {
+    public AbsenModel(String idKonter, String idAbsen, String idKaryawan, Long tanggal, Long waktuMasuk, Long waktuKeluar, String konfirmasi, String pesan, String urlFoto, String jenisAbsen) {
         this.idKonter = idKonter;
         this.idAbsen = idAbsen;
         this.idKaryawan = idKaryawan;
@@ -38,6 +28,7 @@ public class AbsenModel implements Serializable {
         this.konfirmasi = konfirmasi;
         this.pesan = pesan;
         this.urlFoto = urlFoto;
+        this.jenisAbsen = jenisAbsen;
     }
 
     public String getIdKonter() {
@@ -110,5 +101,13 @@ public class AbsenModel implements Serializable {
 
     public void setUrlFoto(String urlFoto) {
         this.urlFoto = urlFoto;
+    }
+
+    public String getJenisAbsen() {
+        return jenisAbsen;
+    }
+
+    public void setJenisAbsen(String jenisAbsen) {
+        this.jenisAbsen = jenisAbsen;
     }
 }

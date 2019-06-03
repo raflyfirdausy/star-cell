@@ -24,6 +24,7 @@ absen (firebaseDatabase)
   |- konfirmasi (pending, accept, reject)
   |- pesan
   |- urlFoto
+  |- jenisAbsen
 
 absen
 |-id_konter (ambil dari key node konter)
