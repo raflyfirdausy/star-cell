@@ -351,7 +351,7 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
                     dataAbsen.setTanggal(new Date().getTime());
                     dataAbsen.setWaktuMasuk(new Date().getTime());
                     dataAbsen.setWaktuKeluar(null);
-                    dataAbsen.setKonfirmasi("pending");
+                    dataAbsen.setStatus("pending");
                     dataAbsen.setPesan(finalPesanAbsen);
                     dataAbsen.setUrlFoto(Objects.requireNonNull(downloadURL).toString());
                     dataAbsen.setIdKonter(firebaseAuth.getCurrentUser().getUid());

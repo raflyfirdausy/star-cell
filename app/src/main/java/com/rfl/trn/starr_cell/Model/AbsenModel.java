@@ -10,7 +10,7 @@ public class AbsenModel implements Serializable {
     private Long tanggal;
     private Long waktuMasuk;
     private Long waktuKeluar;
-    private String konfirmasi;
+    private String status;
     private String pesan;
     private String urlFoto;
     private String jenisAbsen;
@@ -18,14 +18,14 @@ public class AbsenModel implements Serializable {
     public AbsenModel() {
     }
 
-    public AbsenModel(String idKonter, String idAbsen, String idKaryawan, Long tanggal, Long waktuMasuk, Long waktuKeluar, String konfirmasi, String pesan, String urlFoto, String jenisAbsen) {
+    public AbsenModel(String idKonter, String idAbsen, String idKaryawan, Long tanggal, Long waktuMasuk, Long waktuKeluar, String status, String pesan, String urlFoto, String jenisAbsen) {
         this.idKonter = idKonter;
         this.idAbsen = idAbsen;
         this.idKaryawan = idKaryawan;
         this.tanggal = tanggal;
         this.waktuMasuk = waktuMasuk;
         this.waktuKeluar = waktuKeluar;
-        this.konfirmasi = konfirmasi;
+        this.status = status;
         this.pesan = pesan;
         this.urlFoto = urlFoto;
         this.jenisAbsen = jenisAbsen;
@@ -79,12 +79,12 @@ public class AbsenModel implements Serializable {
         this.waktuKeluar = waktuKeluar;
     }
 
-    public String getKonfirmasi() {
-        return konfirmasi;
+    public String getStatus() {
+        return status;
     }
 
-    public void setKonfirmasi(String konfirmasi) {
-        this.konfirmasi = konfirmasi;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getPesan() {
