@@ -30,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.rfl.trn.starr_cell.Activity.TambahKaryawanActivity;
 import com.rfl.trn.starr_cell.Adapter.AdapterListKaryawan;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
+import com.rfl.trn.starr_cell.Helper.Bantuan;
 import com.rfl.trn.starr_cell.Model.KaryawanModel;
 import com.rfl.trn.starr_cell.R;
 
@@ -116,7 +117,7 @@ public class AdminKaryawanFragment extends Fragment {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                        new Bantuan(getActivity()).swal_error(databaseError.getMessage());
                     }
                 });
 

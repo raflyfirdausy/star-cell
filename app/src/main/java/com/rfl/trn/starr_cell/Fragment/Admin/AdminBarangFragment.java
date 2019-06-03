@@ -31,6 +31,7 @@ import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.rfl.trn.starr_cell.Activity.TambahBarangActivity;
 import com.rfl.trn.starr_cell.Adapter.AdapterListBarang;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
+import com.rfl.trn.starr_cell.Helper.Bantuan;
 import com.rfl.trn.starr_cell.Interface.IDialog;
 import com.rfl.trn.starr_cell.Model.BarangModel;
 import com.rfl.trn.starr_cell.R;
@@ -166,7 +167,7 @@ public class AdminBarangFragment extends Fragment {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                        new Bantuan(getActivity()).swal_error(databaseError.getMessage());
                     }
                 });
 
@@ -263,7 +264,7 @@ public class AdminBarangFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                new Bantuan(getActivity()).swal_error(databaseError.getMessage());
             }
         });
     }
@@ -315,7 +316,7 @@ public class AdminBarangFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                new Bantuan(getActivity()).swal_error(databaseError.getMessage());
             }
         });
     }
@@ -367,7 +368,7 @@ public class AdminBarangFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                new Bantuan(getActivity()).swal_error(databaseError.getMessage());
             }
         });
     }
@@ -440,7 +441,7 @@ public class AdminBarangFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                new Bantuan(getActivity()).swal_error(databaseError.getMessage());
             }
         });
     }

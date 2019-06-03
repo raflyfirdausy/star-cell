@@ -194,7 +194,7 @@ public class TambahBarangActivity extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                        new Bantuan(context).swal_error(databaseError.getMessage());
                     }
                 });
 
@@ -258,7 +258,7 @@ public class TambahBarangActivity extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                        new Bantuan(context).swal_error(databaseError.getMessage());
                     }
                 });
 
@@ -321,7 +321,7 @@ public class TambahBarangActivity extends AppCompatActivity {
                             }
                             @Override
                             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                                new Bantuan(context).swal_error(databaseError.getMessage());
                             }
                         });
 
@@ -402,6 +402,7 @@ public class TambahBarangActivity extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
+                        new Bantuan(context).swal_error(databaseError.getMessage());
                     }
                 });
 
