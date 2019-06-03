@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 
+import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -52,7 +53,7 @@ public class AdminKonterFragment extends Fragment {
     FloatingActionButton fabTambahKonter;
     Unbinder unbinder;
     @BindView(R.id.rv_konter)
-    RecyclerView rvKonter;
+    ShimmerRecyclerView rvKonter;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
     private List<KonterModel> list = new ArrayList<>();
@@ -73,6 +74,7 @@ public class AdminKonterFragment extends Fragment {
         //firebase
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
+        rvKonter.showShimmerAdapter();
         return view;
     }
 
@@ -93,7 +95,6 @@ public class AdminKonterFragment extends Fragment {
                                 Objects.requireNonNull(konterModel).setKey(ds.getKey());
                                 list.add(konterModel);
                             }
-
                             adapterListKonter = new AdapterListKonter(getActivity(), list);
                             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
                             rvKonter.setLayoutManager(layoutManager);
