@@ -25,6 +25,7 @@ absen (firebaseDatabase)
   |- pesan
   |- urlFoto
   |- jenisAbsen
+  |- namaFoto (buat child hapus foto di firebaseStorage)
 
 absen
 |-id_konter (ambil dari key node konter)

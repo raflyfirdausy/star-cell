@@ -328,9 +328,10 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
 
+        final String namaFoto = "absen_" + new Date().getTime() + ".jpeg";
         final StorageReference ref = storageReference.child("absen")
                 .child(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid())
-                .child("absen_" + new Date().getTime() + ".jpeg");
+                .child(namaFoto);
         UploadTask uploadTask = ref.putBytes(data);
         final String finalPesanAbsen = pesanAbsen;
         uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -356,6 +357,7 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
                     dataAbsen.setUrlFoto(Objects.requireNonNull(downloadURL).toString());
                     dataAbsen.setIdKonter(firebaseAuth.getCurrentUser().getUid());
                     dataAbsen.setJenisAbsen("masuk");
+                    dataAbsen.setNamaFoto(namaFoto);
 
                     String keyAbsen = databaseReference.push().getKey();
 
