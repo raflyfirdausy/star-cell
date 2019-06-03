@@ -5,8 +5,9 @@ import java.io.Serializable;
 public class AbsenModel implements Serializable {
 /*
     absen
-    |-id_konter(ambil dari key node konter)
+
      |- {id_absen}(random id)
+      |- idKonter
       |- id_karyawan(ambil dari key node karyawan)
       |- tanggal
       |- waktu_masuk
