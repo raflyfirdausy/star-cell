@@ -163,12 +163,13 @@ public class AbsensiKaryawanFragment extends Fragment {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                                 listCurrentKaryawan.add(dataSnapshot.child("namaKaryawan").getValue(String.class));
-                                                String currentKaryawan = "";
-                                                for (int i = 0; i < listCurrentKaryawan.size() ; i++) {
-                                                    currentKaryawan += listCurrentKaryawan.get(i) + "\n";
-                                                    tvKaryawan.setText(currentKaryawan);
+                                                if (tvKaryawan != null) {
+                                                    String currentKaryawan = "";
+                                                    for (int i = 0; i < listCurrentKaryawan.size(); i++) {
+                                                        currentKaryawan += listCurrentKaryawan.get(i) + "\n";
+                                                        tvKaryawan.setText(currentKaryawan);
+                                                    }
                                                 }
-
                                             }
 
                                             @Override
