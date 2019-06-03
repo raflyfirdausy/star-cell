@@ -106,4 +106,8 @@
     <string name="kirim">Kirim</string>
     <string name="klik_untuk_mengambil_foto">Klik untuk mengambil foto</string>
     <string name="tambahkan_anda_untuk_bukti_absen">Tambahkan anda untuk bukti absen</string>
+    <string name="karyawan_lebih_dari_dua">Total karyawan yang sedang bekerja tidak boleh lebih dari 2 orang. Silahkan Absen keluar salah satu karyawan terlebih dahulu jika ingin absen masuk.</string>
+    <string name="belum_ada_karyawan_yang_sedang_bekerja">Belum ada karyawan yang sedang bekerja</string>
+    <string name="overtime_in">Overtime In</string>
+    <string name="overtime_out">Overtime Out</string>
 </resources>

@@ -3,17 +3,6 @@ package com.rfl.trn.starr_cell.Model;
 import java.io.Serializable;
 
 public class AbsenModel implements Serializable {
-/*
-    absen
-
-     |- {id_absen}(random id)
-      |- idKonter
-      |- id_karyawan(ambil dari key node karyawan)
-      |- tanggal
-      |- waktu_masuk
-      |- waktu_keluar
-      |- konfirmasi (pending, accept, reject)
-*/
 
     private String idKonter;
     private String idAbsen;
@@ -21,23 +10,29 @@ public class AbsenModel implements Serializable {
     private Long tanggal;
     private Long waktuMasuk;
     private Long waktuKeluar;
-    private String konfirmasi;
+    private String status;
     private String pesan;
     private String urlFoto;
+    private String jenisAbsen;
+    private String namaFoto;
+    private boolean lembur;
 
     public AbsenModel() {
     }
 
-    public AbsenModel(String idKonter, String idAbsen, String idKaryawan, Long tanggal, Long waktuMasuk, Long waktuKeluar, String konfirmasi, String pesan, String urlFoto) {
+    public AbsenModel(String idKonter, String idAbsen, String idKaryawan, Long tanggal, Long waktuMasuk, Long waktuKeluar, String status, String pesan, String urlFoto, String jenisAbsen, String namaFoto, boolean lembur) {
         this.idKonter = idKonter;
         this.idAbsen = idAbsen;
         this.idKaryawan = idKaryawan;
         this.tanggal = tanggal;
         this.waktuMasuk = waktuMasuk;
         this.waktuKeluar = waktuKeluar;
-        this.konfirmasi = konfirmasi;
+        this.status = status;
         this.pesan = pesan;
         this.urlFoto = urlFoto;
+        this.jenisAbsen = jenisAbsen;
+        this.namaFoto = namaFoto;
+        this.lembur = lembur;
     }
 
     public String getIdKonter() {
@@ -88,12 +83,12 @@ public class AbsenModel implements Serializable {
         this.waktuKeluar = waktuKeluar;
     }
 
-    public String getKonfirmasi() {
-        return konfirmasi;
+    public String getStatus() {
+        return status;
     }
 
-    public void setKonfirmasi(String konfirmasi) {
-        this.konfirmasi = konfirmasi;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getPesan() {
@@ -110,5 +105,29 @@ public class AbsenModel implements Serializable {
 
     public void setUrlFoto(String urlFoto) {
         this.urlFoto = urlFoto;
+    }
+
+    public String getJenisAbsen() {
+        return jenisAbsen;
+    }
+
+    public void setJenisAbsen(String jenisAbsen) {
+        this.jenisAbsen = jenisAbsen;
+    }
+
+    public String getNamaFoto() {
+        return namaFoto;
+    }
+
+    public void setNamaFoto(String namaFoto) {
+        this.namaFoto = namaFoto;
+    }
+
+    public boolean isLembur() {
+        return lembur;
+    }
+
+    public void setLembur(boolean lembur) {
+        this.lembur = lembur;
     }
 }

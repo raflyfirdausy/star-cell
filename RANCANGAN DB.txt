@@ -21,9 +21,12 @@ absen (firebaseDatabase)
   |- tanggal (timestamp)
   |- waktu_masuk
   |- waktu_keluar
-  |- konfirmasi (pending, accept, reject)
+  |- status (pending, accept, reject)
   |- pesan
   |- urlFoto
+  |- jenisAbsen
+  |- namaFoto (buat child hapus foto di firebaseStorage)
+  |- lembur (boolean)
 
 absen
 |-id_konter (ambil dari key node konter)

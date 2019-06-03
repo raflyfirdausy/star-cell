@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.github.javafaker.Faker;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -48,6 +49,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -75,6 +77,8 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
     private StorageReference storageReference;
     private String keyKaryawan = null;
     private Uri downloadURL;
+    private long totalCurrentKaryawan = 0;
+    private List<String> listKeyCurrentKaryawan = new ArrayList<>();
 
 
     @Override
@@ -89,6 +93,7 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         storageReference = FirebaseStorage.getInstance().getReference();
+        getTotalAndKeyCurrentKaryawan();
         getDataKaryawan();
     }
 
@@ -261,8 +266,43 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
             });
             dialog.show();
         } else {
-            simpanKeDatabase();
+            if (isSudahAbsen()) {
+                new Bantuan(context).swal_error("Kamu sudah absen");
+            } else {
+                if (totalCurrentKaryawan == 2) {
+                    new Bantuan(context).swal_error(getString(R.string.karyawan_lebih_dari_dua));
+                } else {
+                    simpanKeDatabase("ID-" +
+                            new Faker(new Locale("in-ID")).random().hex(10));
+                }
+            }
         }
+    }
+
+    private void getTotalAndKeyCurrentKaryawan() {
+        databaseReference.child("currentKaryawan")
+                .child(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid())
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        listKeyCurrentKaryawan.clear();
+                        totalCurrentKaryawan = dataSnapshot.getChildrenCount();
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                listKeyCurrentKaryawan.add(data.getValue(String.class));
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        new Bantuan(context).swal_error(databaseError.getMessage());
+                    }
+                });
+    }
+
+    private boolean isSudahAbsen() {
+        return listKeyCurrentKaryawan.contains(keyKaryawan);
     }
 
     @Override
@@ -273,7 +313,7 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
         }
     }
 
-    private void simpanKeDatabase() {
+    private void simpanKeDatabase(final String childKaryawan) {
         final SweetAlertDialog loading = new Bantuan(context).swal_loading("Tunggu beberapa saat, proses absen");
         loading.show();
         String pesanAbsen = null;
@@ -288,9 +328,10 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
 
+        final String namaFoto = "absen_" + new Date().getTime() + ".jpeg";
         final StorageReference ref = storageReference.child("absen")
                 .child(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid())
-                .child("absen_" + new Date().getTime() + ".jpeg");
+                .child(namaFoto);
         UploadTask uploadTask = ref.putBytes(data);
         final String finalPesanAbsen = pesanAbsen;
         uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -311,10 +352,13 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
                     dataAbsen.setTanggal(new Date().getTime());
                     dataAbsen.setWaktuMasuk(new Date().getTime());
                     dataAbsen.setWaktuKeluar(null);
-                    dataAbsen.setKonfirmasi("pending");
+                    dataAbsen.setStatus("pending");
                     dataAbsen.setPesan(finalPesanAbsen);
                     dataAbsen.setUrlFoto(Objects.requireNonNull(downloadURL).toString());
                     dataAbsen.setIdKonter(firebaseAuth.getCurrentUser().getUid());
+                    dataAbsen.setJenisAbsen("masuk");
+                    dataAbsen.setNamaFoto(namaFoto);
+                    dataAbsen.setLembur(false);
 
                     String keyAbsen = databaseReference.push().getKey();
 
@@ -325,14 +369,28 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     //TODO : set current karyawan tp ngko lah :v
-                                    loading.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-                                    loading.showContentText(true);
-                                    loading.setTitleText("Sukses");
-                                    loading.setContentText("Berhasil Absen");
-                                    loading.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    databaseReference.child("currentKaryawan")
+                                            .child(firebaseAuth.getCurrentUser().getUid())
+                                            .child(childKaryawan)
+                                            .setValue(dataAbsen.getIdKaryawan())
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    loading.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                                    loading.showContentText(true);
+                                                    loading.setTitleText("Sukses");
+                                                    loading.setContentText("Berhasil Absen");
+                                                    loading.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                        @Override
+                                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                            finish();
+                                                        }
+                                                    });
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
                                         @Override
-                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                            finish();
+                                        public void onFailure(@NonNull Exception e) {
+                                            new Bantuan(context).swal_error("Erorr saat mengisi current karyawan : " + e.getMessage());
                                         }
                                     });
                                 }
