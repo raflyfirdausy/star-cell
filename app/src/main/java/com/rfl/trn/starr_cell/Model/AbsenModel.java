@@ -1,6 +1,8 @@
 package com.rfl.trn.starr_cell.Model;
 
-public class AbsenModel {
+import java.io.Serializable;
+
+public class AbsenModel implements Serializable {
 /*
     absen
     |-id_konter(ambil dari key node konter)

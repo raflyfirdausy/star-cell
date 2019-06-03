@@ -81,7 +81,7 @@ public class DetailKaryawanActivity extends AppCompatActivity {
                         if (dataSnapshot.exists()) {
                             svDetailKaryawan.setVisibility(View.VISIBLE);
                             model = dataSnapshot.getValue(KaryawanModel.class);
-                            mytvDetailNamaKaryawan.setText(model.getNamaKarywan());
+                            mytvDetailNamaKaryawan.setText(model.getNamaKaryawan());
                             mytvDetailStatusKaryawan.setText(model.getStatusKerja());
                             mytvDetailAlamatKaryawan.setText(model.getAlamatKaryawan());
                             mytvDetailNoHpKaryawan.setText(String.valueOf(model.getNomerHp()));

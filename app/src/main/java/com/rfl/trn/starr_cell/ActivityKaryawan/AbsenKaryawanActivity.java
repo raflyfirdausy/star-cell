@@ -102,7 +102,7 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
                         if (dataSnapshot.exists()) {
                             for (DataSnapshot data : dataSnapshot.getChildren()) {
                                 listKeyKaryawan.add(data.getKey());
-                                listNamaKaryawan.add(data.child("namaKarywan").getValue(String.class));
+                                listNamaKaryawan.add(data.child("namaKaryawan").getValue(String.class));
                             }
                         } else {
                             listKeyKaryawan.add("kosong");
@@ -314,11 +314,11 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
                     dataAbsen.setKonfirmasi("pending");
                     dataAbsen.setPesan(finalPesanAbsen);
                     dataAbsen.setUrlFoto(Objects.requireNonNull(downloadURL).toString());
+                    dataAbsen.setIdKonter(firebaseAuth.getCurrentUser().getUid());
 
                     String keyAbsen = databaseReference.push().getKey();
 
                     databaseReference.child("absen")
-                            .child(firebaseAuth.getCurrentUser().getUid())
                             .child(Objects.requireNonNull(keyAbsen))
                             .setValue(dataAbsen)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {

@@ -15,12 +15,10 @@ import android.widget.LinearLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
-import com.rfl.trn.starr_cell.Activity.DaftarKonterActivity;
 import com.rfl.trn.starr_cell.Activity.DetailKaryawanActivity;
 import com.rfl.trn.starr_cell.Activity.TambahKaryawanActivity;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
 import com.rfl.trn.starr_cell.Model.KaryawanModel;
-import com.rfl.trn.starr_cell.Model.KonterModel;
 import com.rfl.trn.starr_cell.R;
 
 import java.util.ArrayList;
@@ -82,7 +80,7 @@ public class AdapterListKaryawan extends RecyclerView.Adapter<AdapterListKaryawa
             Intent intent = new Intent(context, TambahKaryawanActivity.class);
             intent.putExtra("jenis", jenis);
             intent.putExtra("key", karyawanModel.getIdKaryawan());
-            intent.putExtra("namaKaryawan", karyawanModel.getNamaKarywan());
+            intent.putExtra("namaKaryawan", karyawanModel.getNamaKaryawan());
             intent.putExtra("alamatKaryawan", karyawanModel.getAlamatKaryawan());
             intent.putExtra("noHpKaryawan", String.valueOf(karyawanModel.getNomerHp()));
             if (karyawanModel.getJenisKelamin().equalsIgnoreCase("Laki-Laki")){
@@ -99,7 +97,7 @@ public class AdapterListKaryawan extends RecyclerView.Adapter<AdapterListKaryawa
         }
 
         void setDataKeView(final KaryawanModel isiData, final String s) {
-            tvNamaKaryawan.setText(isiData.getNamaKarywan());
+            tvNamaKaryawan.setText(isiData.getNamaKaryawan());
             tvNoHpKaryawan.setText(String.valueOf(isiData.getNomerHp()));
             llParent.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -116,7 +114,7 @@ public class AdapterListKaryawan extends RecyclerView.Adapter<AdapterListKaryawa
                             "Edit Data Karyawan", "Hapus Karyawan " , "Batal"};
                     AlertDialog.Builder builder;
                     builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Pilih Aksi Untuk " + isiData.getNamaKarywan())
+                    builder.setTitle("Pilih Aksi Untuk " + isiData.getNamaKaryawan())
                             .setItems(listItem, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -141,7 +139,7 @@ public class AdapterListKaryawan extends RecyclerView.Adapter<AdapterListKaryawa
             SweetAlertDialog tanya = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
                     .setTitleText("Peringatan")
                     .setContentText("Apakah kamu yakin akan menghapus " +
-                            isiData.getNamaKarywan()
+                            isiData.getNamaKaryawan()
                             + " ?\nSemua Data pada konter tersebut akan di hapus secara permanent. " +
                             "Data yang telah di hapus tidak dapat di kembalikan")
                     .setConfirmText("Ya, Hapus")
@@ -163,9 +161,9 @@ public class AdapterListKaryawan extends RecyclerView.Adapter<AdapterListKaryawa
         }
         private void lihatDataKonter(KaryawanModel karyawanModel) {
             final SweetAlertDialog detail = new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
-                    .setTitleText("Detail Data " + karyawanModel.getNamaKarywan())
+                    .setTitleText("Detail Data " + karyawanModel.getNamaKaryawan())
                     .setContentText(
-                            "Nama Konter : " + karyawanModel.getNamaKarywan() + "\n" +
+                            "Nama Konter : " + karyawanModel.getNamaKaryawan() + "\n" +
                                     "Alamat Konter : " + karyawanModel.getAlamatKaryawan()
                     );
             detail.show();
@@ -179,7 +177,7 @@ public class AdapterListKaryawan extends RecyclerView.Adapter<AdapterListKaryawa
             data.addAll(dataSementara);
         } else {
             for (int i = 0; i < dataSementara.size(); i++) {
-                if (dataSementara.get(i).getNamaKarywan().toLowerCase(Locale.getDefault()).contains(text)) {
+                if (dataSementara.get(i).getNamaKaryawan().toLowerCase(Locale.getDefault()).contains(text)) {
                     data.add(dataSementara.get(i));
                 }
             }

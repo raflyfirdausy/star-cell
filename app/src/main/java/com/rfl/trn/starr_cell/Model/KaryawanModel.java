@@ -7,7 +7,7 @@ public class KaryawanModel implements Serializable {
     String jenisKelamin;
     String photoUrl;
     String statusKerja;
-    String namaKarywan;
+    String namaKaryawan;
     String alamatKaryawan;
     String nomerHp;
     Long tanggalDiubah;
@@ -15,12 +15,12 @@ public class KaryawanModel implements Serializable {
     public KaryawanModel() {
     }
 
-    public KaryawanModel(String idKaryawan, String jenisKelamin, String photoUrl, String statusKerja, String namaKarywan, String alamatKaryawan, String nomerHp, Long tanggalDiubah) {
+    public KaryawanModel(String idKaryawan, String jenisKelamin, String photoUrl, String statusKerja, String namaKaryawan, String alamatKaryawan, String nomerHp, Long tanggalDiubah) {
         this.idKaryawan = idKaryawan;
         this.jenisKelamin = jenisKelamin;
         this.photoUrl = photoUrl;
         this.statusKerja = statusKerja;
-        this.namaKarywan = namaKarywan;
+        this.namaKaryawan = namaKaryawan;
         this.alamatKaryawan = alamatKaryawan;
         this.nomerHp = nomerHp;
         this.tanggalDiubah = tanggalDiubah;
@@ -58,12 +58,12 @@ public class KaryawanModel implements Serializable {
         this.statusKerja = statusKerja;
     }
 
-    public String getNamaKarywan() {
-        return namaKarywan;
+    public String getNamaKaryawan() {
+        return namaKaryawan;
     }
 
-    public void setNamaKarywan(String namaKarywan) {
-        this.namaKarywan = namaKarywan;
+    public void setNamaKaryawan(String namaKaryawan) {
+        this.namaKaryawan = namaKaryawan;
     }
 
     public String getNomerHp() {
