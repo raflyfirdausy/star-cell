@@ -3,6 +3,8 @@ package com.rfl.trn.starr_cell.Fragment.Karyawan;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,16 +17,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.rfl.trn.starr_cell.ActivityKaryawan.AbsenKaryawanActivity;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
-import com.rfl.trn.starr_cell.Model.KaryawanModel;
 import com.rfl.trn.starr_cell.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,12 +52,8 @@ public class AbsensiKaryawanFragment extends Fragment {
     MyTextView tvDetailKaryawan;
     @BindView(R.id.ll_header)
     LinearLayout llHeader;
-    @BindView(R.id.tv_karyawan1)
-    TextView tvKaryawan1;
-    @BindView(R.id.tv_karyawan2)
-    TextView tvKaryawan2;
-    @BindView(R.id.tv_karyawan3)
-    TextView tvKaryawan3;
+    @BindView(R.id.tv_karyawan)
+    TextView tvKaryawan;
     @BindView(R.id.layout_karyawanSaatIni)
     LinearLayout layoutKaryawanSaatIni;
     @BindView(R.id.layout_absenMasuk)
@@ -58,6 +61,11 @@ public class AbsensiKaryawanFragment extends Fragment {
     @BindView(R.id.layout_absenKeluar)
     LinearLayout layoutAbsenKeluar;
     Unbinder unbinder;
+    private FirebaseAuth firebaseAuth;
+    private DatabaseReference databaseReference;
+    private StorageReference storageReference;
+    private long totalCurrentKaryawan = 0;
+    private List<String> listCurrentKaryawan = new ArrayList<>();
 
     public AbsensiKaryawanFragment() {
         // Required empty public constructor
@@ -65,12 +73,26 @@ public class AbsensiKaryawanFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_absensi_karyawan, container, false);
         unbinder = ButterKnife.bind(this, view);
+
+        //firebase
+        firebaseAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        storageReference = FirebaseStorage.getInstance().getReference();
+
+        getTotalCurrentKaryawan();
+        setAndgetCurrentKaryawan();
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+//        setAndgetCurrentKaryawan();
     }
 
     @Override
@@ -86,7 +108,11 @@ public class AbsensiKaryawanFragment extends Fragment {
                 new Bantuan(getActivity()).swal_sukses("karyawan");
                 break;
             case R.id.layout_absenMasuk:
-                startActivity(new Intent(getActivity(), AbsenKaryawanActivity.class));
+                if (totalCurrentKaryawan < 2) {
+                    startActivity(new Intent(getActivity(), AbsenKaryawanActivity.class));
+                } else {
+                    new Bantuan(getActivity()).swal_error(getString(R.string.karyawan_lebih_dari_dua));
+                }
                 break;
             case R.id.layout_absenKeluar:
                 new Bantuan(getActivity()).swal_sukses("keluar");
@@ -104,5 +130,60 @@ public class AbsensiKaryawanFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
+    }
+
+    private void getTotalCurrentKaryawan() {
+        databaseReference.child("currentKaryawan")
+                .child(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid())
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        totalCurrentKaryawan = dataSnapshot.getChildrenCount();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        new Bantuan(getActivity()).swal_error(databaseError.getMessage());
+                    }
+                });
+    }
+
+    private void setAndgetCurrentKaryawan() {
+        databaseReference.child("currentKaryawan")
+                .child(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid())
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        listCurrentKaryawan.clear();
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                databaseReference.child("karyawan")
+                                        .child(Objects.requireNonNull(data.getValue(String.class)))
+                                        .addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                listCurrentKaryawan.add(dataSnapshot.child("namaKaryawan").getValue(String.class));
+                                                String currentKaryawan = "";
+                                                for (int i = 0; i < listCurrentKaryawan.size() ; i++) {
+                                                    currentKaryawan += listCurrentKaryawan.get(i) + "\n";
+                                                    tvKaryawan.setText(currentKaryawan);
+                                                }
+
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                new Bantuan(getActivity()).swal_error(databaseError.getMessage());
+                                            }
+                                        });
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        new Bantuan(getActivity()).swal_error(databaseError.getMessage());
+                    }
+                });
     }
 }

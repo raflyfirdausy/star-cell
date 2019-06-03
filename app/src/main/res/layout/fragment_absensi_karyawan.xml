@@ -118,30 +118,10 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/tv_karyawan1"
+                            android:id="@+id/tv_karyawan"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/rafli_firdausy_irawan"
-                            android:textColor="@color/white"
-                            android:textSize="16sp"
-                            android:textStyle="normal"
-                            tools:ignore="SmallSp" />
-
-                        <TextView
-                            android:id="@+id/tv_karyawan2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/trian_damai"
-                            android:textColor="@color/white"
-                            android:textSize="16sp"
-                            android:textStyle="normal"
-                            tools:ignore="SmallSp" />
-
-                        <TextView
-                            android:id="@+id/tv_karyawan3"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/karyawan_star_cell_lainya"
+                            android:text="@string/belum_ada_karyawan_yang_sedang_bekerja"
                             android:textColor="@color/white"
                             android:textSize="16sp"
                             android:textStyle="normal"
