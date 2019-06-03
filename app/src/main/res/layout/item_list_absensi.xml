@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_parent_absen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -13,7 +14,7 @@
             android:id="@+id/iv_karyawan"
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:padding="20dp"
+            android:padding="2dp"
             app:srcCompat="@drawable/ic_store"
             android:tint="@color/colorPrimary" />
 
@@ -44,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="monospace"
                     android:paddingTop="5dp"
-                    android:text="@string/detail_konter"
+                    android:text="Star Cell 1"
                     android:textColor="@color/black"
                     android:textSize="12sp"
                     android:textStyle="normal" />
