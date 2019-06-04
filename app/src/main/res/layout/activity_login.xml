@@ -17,163 +17,165 @@
         android:layout_weight="85"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.v4.widget.NestedScrollView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:padding="30dp">
+                android:layout_height="match_parent">
 
-                <LinearLayout
+                <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:id="@+id/frame"
-                        android:layout_width="180dp"
-                        android:layout_height="180dp"
-                        android:background="@drawable/ic_karyawan"
-                        android:scaleType="centerCrop"
-                        android:layout_gravity="center"/>
+                    android:layout_centerInParent="true">
 
                     <LinearLayout
-                        android:id="@+id/linear"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:padding="30dp">
 
-                        <com.rfl.trn.starr_cell.Custom.MyTextView
-                            android:id="@+id/head"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="@string/star_cell"
-                            android:textColor="@color/white"
-                            android:textSize="25sp"
-                            android:textStyle="bold"
-                            android:layout_marginTop="@dimen/dp_8"/>
-
-                        <com.rfl.trn.starr_cell.Custom.MyTextView
-                            android:id="@+id/tv_login"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="@string/login_karyawan"
-                            android:textColor="@color/white"
-                            android:textSize="18sp"
-                            android:typeface="monospace"/>
-
-
-                        <android.support.design.widget.TextInputLayout
-                            android:id="@+id/email1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:theme="@style/login">
-
-                            <com.rfl.trn.starr_cell.Custom.MyEditText
-                                android:id="@+id/myet_email"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:drawableStart="@drawable/ic_user"
-                                android:drawablePadding="15dp"
-                                android:drawableTint="@color/white"
-                                android:hint="@string/email"
-                                android:inputType="textEmailAddress"
-                                android:paddingTop="10dp"
-                                android:paddingBottom="10dp"
-                                android:textColor="@color/white"
-                                android:textColorHint="@color/white"
-                                tools:targetApi="m" />
-
-                        </android.support.design.widget.TextInputLayout>
-
-
-                        <android.support.design.widget.TextInputLayout
-                            android:id="@+id/password"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:theme="@style/login">
-
-                            <com.rfl.trn.starr_cell.Custom.MyEditText
-                                android:id="@+id/myet_password"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:drawableStart="@drawable/ic_pass"
-                                android:drawablePadding="15dp"
-                                android:drawableTint="@color/white"
-                                android:hint="@string/password"
-                                android:inputType="textPassword"
-                                android:paddingTop="10dp"
-                                android:paddingBottom="10dp"
-                                android:textColor="@color/white"
-                                android:textColorHint="@color/white"
-                                tools:targetApi="m" />
-                        </android.support.design.widget.TextInputLayout>
+                        <ImageView
+                            android:id="@+id/frame"
+                            android:layout_width="180dp"
+                            android:layout_height="180dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/ic_karyawan"
+                            android:scaleType="centerCrop" />
 
                         <LinearLayout
-                            android:id="@+id/linear4"
+                            android:id="@+id/linear"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:orientation="horizontal"
-                            android:visibility="gone">
-
-                            <CheckBox
-                                android:id="@+id/remember"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="60dp"
-                                android:layout_weight="2"
-                                android:buttonTint="@color/colorhint"
-                                android:checked="false"
-                                android:text="@string/remember_me"
-                                android:textColor="@color/colorhint"
-                                android:textSize="11sp"
-                                tools:ignore="SmallSp" />
+                            android:orientation="vertical">
 
                             <com.rfl.trn.starr_cell.Custom.MyTextView
-                                android:id="@+id/forgotpass"
-                                android:layout_width="0dp"
+                                android:id="@+id/head"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_weight="2.3"
-                                android:text="@string/forgot_password"
-                                android:textColor="@color/colorhint"
-                                android:textSize="11sp"
-                                tools:ignore="SmallSp" />
+                                android:layout_marginTop="@dimen/dp_8"
+                                android:gravity="center"
+                                android:text="@string/star_cell"
+                                android:textColor="@color/white"
+                                android:textSize="25sp"
+                                android:textStyle="bold" />
+
+                            <com.rfl.trn.starr_cell.Custom.MyTextView
+                                android:id="@+id/tv_login"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="@string/login_karyawan"
+                                android:textColor="@color/white"
+                                android:textSize="18sp"
+                                android:typeface="monospace" />
+
+
+                            <android.support.design.widget.TextInputLayout
+                                android:id="@+id/email1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:theme="@style/login">
+
+                                <com.rfl.trn.starr_cell.Custom.MyEditText
+                                    android:id="@+id/myet_email"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:drawableStart="@drawable/ic_user"
+                                    android:drawablePadding="15dp"
+                                    android:drawableTint="@color/white"
+                                    android:hint="@string/email"
+                                    android:inputType="textEmailAddress"
+                                    android:paddingTop="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:textColor="@color/white"
+                                    android:textColorHint="@color/white"
+                                    tools:targetApi="m" />
+
+                            </android.support.design.widget.TextInputLayout>
+
+
+                            <android.support.design.widget.TextInputLayout
+                                android:id="@+id/password"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:theme="@style/login">
+
+                                <com.rfl.trn.starr_cell.Custom.MyEditText
+                                    android:id="@+id/myet_password"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:drawableStart="@drawable/ic_pass"
+                                    android:drawablePadding="15dp"
+                                    android:drawableTint="@color/white"
+                                    android:hint="@string/password"
+                                    android:inputType="textPassword"
+                                    android:paddingTop="10dp"
+                                    android:paddingBottom="10dp"
+                                    android:textColor="@color/white"
+                                    android:textColorHint="@color/white"
+                                    tools:targetApi="m" />
+                            </android.support.design.widget.TextInputLayout>
+
+                            <LinearLayout
+                                android:id="@+id/linear4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:orientation="horizontal"
+                                android:visibility="gone">
+
+                                <CheckBox
+                                    android:id="@+id/remember"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="60dp"
+                                    android:layout_weight="2"
+                                    android:buttonTint="@color/colorhint"
+                                    android:checked="false"
+                                    android:text="@string/remember_me"
+                                    android:textColor="@color/colorhint"
+                                    android:textSize="11sp"
+                                    tools:ignore="SmallSp" />
+
+                                <com.rfl.trn.starr_cell.Custom.MyTextView
+                                    android:id="@+id/forgotpass"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="2.3"
+                                    android:text="@string/forgot_password"
+                                    android:textColor="@color/colorhint"
+                                    android:textSize="11sp"
+                                    tools:ignore="SmallSp" />
+                            </LinearLayout>
+
+                            <com.rfl.trn.starr_cell.Custom.MyTextView
+                                android:id="@+id/btn_login"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginEnd="5dp"
+                                android:background="@drawable/rect1"
+                                android:elevation="3dp"
+                                android:fontFamily="monospace"
+                                android:gravity="center"
+                                android:padding="12dp"
+                                android:text="@string/sign_in"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+
                         </LinearLayout>
 
-                        <com.rfl.trn.starr_cell.Custom.MyTextView
-                            android:id="@+id/btn_login"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginEnd="5dp"
-                            android:background="@drawable/rect1"
-                            android:elevation="3dp"
-                            android:fontFamily="monospace"
-                            android:gravity="center"
-                            android:padding="12dp"
-                            android:text="@string/sign_in"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
-
                     </LinearLayout>
-
-                </LinearLayout>
-
-            </android.support.v4.widget.NestedScrollView>
-
-        </RelativeLayout>
-
+                </ScrollView>
+            </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -197,43 +199,41 @@
                 app:mwhStartColor="@color/white"
                 app:mwhVelocity="1"
                 app:mwhWaveHeight="40dp"
-                app:mwhWaves="MultiWave">
-            </com.scwang.wave.MultiWaveHeader>
+                app:mwhWaves="MultiWave"></com.scwang.wave.MultiWaveHeader>
 
             <TextView
                 android:id="@+id/tv_loginKaryawan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/login_karyawan"
-                android:textSize="18sp"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
-                android:padding="10dp"
-                android:textStyle="bold"
-                android:fontFamily="monospace"
-                android:textColor="@color/colorPrimaryDark"
+                android:layout_alignParentBottom="true"
+                android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="?attr/selectableItemBackground"/>
+                android:fontFamily="monospace"
+                android:padding="10dp"
+                android:text="@string/login_karyawan"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_loginAdmin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/login_admin"
-                android:textSize="18sp"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
-                android:padding="10dp"
-                android:textStyle="bold"
-                android:fontFamily="monospace"
-                android:textColor="@color/colorPrimaryDark"
+                android:layout_alignParentBottom="true"
+                android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="?attr/selectableItemBackground"/>
+                android:fontFamily="monospace"
+                android:padding="10dp"
+                android:text="@string/login_admin"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
         </RelativeLayout>
 
     </LinearLayout>
-
 </LinearLayout>

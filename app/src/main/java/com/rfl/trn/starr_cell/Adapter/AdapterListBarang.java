@@ -36,8 +36,6 @@ import butterknife.ButterKnife;
 
 public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.MyViewHolder> {
 
-
-
     private Context context;
     private List<BarangModel> data;
     private List<BarangModel> dataSementara;
@@ -59,14 +57,11 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_list_barang, viewGroup, false);
-
         return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-
-
         myViewHolder.setDataKewView(data.get(i), key.get(i));
     }
 
@@ -112,8 +107,6 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-
-
         }
 
         @SuppressLint("SetTextI18n")

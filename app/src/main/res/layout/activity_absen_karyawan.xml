@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     tools:context=".ActivityKaryawan.AbsenKaryawanActivity">
 
@@ -12,25 +13,35 @@
         android:orientation="vertical"
         android:padding="@dimen/dp_16">
 
-        <ImageView
-            android:id="@+id/iv_takeFoto"
-            android:layout_width="250dp"
+        <android.support.v7.widget.CardView
+            android:layout_width="197dp"
             android:layout_height="350dp"
             android:layout_gravity="center"
             android:clickable="true"
             android:focusable="true"
-            android:scaleType="fitCenter"
-            android:src="@drawable/bg_take_pict"
-            android:contentDescription="@string/klik_untuk_mengambil_foto" />
+            app:cardCornerRadius="@dimen/dp_8">
+
+            <ImageView
+                android:id="@+id/iv_takeFoto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:clickable="true"
+                android:contentDescription="@string/klik_untuk_mengambil_foto"
+                android:focusable="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/bg_take_pict" />
+        </android.support.v7.widget.CardView>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_16"
+            android:gravity="center"
             android:text="@string/tambahkan_anda_untuk_bukti_absen"
             android:textColor="@color/colortext"
             android:textSize="12sp"
-            android:gravity="center"
-            android:layout_marginBottom="@dimen/dp_16"/>
+            android:layout_marginTop="@dimen/dp_4"/>
 
         <TextView
             android:layout_width="match_parent"

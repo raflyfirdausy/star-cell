@@ -25,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.rfl.trn.starr_cell.ActivityKaryawan.AbsenKaryawanActivity;
+import com.rfl.trn.starr_cell.ActivityKaryawan.ListCurrentKaryawanActivity;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
 import com.rfl.trn.starr_cell.R;
@@ -115,7 +116,7 @@ public class AbsensiKaryawanFragment extends Fragment {
                 }
                 break;
             case R.id.layout_absenKeluar:
-                new Bantuan(getActivity()).swal_sukses("keluar");
+                startActivity(new Intent(getActivity(), ListCurrentKaryawanActivity.class));
                 break;
         }
     }
@@ -158,7 +159,7 @@ public class AbsensiKaryawanFragment extends Fragment {
                         if (dataSnapshot.exists()) {
                             for (DataSnapshot data : dataSnapshot.getChildren()) {
                                 databaseReference.child("karyawan")
-                                        .child(Objects.requireNonNull(data.getValue(String.class)))
+                                        .child(Objects.requireNonNull(data.child("idKaryawan").getValue(String.class)))
                                         .addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

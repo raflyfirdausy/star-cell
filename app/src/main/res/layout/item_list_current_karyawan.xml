@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="120dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginStart="@dimen/dp_16"
+    android:layout_marginTop="@dimen/dp_8"
+    android:layout_marginEnd="@dimen/dp_16"
+    android:layout_marginBottom="@dimen/dp_8"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardCornerRadius="@dimen/dp_8"
+    app:cardElevation="@dimen/dp_0">
+
+    <ImageView
+        android:id="@+id/iv_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/gradient_scooter" />
+
+    <LinearLayout
+        android:id="@+id/layout_currentKaryawan"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="horizontal"
+        android:padding="@dimen/dp_8">
+
+        <ImageView
+            android:id="@+id/iv_fotoKaryawan"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:padding="@dimen/dp_8"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_karyawan" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/dp_8"
+            android:paddingEnd="@dimen/dp_8">
+
+            <com.rfl.trn.starr_cell.Custom.MyTextView
+                android:id="@+id/tv_namaKaryawan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="@string/nama_karyawan"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <com.rfl.trn.starr_cell.Custom.MyTextView
+                android:id="@+id/tv_waktuAbsen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/_12_12_2017_12_12_wib"
+                android:drawablePadding="@dimen/dp_8"
+                android:gravity="center_vertical"
+                android:drawableStart="@drawable/ic_access_time_black_24dp"
+                android:drawableTint="@color/white"
+                android:textColor="@color/white"
+                android:textStyle="normal"
+                tools:targetApi="m"
+                android:layout_marginBottom="@dimen/dp_4"/>
+
+            <com.rfl.trn.starr_cell.Custom.MyTextView
+                android:id="@+id/tv_jenisAbsen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/absen_normal_lembur"
+                android:drawablePadding="@dimen/dp_8"
+                android:gravity="center_vertical"
+                android:drawableStart="@drawable/ic_info_outline_black_24dp"
+                android:drawableTint="@color/white"
+                android:textColor="@color/white"
+                android:textStyle="normal"
+                tools:targetApi="m"
+                android:layout_marginBottom="@dimen/dp_4"/>
+
+            <com.rfl.trn.starr_cell.Custom.MyTextView
+                android:id="@+id/tv_pesanAbsen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pesan_absen"
+                android:drawablePadding="@dimen/dp_8"
+                android:gravity="center_vertical"
+                android:drawableStart="@drawable/ic_message_black_24dp"
+                android:drawableTint="@color/white"
+                android:textColor="@color/white"
+                android:textStyle="normal"
+                tools:targetApi="m"
+                android:layout_marginBottom="@dimen/dp_4"/>
+
+            <com.rfl.trn.starr_cell.Custom.MyTextView
+                android:id="@+id/tv_statusAbsen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pending_accept_reject"
+                android:drawablePadding="@dimen/dp_8"
+                android:gravity="center_vertical"
+                android:drawableStart="@drawable/ic_playlist_add_check_black_24dp"
+                android:drawableTint="@color/white"
+                android:textColor="@color/white"
+                android:textStyle="normal"
+                tools:targetApi="m"
+                android:layout_marginBottom="@dimen/dp_4"/>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</android.support.v7.widget.CardView>
