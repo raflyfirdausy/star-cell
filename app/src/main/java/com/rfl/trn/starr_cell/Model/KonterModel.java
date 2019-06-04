@@ -3,7 +3,7 @@ package com.rfl.trn.starr_cell.Model;
 import java.io.Serializable;
 
 public class KonterModel implements Serializable {
-    private String key,namaKonter,alamatKonter,emailKonter,password,url_foto;
+    private String key,namaKonter,alamatKonter, emailKonter, password, url_foto;
 
     public KonterModel(){
 

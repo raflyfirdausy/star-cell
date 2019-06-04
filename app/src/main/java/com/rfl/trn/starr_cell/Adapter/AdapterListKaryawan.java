@@ -77,8 +77,8 @@ public class AdapterListKaryawan extends RecyclerView.Adapter<AdapterListKaryawa
         MyTextView tvNoHpKaryawan;
         @BindView(R.id.tv_statusKaryawan)
         MyTextView tvStatusKaryawan;
-        @BindView(R.id.layout_currentKaryawan)
-        LinearLayout layoutCurrentKaryawan;
+        @BindView(R.id.ll_parent_action_absen)
+        LinearLayout llParentActionAbsen;
         @BindView(R.id.cv_parent_karyawan)
         CardView cvParentKaryawan;
         @BindView(R.id.ll_parent_action)
@@ -117,7 +117,7 @@ public class AdapterListKaryawan extends RecyclerView.Adapter<AdapterListKaryawa
             tvAlamatKaryawan.setText(isiData.getAlamatKaryawan());
             tvTanggalDiubah.setText(String.valueOf(new Bantuan(context).getDatePretty(isiData.getTanggalDiubah(), false)));
             tvStatusKaryawan.setText(isiData.getStatusKerja());
-            llParentAction.setOnClickListener(new View.OnClickListener() {
+            llParentActionAbsen.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     final String[] listItem = new String[]{"Lihat Data Karyawan",
