@@ -1,25 +1,22 @@
 package com.rfl.trn.starr_cell.Adapter;
 
-import android.annotation.SuppressLint;
-import android.app.Dialog;
+import android.app.AlertDialog;
 import android.content.Context;
-import android.graphics.Color;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
-import android.widget.RelativeLayout;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+import com.rfl.trn.starr_cell.Activity.TambahBarangActivity;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
 import com.rfl.trn.starr_cell.Interface.IDialog;
@@ -29,13 +26,11 @@ import com.rfl.trn.starr_cell.R;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.MyViewHolder> {
-
     private Context context;
     private List<BarangModel> data;
     private List<BarangModel> dataSementara;
@@ -56,7 +51,7 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_list_barang, viewGroup, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_list_barang_admin, viewGroup, false);
         return new MyViewHolder(view);
     }
 
@@ -68,6 +63,109 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.iv_backgroundBarang)
+        ImageView ivBackgroundBarang;
+        @BindView(R.id.iv_fotoBarang)
+        ImageView ivFotoBarang;
+        @BindView(R.id.tv_namaBarang)
+        MyTextView tvNamaBarang;
+        @BindView(R.id.tv_tanggalDiubah)
+        MyTextView tvTanggalDiubah;
+        @BindView(R.id.tv_hargaBarang)
+        MyTextView tvHargaBarang;
+        @BindView(R.id.tv_kategoriBarang)
+        MyTextView tvKategoriBarang;
+        @BindView(R.id.tv_stokBarang)
+        MyTextView tvStokBarang;
+        @BindView(R.id.ll_parent_barang)
+        LinearLayout llParentBarang;
+        @BindView(R.id.cv_parent_karyawan)
+        CardView cvParentKaryawan;
+
+        public MyViewHolder(@NonNull View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+
+
+        public void setDataKewView(final BarangModel isiData, final String s) {
+            tvNamaBarang.setText(isiData.getNamaBarang());
+            tvTanggalDiubah.setText("Diubah "+String.valueOf(new Bantuan(context).getDatePretty(isiData.getTanggalDiubah(),false)));
+            tvKategoriBarang.setText(isiData.getIdKategori());
+            tvHargaBarang.setText("Harga "+isiData.getHarga1());
+            tvStokBarang.setText("Stok "+isiData.getStokBarang());
+            llParentBarang.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final String[] listItem = new String[]{"Lihat Data Barang",
+                            "Edit Data Barang", "Hapus Barang ", "Batal"};
+                    AlertDialog.Builder builder;
+                    builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Pilih Aksi Untuk " + isiData.getNamaBarang())
+                            .setItems(listItem, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (which == 0) {
+                                        lihatDataBarang(isiData);
+                                    } else if (which == 1) {
+                                        pindahActivity(isiData, s, "edit");
+                                    } else if (which == 2) {
+                                        hapusBarang(isiData, s);
+                                    }
+                                }
+                            })
+                            .setCancelable(true)
+                            .create()
+                            .show();
+                }
+            });
+
+        }
+
+        private void hapusBarang(final BarangModel isiData, final String s) {
+            final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+            SweetAlertDialog tanya = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
+                    .setTitleText("Peringatan")
+                    .setContentText("Apakah kamu yakin akan menghapus " +
+                            isiData.getNamaBarang()
+                            + " ?\nSemua Data barang tersebut akan di hapus secara permanent. " +
+                            "Data yang telah di hapus tidak dapat di kembalikan")
+                    .setConfirmText("Ya, Hapus")
+                    .setCancelText("Batal")
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            //TODO : hapus konter
+                            sweetAlertDialog.dismissWithAnimation();
+                            databaseReference.child("barang")
+                                    .child(s)
+                                    .removeValue();
+                            notifyDataSetChanged();
+                        }
+                    });
+            tanya.show();
+        }
+
+        private void pindahActivity(BarangModel isiData, String s, String edit) {
+
+            context.startActivity(new Intent(context, TambahBarangActivity.class).putExtra("id", s));
+        }
+
+        private void lihatDataBarang(BarangModel isiData) {
+            final SweetAlertDialog detail = new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
+                    .setTitleText("Detail Data " + isiData.getNamaBarang())
+                    .setContentText(
+                            "Harga : " + isiData.getHarga1() + "\n" +
+                                    "Stok : " + isiData.getStokBarang()
+                    );
+            detail.show();
+        }
+
+
     }
 
     public void cariBarang(String text) {
@@ -84,193 +182,6 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
         }
         notifyDataSetChanged();
     }
-
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.tv_namaBarang)
-        MyTextView tvNamaBarang;
-        @BindView(R.id.tv_hargaBarang)
-        MyTextView tvHargaBarang;
-        @BindView(R.id.ll_parent)
-        LinearLayout llParent;
-        @BindView(R.id.iv_optionMenu)
-        ImageView ivOptionMenu;
-        @BindView(R.id.rl_parent)
-        RelativeLayout rlParent;
-        @BindView(R.id.tv_konterBarang)
-        MyTextView tvKonterBarang;
-        @BindView(R.id.tv_kategoriBarang)
-        MyTextView tvKategoriBarang;
-        @BindView(R.id.view_rand_color)
-        View viewRandColor;
-
-
-        public MyViewHolder(@NonNull View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
-
-        @SuppressLint("SetTextI18n")
-        void setDataKewView(BarangModel isiData, final String s) {
-            Random rand = new Random();
-            int r = rand.nextInt(255);
-            int g = rand.nextInt(255);
-            int b = rand.nextInt(255);
-
-            int randomColor = Color.rgb(r, g, b);
-
-            databaseReference = FirebaseDatabase.getInstance().getReference();
-            tvNamaBarang.setText(isiData.getNamaBarang());
-            tvHargaBarang.setText("Rp " + isiData.getHarga1());
-            tvKategoriBarang.setText("");
-            tvKonterBarang.setText("");
-            viewRandColor.setBackgroundColor(randomColor);
-            databaseReference.child("barang")
-                    .child(s)
-                    .addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()) {
-                                BarangModel model = dataSnapshot.getValue(BarangModel.class);
-
-                                databaseReference.child("konter")
-                                        .child(model.getIdKonter())
-                                        .addValueEventListener(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                if (dataSnapshot.exists()) {
-                                                    String namaKonter = dataSnapshot.child("namaKonter").getValue(String.class);
-                                                    tvKonterBarang.setText(namaKonter);
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                            }
-                                        });
-
-                                databaseReference.child("kategori")
-                                        .child(model.getIdKategori())
-                                        .addValueEventListener(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                if (dataSnapshot.exists()) {
-                                                    String namaKategori = dataSnapshot.child("namaKategori").getValue(String.class);
-                                                    tvKategoriBarang.setText(namaKategori);
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                            }
-                                        });
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-            final Dialog dialog = new Dialog(context);
-            dialog.setContentView(R.layout.dialog_detail_barang);
-
-
-            final MyTextView myetDialogNamaBarang = dialog.findViewById(R.id.myet_dialogNamaBarang);
-            final MyTextView myetDialogKonterBarang = dialog.findViewById(R.id.myet_dialogKonterBarang);
-            final MyTextView myetDialogKategoriBarang = dialog.findViewById(R.id.myet_dialogKategoriBarang);
-            final MyTextView myetDialogStokBarang = dialog.findViewById(R.id.myet_dialogStokBarang);
-            final MyTextView myetDialogHarga1Barang = dialog.findViewById(R.id.myet_dialogHarga1Barang);
-            final MyTextView myetDialogHarga2Barang = dialog.findViewById(R.id.myet_dialogHarga2Barang);
-            final MyTextView myetDialogHarga3Barang = dialog.findViewById(R.id.myet_dialogHarga3Barang);
-            final MyTextView myetDialogTanggalBarang = dialog.findViewById(R.id.myet_dialogTanggalBarang);
-            databaseReference.child("barang")
-                    .child(s)
-                    .addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()) {
-                                BarangModel model = dataSnapshot.getValue(BarangModel.class);
-                                myetDialogNamaBarang.setText(model.getNamaBarang());
-                                myetDialogStokBarang.setText(model.getStokBarang());
-                                myetDialogHarga1Barang.setText("Rp." + model.getHarga1());
-                                myetDialogHarga2Barang.setText("Rp." + model.getHarga2());
-                                myetDialogHarga3Barang.setText("Rp." + model.getHarga3());
-
-                                myetDialogTanggalBarang.setText(String.valueOf(new Bantuan(context).getDatePretty(model.getTanggalDiubah(), false)));
-
-                                databaseReference.child("konter")
-                                        .child(model.getIdKonter())
-                                        .addValueEventListener(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                if (dataSnapshot.exists()) {
-                                                    String namaKonter = dataSnapshot.child("namaKonter").getValue(String.class);
-                                                    myetDialogKonterBarang.setText(namaKonter);
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                            }
-                                        });
-                                databaseReference.child("kategori")
-                                        .child(model.getIdKategori())
-                                        .addValueEventListener(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                if (dataSnapshot.exists()) {
-                                                    String namaKategori = dataSnapshot.child("namaKategori").getValue(String.class);
-                                                    myetDialogKategoriBarang.setText(namaKategori);
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                            }
-                                        });
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-            rlParent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.show();
-                }
-            });
-            final PopupMenu popupMenu = new PopupMenu(context, ivOptionMenu);
-            popupMenu.inflate(R.menu.menu_pilihan_barang);
-
-            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    if (item.getItemId() == R.id.menu_EditBarang) {
-                        listener.onItemPopUpMenu(s, 1);
-                    } else if (item.getItemId() == R.id.menu_DetailBarang_) {
-                        listener.onItemPopUpMenu(s, 2);
-                    }
-                    return true;
-                }
-            });
-
-
-            ivOptionMenu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    popupMenu.show();
-                }
-            });
-
-        }
-
-
-    }
 }
+
+

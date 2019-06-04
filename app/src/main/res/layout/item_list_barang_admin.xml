@@ -17,14 +17,14 @@
     app:cardElevation="@dimen/dp_0">
 
     <ImageView
-        android:id="@+id/iv_background"
+        android:id="@+id/iv_backgroundBarang"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:src="@drawable/gradient_flare" />
+        android:src="@drawable/gradient_coral" />
 
     <LinearLayout
-        android:id="@+id/layout_currentKaryawan"
+        android:id="@+id/ll_parent_barang"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/selectableItemBackground"
@@ -36,7 +36,7 @@
 
 
         <ImageView
-            android:id="@+id/iv_fotoKaryawan"
+            android:id="@+id/iv_fotoBarang"
             android:layout_width="120dp"
             android:layout_height="match_parent"
             android:padding="@dimen/dp_8"
@@ -44,7 +44,6 @@
             android:src="@drawable/ic_karyawan" />
 
         <LinearLayout
-            android:id="@+id/ll_parent_action"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -52,7 +51,7 @@
             android:paddingEnd="@dimen/dp_8">
 
             <com.rfl.trn.starr_cell.Custom.MyTextView
-                android:id="@+id/tv_namaKaryawan"
+                android:id="@+id/tv_namaBarang"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
@@ -76,7 +75,7 @@
                 android:layout_marginBottom="@dimen/dp_4"/>
 
             <com.rfl.trn.starr_cell.Custom.MyTextView
-                android:id="@+id/tv_alamatKaryawan"
+                android:id="@+id/tv_hargaBarang"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/absen_normal_lembur"
@@ -90,7 +89,7 @@
                 android:layout_marginBottom="@dimen/dp_4"/>
 
             <com.rfl.trn.starr_cell.Custom.MyTextView
-                android:id="@+id/tv_noHpKaryawan"
+                android:id="@+id/tv_kategoriBarang"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/pesan_absen"
@@ -104,7 +103,7 @@
                 android:layout_marginBottom="@dimen/dp_4"/>
 
             <com.rfl.trn.starr_cell.Custom.MyTextView
-                android:id="@+id/tv_statusKaryawan"
+                android:id="@+id/tv_stokBarang"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/pending_accept_reject"
