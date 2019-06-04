@@ -17,6 +17,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
+import com.rfl.trn.starr_cell.Helper.Bantuan;
+import com.rfl.trn.starr_cell.Interface.IKonfirmasiAbsen;
 import com.rfl.trn.starr_cell.Model.AbsenModel;
 import com.rfl.trn.starr_cell.Model.KaryawanModel;
 import com.rfl.trn.starr_cell.Model.KonterModel;
@@ -33,18 +35,48 @@ public class AdapterListAbsensi extends RecyclerView.Adapter<AdapterListAbsensi.
 
     private Context context;
     private List<AbsenModel> data;
+    private IKonfirmasiAbsen listener;
+    private static final int ITEM_ACCEPT = 1;
+    private static final int ITEM_PENDING = 2;
+    private static final int ITEM_REJECT = 3;
 
-    public AdapterListAbsensi(Context context, List<AbsenModel> data) {
+
+    public AdapterListAbsensi(Context context, List<AbsenModel> data, IKonfirmasiAbsen iKonfirmasiAbsen) {
         this.context = context;
         this.data = data;
+        this.listener = iKonfirmasiAbsen;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        AbsenModel absenModel = data.get(position);
+        if (absenModel.getStatus().equalsIgnoreCase("accept")){
+            return ITEM_ACCEPT;
+        }else if(absenModel.getStatus().equalsIgnoreCase("pending")){
+            return ITEM_PENDING;
+        }else if (absenModel.getStatus().equalsIgnoreCase("reject")){
+            return ITEM_REJECT;
+        }else {
+            return ITEM_REJECT;
+        }
+
     }
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_list_absensi, viewGroup, false);
-
-        return new MyViewHolder(view);
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        MyViewHolder viewHolder = null;
+        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+        switch (viewType){
+            case ITEM_ACCEPT:
+                View view;
+                break;
+            case ITEM_PENDING:
+                break;
+            case ITEM_REJECT:
+                break;
+        }
+        return viewHolder;
     }
 
     @Override
@@ -72,6 +104,7 @@ public class AdapterListAbsensi extends RecyclerView.Adapter<AdapterListAbsensi.
         CardView llParent;
 
         DatabaseReference databaseReference;
+        String namaKaryawan,namaKonter;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -79,7 +112,6 @@ public class AdapterListAbsensi extends RecyclerView.Adapter<AdapterListAbsensi.
         }
 
         private void setDataKeView(final AbsenModel data) {
-            final SweetAlertDialog dialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE);
 
 
             databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -89,15 +121,16 @@ public class AdapterListAbsensi extends RecyclerView.Adapter<AdapterListAbsensi.
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
-                                KaryawanModel karyawanModel = new KaryawanModel();
+                                KaryawanModel karyawanModel ;
                                 karyawanModel = dataSnapshot.getValue(KaryawanModel.class);
-                                tvNamaKonter.setText(karyawanModel.getNamaKaryawan());
+                                namaKaryawan = karyawanModel.getNamaKaryawan();
+                                tvNamaKonter.setText(namaKaryawan);
                             }
                         }
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                            new Bantuan(context).swal_error(databaseError.getMessage());
                         }
                     });
             databaseReference.child("konter")
@@ -106,15 +139,16 @@ public class AdapterListAbsensi extends RecyclerView.Adapter<AdapterListAbsensi.
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
-                                KonterModel konterModel = new KonterModel();
+                                KonterModel konterModel ;
                                 konterModel = dataSnapshot.getValue(KonterModel.class);
+                                namaKonter = konterModel.getNamaKonter();
                                 tvDetailKaryawan.setText(konterModel.getNamaKonter());
                             }
                         }
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                            new Bantuan(context).swal_error(databaseError.getMessage());
                         }
                     });
 
@@ -124,24 +158,7 @@ public class AdapterListAbsensi extends RecyclerView.Adapter<AdapterListAbsensi.
             llParent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    dialog.setTitleText("Konfirmasi");
-                    dialog.setContentText("Karyawan"+tvDetailKaryawan.getText()+".\n Telah melakuan absen pada "+data.getWaktuMasuk());
-                    dialog.setConfirmText("Terima");
-                    dialog.setCancelText("Tolak");
-                    dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-
-                            dialog.dismissWithAnimation();
-                        }
-                    });
-                    dialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            dialog.dismissWithAnimation();
-                        }
-                    });
-                    dialog.show();
+                    listener.AlertKonfirmas(namaKaryawan,namaKonter, data);
                 }
             });
 

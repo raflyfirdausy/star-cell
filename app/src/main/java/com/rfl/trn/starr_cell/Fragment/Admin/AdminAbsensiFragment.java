@@ -18,9 +18,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rfl.trn.starr_cell.Adapter.AdapterListAbsensi;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
+import com.rfl.trn.starr_cell.Interface.IKonfirmasiAbsen;
 import com.rfl.trn.starr_cell.Model.AbsenModel;
 import com.rfl.trn.starr_cell.R;
 
@@ -76,6 +78,10 @@ public class AdminAbsensiFragment extends Fragment {
     }
 
     private void semuaAbsen() {
+        final SweetAlertDialog dialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE);
+        dialog.setTitleText("Konfirmasi");
+
+
         databaseReference.child("absen")
                 .addValueEventListener(new ValueEventListener() {
                     @Override
@@ -91,7 +97,30 @@ public class AdminAbsensiFragment extends Fragment {
 
                             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
                             rvAbsensi.setLayoutManager(layoutManager);
-                            adapterListAbsensi = new AdapterListAbsensi(getActivity(), list);
+                            adapterListAbsensi = new AdapterListAbsensi(getActivity(), list, new IKonfirmasiAbsen() {
+                                @Override
+                                public void AlertKonfirmas(String Nama, String Konter, AbsenModel dataAbsen) {
+                                    dialog.setContentText("Karyawan"+Nama+".\n Telah melakuan absen pada "+dataAbsen.getWaktuMasuk());
+                                    dialog.setConfirmText("Terima");
+                                    dialog.setCancelText("Tolak");
+                                    dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                                            dialog.dismissWithAnimation();
+                                            dialog.changeAlertType(SweetAlertDialog.NORMAL_TYPE);
+                                        }
+                                    });
+                                    dialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                            dialog.dismissWithAnimation();
+                                            dialog.changeAlertType(SweetAlertDialog.NORMAL_TYPE);
+                                        }
+                                    });
+                                    dialog.show();
+                                }
+                            });
                             rvAbsensi.setAdapter(adapterListAbsensi);
                         }
 
