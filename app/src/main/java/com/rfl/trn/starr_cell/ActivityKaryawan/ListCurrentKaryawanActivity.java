@@ -83,10 +83,13 @@ public class ListCurrentKaryawanActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         listCurrentKaryawan.clear();
+                        String idCurrentKaryawan;
                         if (dataSnapshot.exists()) {
                             rvAbsen.setVisibility(View.VISIBLE);
                             llBelumAdaAbsenMasuk.setVisibility(View.GONE);
                             for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                idCurrentKaryawan = data.getKey();
+                                final String finalIdCurrentKaryawan = idCurrentKaryawan;
                                 databaseReference.child("absen")
                                         .child(Objects.requireNonNull(data.child("idAbsen").getValue(String.class)))
                                         .addValueEventListener(new ValueEventListener() {
@@ -97,6 +100,7 @@ public class ListCurrentKaryawanActivity extends AppCompatActivity {
                                                     absenModel = dataSnapshot.getValue(AbsenModel.class);
                                                     assert absenModel != null;
                                                     absenModel.setIdAbsen(dataSnapshot.getKey());
+                                                    absenModel.setIdCurrentKaryawan(finalIdCurrentKaryawan);
                                                     listCurrentKaryawan.add(absenModel);
                                                     adapterCurrentKaryawan = new AdapterCurrentKaryawan(context, listCurrentKaryawan);
                                                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);

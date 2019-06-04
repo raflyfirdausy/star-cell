@@ -1,6 +1,9 @@
 package com.rfl.trn.starr_cell.Adapter;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,10 +17,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+import com.rfl.trn.starr_cell.ActivityKaryawan.AbsenKaryawanActivity;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
 import com.rfl.trn.starr_cell.Model.AbsenModel;
 import com.rfl.trn.starr_cell.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -43,7 +49,7 @@ public class AdapterCurrentKaryawan extends RecyclerView.Adapter<AdapterCurrentK
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.setDataKewView(data.get(i));
+        viewHolder.setDataKewView(context, data.get(i));
     }
 
 
@@ -72,12 +78,15 @@ public class AdapterCurrentKaryawan extends RecyclerView.Adapter<AdapterCurrentK
         @BindView(R.id.layout_currentKaryawan)
         LinearLayout layoutCurrentKaryawan;
 
+        String namaKaryawan;
+
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
 
-        void setDataKewView(AbsenModel isiData) {
+        @SuppressLint("SetTextI18n")
+        void setDataKewView(final Context context, final AbsenModel isiData) {
             if(isiData.getStatus().equalsIgnoreCase("pending")){
                 ivBackground.setImageResource(R.drawable.gradient_scooter);
             } else if(isiData.getStatus().equalsIgnoreCase("accept")){
@@ -92,13 +101,14 @@ public class AdapterCurrentKaryawan extends RecyclerView.Adapter<AdapterCurrentK
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if(dataSnapshot.exists()){
-                                tvNamaKaryawan.setText(dataSnapshot.child("namaKaryawan").getValue(String.class));
+                                namaKaryawan = dataSnapshot.child("namaKaryawan").getValue(String.class);
+                                tvNamaKaryawan.setText(namaKaryawan);
                             }
                         }
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
-                            //njiot context si piwe :v
+                            new Bantuan(context).swal_error(databaseError.getMessage());
                         }
                     });
 
@@ -110,6 +120,38 @@ public class AdapterCurrentKaryawan extends RecyclerView.Adapter<AdapterCurrentK
             }
             tvPesanAbsen.setText(isiData.getPesan());
             tvStatusAbsen.setText(isiData.getStatus());
+
+            Picasso.get()
+                    .load(isiData.getUrlFoto())
+                    .placeholder(R.drawable.ic_karyawan)
+                    .error(R.drawable.error_center_x)
+                    .fit()
+                    .into(ivFotoKaryawan);
+
+            layoutCurrentKaryawan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SweetAlertDialog dialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE);
+                    dialog.setTitleText("Perhatian");
+                    dialog.setContentText("Apakah anda ingin absen keluar untuk karyawan dengan nama " + namaKaryawan + " ?");
+                    dialog.setConfirmText("Iya, Absen Keluar");
+                    dialog.setCancelText("Batal");
+
+                    dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            //TODO : pindah absen keluar
+                            sweetAlertDialog.dismissWithAnimation();
+                            Intent intent = new Intent(context, AbsenKaryawanActivity.class);
+                            intent.putExtra("jenis", "absenKeluar");
+                            intent.putExtra("idCurrentKaryawan", isiData.getIdCurrentKaryawan());
+                            intent.putExtra("idAbsenMasuk", isiData.getIdAbsen());
+                            context.startActivity(intent);
+                        }
+                    });
+                    dialog.show();
+                }
+            });
         }
     }
 }

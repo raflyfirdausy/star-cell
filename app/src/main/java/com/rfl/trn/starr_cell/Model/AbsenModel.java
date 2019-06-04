@@ -17,6 +17,8 @@ public class AbsenModel implements Serializable {
     private String jenisAbsen;
     private String namaFoto;
     private boolean lembur;
+    private String idCurrentKaryawan;
+    private String idAbsenMasuk;
 
     public AbsenModel() {
     }
@@ -139,5 +141,21 @@ public class AbsenModel implements Serializable {
 
     public void setWaktuDiterima(Long waktuDiterima) {
         this.waktuDiterima = waktuDiterima;
+    }
+
+    public String getIdCurrentKaryawan() {
+        return idCurrentKaryawan;
+    }
+
+    public void setIdCurrentKaryawan(String idCurrentKaryawan) {
+        this.idCurrentKaryawan = idCurrentKaryawan;
+    }
+
+    public String getIdAbsenMasuk() {
+        return idAbsenMasuk;
+    }
+
+    public void setIdAbsenMasuk(String idAbsenMasuk) {
+        this.idAbsenMasuk = idAbsenMasuk;
     }
 }

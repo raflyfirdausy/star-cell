@@ -28,6 +28,7 @@ absen (firebaseDatabase)
   |- jenisAbsen
   |- namaFoto (buat child hapus foto di firebaseStorage)
   |- lembur (boolean)
+  |- idCurrentKaryawan (buat ngeset data current karyawan, child ini digunakan buat absen keluar saja)
 
 absen
 |-id_konter (ambil dari key node konter)

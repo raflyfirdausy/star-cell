@@ -60,6 +60,7 @@ import butterknife.OnClick;
 
 public class AbsenKaryawanActivity extends AppCompatActivity {
 
+    private static int MAX_CURRENT_KARYAWAN = 2;
     private final int ALL_PERMISSION = 999;
     private final int CODE_CAMERA = 2;
     @BindView(R.id.iv_takeFoto)
@@ -81,7 +82,15 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
     private Uri downloadURL;
     private long totalCurrentKaryawan = 0;
     private List<String> listKeyCurrentKaryawan = new ArrayList<>();
-
+    /*
+        kodeAbsen
+        0 - Absen Masuk Normal
+        1 - Absen Keluar Normal
+        2 - Absen Masuk Lembur
+        3 - Absen Keluar Lembur
+     */
+    private int kodeAbsen = 0;
+    private String namaFoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +98,7 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
         setContentView(R.layout.activity_absen_karyawan);
         ButterKnife.bind(this);
         Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.app_name);
-        getSupportActionBar().setSubtitle(R.string.absensi);
+
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         //firebase
         firebaseAuth = FirebaseAuth.getInstance();
@@ -97,6 +106,17 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
         getTotalAndKeyCurrentKaryawan();
         getDataKaryawan();
+
+        if (!getIntent().hasExtra("jenis")) {
+            getSupportActionBar().setSubtitle("Absen Masuk Normal");
+            kodeAbsen = 0;
+        } else {
+            if (getIntent().getStringExtra("jenis").equalsIgnoreCase("absenKeluar")) {
+                getSupportActionBar().setSubtitle("Absen Keluar Normal");
+                kodeAbsen = 1;
+            }
+        }
+
     }
 
     private void getDataKaryawan() {
@@ -268,15 +288,20 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
             });
             dialog.show();
         } else {
-            if (isSudahAbsen()) {
-                new Bantuan(context).swal_error("Kamu sudah absen");
-            } else {
-                if (totalCurrentKaryawan == 2) {
-                    new Bantuan(context).swal_error(getString(R.string.karyawan_lebih_dari_dua));
+            if (kodeAbsen == 0 || kodeAbsen == 2) {  //absen masuk
+                if (isSudahAbsen()) {
+                    new Bantuan(context).swal_error("Maaf anda sudah absen");
                 } else {
-                    simpanKeDatabase("ID-" +
-                            new Faker(new Locale("in-ID")).random().hex(10));
+                    if (totalCurrentKaryawan == MAX_CURRENT_KARYAWAN) {
+                        new Bantuan(context).swal_error(getString(R.string.karyawan_lebih_dari_dua));
+                    } else {
+                        simpanKeDatabase(kodeAbsen);
+                    }
                 }
+            } else if (kodeAbsen == 1 || kodeAbsen == 3) { //absen keluar
+                simpanKeDatabase(kodeAbsen);
+            } else {
+                new Bantuan(context).swal_error("Kode Absen Salah!");
             }
         }
     }
@@ -315,7 +340,7 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
         }
     }
 
-    private void simpanKeDatabase(final String childKaryawan) {
+    private void simpanKeDatabase(final int kodeAbsen) {
         final SweetAlertDialog loading = new Bantuan(context).swal_loading("Tunggu beberapa saat, proses absen");
         loading.show();
         String pesanAbsen = null;
@@ -330,7 +355,22 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
 
-        final String namaFoto = "absen_" + new Date().getTime() + ".jpeg";
+        if (kodeAbsen == 0) {
+            loading.setContentText("Tunggu beberapa saat, proses absen masuk normal");
+            namaFoto = "absenMasukNormal_";
+        } else if (kodeAbsen == 1) {
+            loading.setContentText("Tunggu beberapa saat, proses absen keluar normal");
+            namaFoto = "absenKeluarNormal_";
+        } else if (kodeAbsen == 2) {
+            loading.setContentText("Tunggu beberapa saat, proses absen masuk lembur");
+            namaFoto = "absenMasukLembur_";
+        } else if (kodeAbsen == 3) {
+            loading.setContentText("Tunggu beberapa saat, proses absen keluar lembur");
+            namaFoto = "absenKeluarNormal_";
+        }
+
+        namaFoto += new Date().getTime() + ".jpeg";
+
         final StorageReference ref = storageReference.child("absen")
                 .child(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid())
                 .child(namaFoto);
@@ -349,64 +389,31 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Uri> task) {
                 if (task.isSuccessful()) {
                     downloadURL = task.getResult();
+                    String keyPushAbsen = databaseReference.push().getKey();
+
                     final AbsenModel dataAbsen = new AbsenModel();
                     dataAbsen.setIdKaryawan(keyKaryawan);
-                    dataAbsen.setTanggal(new Date().getTime());
-                    dataAbsen.setWaktuMasuk(new Date().getTime());
-                    dataAbsen.setWaktuKeluar(null);
-                    dataAbsen.setStatus("pending");
-                    dataAbsen.setPesan(finalPesanAbsen);
-                    dataAbsen.setUrlFoto(Objects.requireNonNull(downloadURL).toString());
-                    dataAbsen.setIdKonter(firebaseAuth.getCurrentUser().getUid());
-                    dataAbsen.setJenisAbsen("masuk");
+                    dataAbsen.setIdKonter(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid());
                     dataAbsen.setNamaFoto(namaFoto);
-                    dataAbsen.setLembur(false);
-                    dataAbsen.setWaktuDiterima(new Date().getTime());
+                    dataAbsen.setPesan(finalPesanAbsen);
+                    dataAbsen.setStatus("Pending");
+                    dataAbsen.setTanggal(new Date().getTime());
+                    dataAbsen.setUrlFoto(Objects.requireNonNull(downloadURL).toString());
 
-                    String keyAbsen = databaseReference.push().getKey();
+                    String jenisAbsen = null;
+                    boolean isLembur = false;
 
-                    final Map<String, String> dataCurrentKaryawan = new HashMap<>();
-                    dataCurrentKaryawan.put("idAbsen", Objects.requireNonNull(keyAbsen));
-                    dataCurrentKaryawan.put("idKaryawan", dataAbsen.getIdKaryawan());
-
-                    databaseReference.child("absen")
-                            .child(Objects.requireNonNull(keyAbsen))
-                            .setValue(dataAbsen)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    databaseReference.child("currentKaryawan")
-                                            .child(firebaseAuth.getCurrentUser().getUid())
-                                            .child(childKaryawan)
-                                            .setValue(dataCurrentKaryawan)
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    loading.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-                                                    loading.showContentText(true);
-                                                    loading.setTitleText("Sukses");
-                                                    loading.setContentText("Berhasil Absen");
-                                                    loading.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                                        @Override
-                                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                            finish();
-                                                        }
-                                                    });
-                                                }
-                                            }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            new Bantuan(context).swal_error("Erorr saat mengisi current karyawan : " + e.getMessage());
-                                        }
-                                    });
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            loading.dismissWithAnimation();
-                            new Bantuan(context).swal_error("Error saat menyimpan ke database : " + e.getMessage());
-                        }
-                    });
+                    if (kodeAbsen == 0) {
+                        simpanAbsenMasukNormal(dataAbsen, keyPushAbsen, "Masuk", false, loading);
+                    } else if (kodeAbsen == 1) {
+                        simpanAbsenKeluarNormal(dataAbsen, keyPushAbsen, "Keluar", false, loading);
+                    } else if (kodeAbsen == 2) {
+                        jenisAbsen = "Masuk";
+                        isLembur = true;
+                    } else if (kodeAbsen == 3) {
+                        jenisAbsen = "Keluar";
+                        isLembur = true;
+                    }
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -414,6 +421,102 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
             public void onFailure(@NonNull Exception e) {
                 loading.dismissWithAnimation();
                 new Bantuan(context).swal_error(e.getMessage());
+            }
+        });
+    }
+
+    private void simpanAbsenMasukNormal(AbsenModel dataAbsen, String keyPushAbsen, String jenisAbsen, boolean isLembur, final SweetAlertDialog loading){
+
+        dataAbsen.setWaktuMasuk(new Date().getTime());
+        dataAbsen.setLembur(isLembur);
+        dataAbsen.setJenisAbsen(jenisAbsen);
+
+        final Map<String, String> dataCurrentKaryawan = new HashMap<>();
+        dataCurrentKaryawan.put("idAbsen", Objects.requireNonNull(keyPushAbsen));
+        dataCurrentKaryawan.put("idKaryawan", dataAbsen.getIdKaryawan());
+
+        databaseReference.child("absen")
+                .child(Objects.requireNonNull(keyPushAbsen))
+                .setValue(dataAbsen)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        databaseReference.child("currentKaryawan")
+                                .child(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid())
+                                .child("ID-" + new Faker(new Locale("in-ID")).random().hex(10))
+                                .setValue(dataCurrentKaryawan)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        loading.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                        loading.showContentText(true);
+                                        loading.setTitleText("Sukses");
+                                        loading.setContentText("Berhasil Absen Masuk Normal");
+                                        loading.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                            @Override
+                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                finish();
+                                            }
+                                        });
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                new Bantuan(context).swal_error("Erorr saat mengisi current karyawan : " + e.getMessage());
+                            }
+                        });
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                loading.dismissWithAnimation();
+                new Bantuan(context).swal_error("Error saat menyimpan ke database : " + e.getMessage());
+            }
+        });
+    }
+
+    private void simpanAbsenKeluarNormal(AbsenModel dataAbsen, String keyPushAbsen, String jenisAbsen, boolean isLembur, final SweetAlertDialog loading){
+        dataAbsen.setWaktuKeluar(new Date().getTime());
+        dataAbsen.setLembur(isLembur);
+        dataAbsen.setJenisAbsen(jenisAbsen);
+        dataAbsen.setIdAbsenMasuk(getIntent().getStringExtra("idAbsenMasuk"));
+
+        databaseReference.child("absen")
+                .child(Objects.requireNonNull(keyPushAbsen))
+                .setValue(dataAbsen)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        databaseReference.child("currentKaryawan")
+                                .child(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid())
+                                .child(getIntent().getStringExtra("idCurrentKaryawan"))
+                                .setValue(null)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        loading.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                        loading.showContentText(true);
+                                        loading.setTitleText("Sukses");
+                                        loading.setContentText("Berhasil Absen Keluar Normal");
+                                        loading.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                            @Override
+                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                finish();
+                                            }
+                                        });
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                new Bantuan(context).swal_error("Erorr saat menghapus current karyawan : " + e.getMessage());
+                            }
+                        });
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                loading.dismissWithAnimation();
+                new Bantuan(context).swal_error("Error saat menyimpan ke database : " + e.getMessage());
             }
         });
     }
