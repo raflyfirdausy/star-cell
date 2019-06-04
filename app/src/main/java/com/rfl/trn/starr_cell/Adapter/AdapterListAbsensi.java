@@ -24,6 +24,7 @@ import com.rfl.trn.starr_cell.Model.AbsenModel;
 import com.rfl.trn.starr_cell.Model.KaryawanModel;
 import com.rfl.trn.starr_cell.R;
 
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -159,10 +160,13 @@ public class AdapterListAbsensi extends RecyclerView.Adapter<AdapterListAbsensi.
             dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                 @Override
                 public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    AbsenModel model = new AbsenModel();
+                    model.setStatus("accept");
+                    model.setWaktuDiterima(new Date().getTime());
                     databaseReference
                             .child("absen")
                             .child(s)
-                            .child("status").setValue("accept");
+                            .setValue(model);
                     dialog.dismissWithAnimation();
                 }
             });
@@ -186,10 +190,13 @@ public class AdapterListAbsensi extends RecyclerView.Adapter<AdapterListAbsensi.
             dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                 @Override
                 public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    AbsenModel model = new AbsenModel();
+                    model.setStatus("reject");
+                    model.setWaktuDiterima(new Date().getTime());
                     databaseReference
                             .child("absen")
                             .child(edit)
-                            .child("status").setValue("reject");
+                            .setValue(model);
                     dialog.dismissWithAnimation();
                 }
             });
