@@ -361,6 +361,7 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
                     dataAbsen.setJenisAbsen("masuk");
                     dataAbsen.setNamaFoto(namaFoto);
                     dataAbsen.setLembur(false);
+                    dataAbsen.setWaktuDiterima(new Date().getTime());
 
                     String keyAbsen = databaseReference.push().getKey();
 

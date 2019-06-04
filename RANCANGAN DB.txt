@@ -21,6 +21,7 @@ absen (firebaseDatabase)
   |- tanggal (timestamp)
   |- waktu_masuk
   |- waktu_keluar
+  |- waktu diterima
   |- status (pending, accept, reject)
   |- pesan
   |- urlFoto

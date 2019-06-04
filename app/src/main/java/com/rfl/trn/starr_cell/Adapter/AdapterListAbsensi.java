@@ -1,6 +1,8 @@
 package com.rfl.trn.starr_cell.Adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
 import com.rfl.trn.starr_cell.Interface.IKonfirmasiAbsen;
@@ -28,18 +31,18 @@ import butterknife.ButterKnife;
 
 public class AdapterListAbsensi extends RecyclerView.Adapter<AdapterListAbsensi.MyViewHolder> {
 
-
-
     private Context context;
     private List<AbsenModel> data;
+    private List<String> keyAbsen;
     private IKonfirmasiAbsen listener;
     private static final int ITEM_PEMISAH = 1;
     private static final int ITEM_ABSEN = 2;
 
 
-    public AdapterListAbsensi(Context context, List<AbsenModel> data) {
+    public AdapterListAbsensi(Context context, List<AbsenModel> data, List<String> keyAbsen) {
         this.context = context;
         this.data = data;
+        this.keyAbsen = keyAbsen;
     }
 
 
@@ -52,7 +55,7 @@ public class AdapterListAbsensi extends RecyclerView.Adapter<AdapterListAbsensi.
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-        myViewHolder.setDataKeViewAbsen(data.get(i));
+        myViewHolder.setDataKeViewAbsen(data.get(i),keyAbsen.get(i));
 
     }
 
@@ -88,14 +91,14 @@ public class AdapterListAbsensi extends RecyclerView.Adapter<AdapterListAbsensi.
             ButterKnife.bind(this, itemView);
         }
 
-        public void setDataKeViewAbsen(final AbsenModel data) {
+        public void setDataKeViewAbsen(final AbsenModel data, final String s) {
             databaseReference = FirebaseDatabase.getInstance().getReference();
             databaseReference.child("karyawan")
                     .child(data.getIdKaryawan())
                     .addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()){
+                            if (dataSnapshot.exists()) {
                                 KaryawanModel model;
                                 model = dataSnapshot.getValue(KaryawanModel.class);
                                 tvNamaKaryawan.setText(model.getNamaKaryawan());
@@ -108,11 +111,106 @@ public class AdapterListAbsensi extends RecyclerView.Adapter<AdapterListAbsensi.
 
                         }
                     });
+
             tvPesanAbsen.setText(data.getPesan());
             tvJenisAbsen.setText(data.getJenisAbsen());
-            tvWaktuAbsen.setText(String.valueOf(new Bantuan(context).getDatePretty(data.getWaktuMasuk(),true)));
-            tvNamaKaryawan.setText(data.getIdKaryawan());
+            tvWaktuAbsen.setText(data.getWaktuMasuk().toString());
             tvStatusAbsen.setText(data.getStatus());
+            layoutCurrentKaryawan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String[] listItem = new String[0];
+                    if (data.getStatus().equalsIgnoreCase("pending")){
+                         listItem = new String[]{"Lihat Data Absen",
+                                "Tolak", "Terima", "Batal"};
+
+                    }else {
+                        listItem = new String[]{"Lihat Data Absen"};
+                    }
+                    AlertDialog.Builder builder;
+                    builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Pilih Aksi Untuk " + data.getIdKaryawan())
+                            .setItems(listItem, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (which == 0) {
+                                        lihatDataAbsen(data, s);
+                                    } else if (which == 1) {
+                                        TolakAbsen(data, s);
+                                    } else if (which == 2) {
+                                        TerimaAbsen(data,s);
+                                    }
+                                }
+                            })
+                            .setCancelable(true)
+                            .create()
+                            .show();
+
+                }
+            });
+        }
+
+        private void TerimaAbsen(final AbsenModel data, final String s) {
+            final SweetAlertDialog dialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE);
+            dialog.setTitleText("Peringatan");
+            dialog.setContentText("Terima Absen Karyawan " + data.getIdKaryawan() + "?");
+            dialog.setConfirmText("Iya, Terima");
+            dialog.setCancelText("Tidak dulu");
+            dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    databaseReference
+                            .child("absen")
+                            .child(s)
+                            .child("status").setValue("accept");
+                    dialog.dismissWithAnimation();
+                }
+            });
+            dialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+
+                    dialog.dismissWithAnimation();
+                }
+            });
+            dialog.show();
+        }
+
+        private void TolakAbsen(AbsenModel data, final String edit) {
+            final SweetAlertDialog dialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE);
+            dialog.setTitleText("Peringatan");
+            dialog.setContentText("Tolak Absen Karyawan " + data.getIdKaryawan() + "?");
+            dialog.setConfirmText("Iya, Tolak");
+            dialog.setCancelText("Tidak dulu");
+            dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    databaseReference
+                            .child("absen")
+                            .child(edit)
+                            .child("status").setValue("reject");
+                    dialog.dismissWithAnimation();
+                }
+            });
+            dialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                    dialog.dismissWithAnimation();
+                }
+            });
+            dialog.show();
+        }
+
+        private void lihatDataAbsen(AbsenModel data, String s) {
+            final SweetAlertDialog detail = new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
+                    .setTitleText("Detail Data " + data.getIdKaryawan())
+                    .setContentText(
+                            "Nama Konter : " + data.getIdKonter() + "\n" +
+                                    "Alamat Konter : " + data.getJenisAbsen()
+                    );
+            detail.show();
         }
 
 

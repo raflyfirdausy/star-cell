@@ -51,6 +51,7 @@ public class AdminAbsensiFragment extends Fragment {
 
     private DatabaseReference databaseReference;
     private List<AbsenModel> list = new ArrayList<>();
+    private List<String > keyAbsen = new ArrayList<>();
     private AdapterListAbsensi adapterListAbsensi;
 
 
@@ -83,18 +84,28 @@ public class AdminAbsensiFragment extends Fragment {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()){
-                            llBelumAdaAbsen.setVisibility(View.GONE);
-                            list.clear();
-                            AbsenModel model;
-                            for (DataSnapshot data : dataSnapshot.getChildren()){
-                                model = data.getValue(AbsenModel.class);
-                                list.add(model);
+                            try {
+                                llBelumAdaAbsen.setVisibility(View.GONE);
+                                list.clear();
+                                keyAbsen.clear();
+                                AbsenModel model = null;
+                                for (DataSnapshot data : dataSnapshot.getChildren()){
+                                    String key = data.getKey();
+                                    model = data.getValue(AbsenModel.class);
+                                    list.add(model);
+                                    keyAbsen.add(key);
+                                }
+                                adapterListAbsensi = new AdapterListAbsensi(getActivity(),list,keyAbsen);
+                                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                                rvAbsensi.setLayoutManager(layoutManager);
+                                rvAbsensi.setAdapter(adapterListAbsensi);
+                            }catch (NullPointerException e){
+                                new Bantuan(getContext()).swal_error(e.getMessage());
                             }
-                            adapterListAbsensi = new AdapterListAbsensi(getActivity(),list);
-                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                            rvAbsensi.setLayoutManager(layoutManager);
-                            rvAbsensi.setAdapter(adapterListAbsensi);
-                            adapterListAbsensi.notifyDataSetChanged();
+
+
+                        }else {
+                            rvAbsensi.setVisibility(View.GONE);
                         }
                     }
 

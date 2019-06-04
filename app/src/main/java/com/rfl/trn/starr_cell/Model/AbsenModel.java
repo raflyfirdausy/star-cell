@@ -10,6 +10,7 @@ public class AbsenModel implements Serializable {
     private Long tanggal;
     private Long waktuMasuk;
     private Long waktuKeluar;
+    private Long waktuDiterima;
     private String status;
     private String pesan;
     private String urlFoto;
@@ -33,6 +34,7 @@ public class AbsenModel implements Serializable {
         this.jenisAbsen = jenisAbsen;
         this.namaFoto = namaFoto;
         this.lembur = lembur;
+
     }
 
     public String getIdKonter() {
@@ -129,5 +131,13 @@ public class AbsenModel implements Serializable {
 
     public void setLembur(boolean lembur) {
         this.lembur = lembur;
+    }
+
+    public Long getWaktuDiterima() {
+        return waktuDiterima;
+    }
+
+    public void setWaktuDiterima(Long waktuDiterima) {
+        this.waktuDiterima = waktuDiterima;
     }
 }

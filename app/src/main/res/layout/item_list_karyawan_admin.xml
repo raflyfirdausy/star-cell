@@ -24,7 +24,7 @@
         android:src="@drawable/gradient_flare" />
 
     <LinearLayout
-        android:id="@+id/layout_currentKaryawan"
+        android:id="@+id/ll_parent_action_absen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/selectableItemBackground"
