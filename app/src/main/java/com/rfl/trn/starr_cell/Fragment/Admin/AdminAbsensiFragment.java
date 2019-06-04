@@ -78,52 +78,24 @@ public class AdminAbsensiFragment extends Fragment {
     }
 
     private void semuaAbsen() {
-        final SweetAlertDialog dialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE);
-        dialog.setTitleText("Konfirmasi");
-
-
         databaseReference.child("absen")
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        list.clear();
-                        if (dataSnapshot.exists()) {
+                        if (dataSnapshot.exists()){
                             llBelumAdaAbsen.setVisibility(View.GONE);
+                            list.clear();
                             AbsenModel model;
-                            for (DataSnapshot data : dataSnapshot.getChildren()) {
+                            for (DataSnapshot data : dataSnapshot.getChildren()){
                                 model = data.getValue(AbsenModel.class);
                                 list.add(model);
                             }
-
+                            adapterListAbsensi = new AdapterListAbsensi(getActivity(),list);
                             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
                             rvAbsensi.setLayoutManager(layoutManager);
-                            adapterListAbsensi = new AdapterListAbsensi(getActivity(), list, new IKonfirmasiAbsen() {
-                                @Override
-                                public void AlertKonfirmas(String Nama, String Konter, AbsenModel dataAbsen) {
-                                    dialog.setContentText("Karyawan"+Nama+".\n Telah melakuan absen pada "+dataAbsen.getWaktuMasuk());
-                                    dialog.setConfirmText("Terima");
-                                    dialog.setCancelText("Tolak");
-                                    dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                        @Override
-                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-
-                                            dialog.dismissWithAnimation();
-                                            dialog.changeAlertType(SweetAlertDialog.NORMAL_TYPE);
-                                        }
-                                    });
-                                    dialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                        @Override
-                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                            dialog.dismissWithAnimation();
-                                            dialog.changeAlertType(SweetAlertDialog.NORMAL_TYPE);
-                                        }
-                                    });
-                                    dialog.show();
-                                }
-                            });
                             rvAbsensi.setAdapter(adapterListAbsensi);
+                            adapterListAbsensi.notifyDataSetChanged();
                         }
-
                     }
 
                     @Override
@@ -131,6 +103,8 @@ public class AdminAbsensiFragment extends Fragment {
                         new Bantuan(getActivity()).swal_error(databaseError.getMessage());
                     }
                 });
+
+
     }
 
     @Override

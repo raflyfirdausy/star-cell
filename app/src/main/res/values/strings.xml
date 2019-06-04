@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Star Cell</string>
     <string name="title_activity_dashboard">Dashboard</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -108,7 +108,7 @@
     <string name="belum_ada_karyawan_yang_sedang_bekerja">Belum ada karyawan yang sedang bekerja</string>
     <string name="overtime_in">Overtime In</string>
     <string name="overtime_out">Overtime Out</string>
-    <string name="silahkan_pilih_nama_anda">Silahkan pilih nama anda di bawah ini untuk absen keluar (mengakhiri sift pekerjaan)</string>
+    <string name="silahkan_pilih_nama_anda" tools:ignore="ExtraTranslation">Silahkan pilih nama anda di bawah ini untuk absen keluar (mengakhiri sift pekerjaan)</string>
     <string name="tidak_ada_karyawan_yang_sedang_bekerja_saat_ini">Tidak Ada karyawan yang sedang bekerja saat ini</string>
     <string name="_12_12_12_wib">12 : 12 : 12 WIB</string>
     <string name="_12_12_2017_12_12_wib">12/12/2017 | 12:12 WIB</string>

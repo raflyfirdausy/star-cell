@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +16,9 @@ import android.widget.LinearLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
-import com.rfl.trn.starr_cell.Activity.DetailKaryawanActivity;
 import com.rfl.trn.starr_cell.Activity.TambahKaryawanActivity;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
+import com.rfl.trn.starr_cell.Helper.Bantuan;
 import com.rfl.trn.starr_cell.Model.KaryawanModel;
 import com.rfl.trn.starr_cell.R;
 
@@ -29,6 +30,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class AdapterListKaryawan extends RecyclerView.Adapter<AdapterListKaryawan.MyViewHolder> {
+
+
     private Context context;
     private List<KaryawanModel> data;
     private List<KaryawanModel> dataSementara;
@@ -45,7 +48,7 @@ public class AdapterListKaryawan extends RecyclerView.Adapter<AdapterListKaryawa
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_list_karyawan, viewGroup, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_list_karyawan_admin, viewGroup, false);
         return new MyViewHolder(view);
     }
 
@@ -60,32 +63,44 @@ public class AdapterListKaryawan extends RecyclerView.Adapter<AdapterListKaryawa
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.iv_karyawan)
-        ImageView ivKaryawan;
+        @BindView(R.id.iv_background)
+        ImageView ivBackground;
+        @BindView(R.id.iv_fotoKaryawan)
+        ImageView ivFotoKaryawan;
         @BindView(R.id.tv_namaKaryawan)
         MyTextView tvNamaKaryawan;
+        @BindView(R.id.tv_tanggalDiubah)
+        MyTextView tvTanggalDiubah;
+        @BindView(R.id.tv_alamatKaryawan)
+        MyTextView tvAlamatKaryawan;
         @BindView(R.id.tv_noHpKaryawan)
         MyTextView tvNoHpKaryawan;
-        @BindView(R.id.ll_parent)
-        LinearLayout llParent;
-
+        @BindView(R.id.tv_statusKaryawan)
+        MyTextView tvStatusKaryawan;
+        @BindView(R.id.layout_currentKaryawan)
+        LinearLayout layoutCurrentKaryawan;
+        @BindView(R.id.cv_parent_karyawan)
+        CardView cvParentKaryawan;
+        @BindView(R.id.ll_parent_action)
+        LinearLayout llParentAction;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
         }
-        private void pindahActivity(KaryawanModel karyawanModel,String id, String jenis) {
-            int sex ;
+
+        private void pindahActivity(KaryawanModel karyawanModel, String id, String jenis) {
+            int sex;
             Intent intent = new Intent(context, TambahKaryawanActivity.class);
             intent.putExtra("jenis", jenis);
             intent.putExtra("key", karyawanModel.getIdKaryawan());
             intent.putExtra("namaKaryawan", karyawanModel.getNamaKaryawan());
             intent.putExtra("alamatKaryawan", karyawanModel.getAlamatKaryawan());
             intent.putExtra("noHpKaryawan", String.valueOf(karyawanModel.getNomerHp()));
-            if (karyawanModel.getJenisKelamin().equalsIgnoreCase("Laki-Laki")){
+            if (karyawanModel.getJenisKelamin().equalsIgnoreCase("Laki-Laki")) {
                 sex = 1;
-            }else {
+            } else {
                 sex = 2;
             }
             intent.putExtra("sexKaryawan", sex);
@@ -99,19 +114,14 @@ public class AdapterListKaryawan extends RecyclerView.Adapter<AdapterListKaryawa
         void setDataKeView(final KaryawanModel isiData, final String s) {
             tvNamaKaryawan.setText(isiData.getNamaKaryawan());
             tvNoHpKaryawan.setText(String.valueOf(isiData.getNomerHp()));
-            llParent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    context.startActivity(new Intent(context, DetailKaryawanActivity.class)
-                            .putExtra("id", s));
-
-                }
-            });
-            llParent.setOnClickListener(new View.OnClickListener() {
+            tvAlamatKaryawan.setText(isiData.getAlamatKaryawan());
+            tvTanggalDiubah.setText(String.valueOf(new Bantuan(context).getDatePretty(isiData.getTanggalDiubah(), false)));
+            tvStatusKaryawan.setText(isiData.getStatusKerja());
+            llParentAction.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     final String[] listItem = new String[]{"Lihat Data Karyawan",
-                            "Edit Data Karyawan", "Hapus Karyawan " , "Batal"};
+                            "Edit Data Karyawan", "Hapus Karyawan ", "Batal"};
                     AlertDialog.Builder builder;
                     builder = new AlertDialog.Builder(context);
                     builder.setTitle("Pilih Aksi Untuk " + isiData.getNamaKaryawan())
@@ -121,7 +131,7 @@ public class AdapterListKaryawan extends RecyclerView.Adapter<AdapterListKaryawa
                                     if (which == 0) {
                                         lihatDataKonter(isiData);
                                     } else if (which == 1) {
-                                        pindahActivity(isiData, isiData.getIdKaryawan(),"edit");
+                                        pindahActivity(isiData, isiData.getIdKaryawan(), "edit");
                                     } else if (which == 2) {
                                         hapusKonter(isiData);
                                     }
@@ -159,6 +169,7 @@ public class AdapterListKaryawan extends RecyclerView.Adapter<AdapterListKaryawa
 
 
         }
+
         private void lihatDataKonter(KaryawanModel karyawanModel) {
             final SweetAlertDialog detail = new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
                     .setTitleText("Detail Data " + karyawanModel.getNamaKaryawan())
