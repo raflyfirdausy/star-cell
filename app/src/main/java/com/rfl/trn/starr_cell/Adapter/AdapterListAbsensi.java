@@ -160,13 +160,16 @@ public class AdapterListAbsensi extends RecyclerView.Adapter<AdapterListAbsensi.
             dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                 @Override
                 public void onClick(SweetAlertDialog sweetAlertDialog) {
-                    AbsenModel model = new AbsenModel();
-                    model.setStatus("accept");
-                    model.setWaktuDiterima(new Date().getTime());
+                    Long time = new Date().getTime();
                     databaseReference
                             .child("absen")
                             .child(s)
-                            .setValue(model);
+                            .child("status").setValue("accept");
+
+                    databaseReference
+                            .child("absen")
+                            .child(s)
+                            .child("waktuDiterima").setValue(time);
                     dialog.dismissWithAnimation();
                 }
             });
@@ -190,13 +193,15 @@ public class AdapterListAbsensi extends RecyclerView.Adapter<AdapterListAbsensi.
             dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                 @Override
                 public void onClick(SweetAlertDialog sweetAlertDialog) {
-                    AbsenModel model = new AbsenModel();
-                    model.setStatus("reject");
-                    model.setWaktuDiterima(new Date().getTime());
+                    Long time = new Date().getTime();
                     databaseReference
                             .child("absen")
                             .child(edit)
-                            .setValue(model);
+                            .child("status").setValue("reject");
+                    databaseReference
+                            .child("absen")
+                            .child(edit)
+                            .child("waktuDiterima").setValue(time);
                     dialog.dismissWithAnimation();
                 }
             });
