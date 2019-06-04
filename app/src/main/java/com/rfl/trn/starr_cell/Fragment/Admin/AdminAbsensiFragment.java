@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,7 +42,7 @@ public class AdminAbsensiFragment extends Fragment {
     @BindView(R.id.ll_header)
     LinearLayout llHeader;
     @BindView(R.id.rv_absensi)
-    RecyclerView rvAbsensi;
+    ShimmerRecyclerView rvAbsensi;
     Unbinder unbinder;
     @BindView(R.id.ll_belum_ada_absen)
     LinearLayout llBelumAdaAbsen;
@@ -62,6 +63,7 @@ public class AdminAbsensiFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_admin_absensi, container, false);
         unbinder = ButterKnife.bind(this, view);
         databaseReference = FirebaseDatabase.getInstance().getReference();
+        rvAbsensi.showShimmerAdapter();
         return view;
 
     }
@@ -70,10 +72,11 @@ public class AdminAbsensiFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         semuaAbsen();
+
     }
 
     private void semuaAbsen() {
-        databaseReference.child("karyawan")
+        databaseReference.child("absen")
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -85,6 +88,7 @@ public class AdminAbsensiFragment extends Fragment {
                                 model = data.getValue(AbsenModel.class);
                                 list.add(model);
                             }
+
                             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
                             rvAbsensi.setLayoutManager(layoutManager);
                             adapterListAbsensi = new AdapterListAbsensi(getActivity(), list);

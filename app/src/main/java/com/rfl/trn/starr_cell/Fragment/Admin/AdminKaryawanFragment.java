@@ -108,6 +108,7 @@ public class AdminKaryawanFragment extends Fragment {
 
                             }
 
+
                             adapterListKaryawan = new AdapterListKaryawan(getActivity(), list, listKey);
                             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
                             rvKaryawan.setLayoutManager(layoutManager);

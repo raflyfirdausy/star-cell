@@ -89,12 +89,16 @@
                     android:gravity="center"
                     android:text="Belum ada yang absen hari ini"/>
             </LinearLayout>
-            <android.support.v7.widget.RecyclerView
+            <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/rv_absensi"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </android.support.v7.widget.RecyclerView>
+                android:layout_height="match_parent"
+                app:shimmer_demo_child_count="4"
+                app:shimmer_demo_grid_child_count="1"
+                app:shimmer_demo_layout="@layout/item_list_placeholder"
+                app:shimmer_demo_layout_manager_type="linear_vertical"
+                app:shimmer_demo_angle="20"/>
         </FrameLayout>
 
     </LinearLayout>
