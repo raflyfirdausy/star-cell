@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">Star Cell</string>
     <string name="title_activity_dashboard">Dashboard</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -43,7 +43,6 @@
     <string name="absensi">Absensi</string>
     <string name="transaksi">Transaksi</string>
     <string name="tambah_data_konter">Tambah data konter</string>
-
     <string name="bottom_sheet_option_camera">Use Camera</string>
     <string name="bottom_sheet_option_gallery">Upload from Gallery</string>
     <string name="bottom_sheet_option_heading">Add Photo</string>
@@ -85,7 +84,6 @@
     <string name="penjualan">Penjualan</string>
     <string name="riwayat_transaksi">Riwayat Transaksi</string>
     <string name="title_activity_main_karyawan">MainActivityKaryawan</string>
-
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
@@ -112,4 +110,9 @@
     <string name="overtime_out">Overtime Out</string>
     <string name="silahkan_pilih_nama_anda">Silahkan pilih nama anda di bawah ini untuk absen keluar (mengakhiri sift pekerjaan)</string>
     <string name="tidak_ada_karyawan_yang_sedang_bekerja_saat_ini">Tidak Ada karyawan yang sedang bekerja saat ini</string>
+    <string name="_12_12_12_wib">12 : 12 : 12 WIB</string>
+    <string name="_12_12_2017_12_12_wib">12/12/2017 | 12:12 WIB</string>
+    <string name="absen_normal_lembur">Absen Normal / Lembur</string>
+    <string name="pesan_absen">Pesan Absen</string>
+    <string name="pending_accept_reject">Pending / Accept / Reject</string>
 </resources>

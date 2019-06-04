@@ -48,8 +48,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -289,7 +291,7 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
                         totalCurrentKaryawan = dataSnapshot.getChildrenCount();
                         if (dataSnapshot.exists()) {
                             for (DataSnapshot data : dataSnapshot.getChildren()) {
-                                listKeyCurrentKaryawan.add(data.getValue(String.class));
+                                listKeyCurrentKaryawan.add(data.child("idKaryawan").getValue(String.class));
                             }
                         }
                     }
@@ -362,17 +364,20 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
 
                     String keyAbsen = databaseReference.push().getKey();
 
+                    final Map<String, String> dataCurrentKaryawan = new HashMap<>();
+                    dataCurrentKaryawan.put("idAbsen", Objects.requireNonNull(keyAbsen));
+                    dataCurrentKaryawan.put("idKaryawan", dataAbsen.getIdKaryawan());
+
                     databaseReference.child("absen")
                             .child(Objects.requireNonNull(keyAbsen))
                             .setValue(dataAbsen)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    //TODO : set current karyawan tp ngko lah :v
                                     databaseReference.child("currentKaryawan")
                                             .child(firebaseAuth.getCurrentUser().getUid())
                                             .child(childKaryawan)
-                                            .setValue(dataAbsen.getIdKaryawan())
+                                            .setValue(dataCurrentKaryawan)
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {

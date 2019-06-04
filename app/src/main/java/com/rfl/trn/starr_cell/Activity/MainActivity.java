@@ -72,8 +72,8 @@ public class MainActivity extends AppCompatActivity
         ButterKnife.bind(this);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setTitle("Star Cell");
-        getSupportActionBar().setSubtitle(getString(R.string.dashboard_karyawan));
+        Objects.requireNonNull(getSupportActionBar()).setTitle(getString(R.string.app_name));
+        getSupportActionBar().setSubtitle(getString(R.string.dashboard));
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
