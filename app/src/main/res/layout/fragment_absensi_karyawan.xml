@@ -7,57 +7,6 @@
     android:orientation="vertical"
     tools:context=".Fragment.Karyawan.AbsensiKaryawanFragment">
 
-    <LinearLayout
-        android:id="@+id/ll_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/iv_karyawan"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:padding="20dp"
-            android:tint="@color/colorPrimary"
-            app:srcCompat="@drawable/ic_absensi" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <com.rfl.trn.starr_cell.Custom.MyTextView
-                    android:id="@+id/tv_namaKonter"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="monospace"
-                    android:text="@string/absensi"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="23sp"
-                    android:textStyle="bold" />
-
-                <com.rfl.trn.starr_cell.Custom.MyTextView
-                    android:id="@+id/tv_detailKaryawan"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="monospace"
-                    android:paddingTop="5dp"
-                    android:text="@string/detail_absensi"
-                    android:textColor="@color/black"
-                    android:textSize="12sp"
-                    android:textStyle="normal" />
-
-            </LinearLayout>
-        </RelativeLayout>
-    </LinearLayout>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -67,336 +16,392 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.v7.widget.CardView
+            <LinearLayout
+                android:id="@+id/ll_header"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:layout_marginStart="@dimen/dp_16"
-                android:layout_marginTop="@dimen/dp_16"
-                android:layout_marginEnd="@dimen/dp_16"
-                android:layout_marginBottom="@dimen/dp_8"
-                android:clickable="true"
-                android:focusable="true"
-                app:cardCornerRadius="@dimen/dp_8"
-                app:cardElevation="@dimen/dp_0">
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="match_parent"
+                    android:id="@+id/iv_karyawan"
+                    android:layout_width="100dp"
                     android:layout_height="match_parent"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/gradient_ultraviolet" />
+                    android:padding="20dp"
+                    android:tint="@color/colorPrimary"
+                    app:srcCompat="@drawable/ic_absensi" />
 
-                <LinearLayout
-                    android:id="@+id/layout_karyawanSaatIni"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="?attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/dp_8">
-
-                    <ImageView
-                        android:layout_width="120dp"
-                        android:layout_height="match_parent"
-                        android:padding="@dimen/dp_8"
-                        android:src="@drawable/ic_karyawan" />
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
                         android:orientation="vertical"
-                        android:paddingStart="@dimen/dp_8"
-                        android:paddingEnd="@dimen/dp_8">
+                        android:padding="10dp">
 
-                        <TextView
+                        <com.rfl.trn.starr_cell.Custom.MyTextView
+                            android:id="@+id/tv_namaKonter"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="4dp"
-                            android:text="@string/karyawan_saat_ini"
-                            android:textColor="@color/white"
-                            android:textSize="24sp"
+                            android:fontFamily="monospace"
+                            android:text="@string/absensi"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="23sp"
                             android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/tv_karyawan"
+                        <com.rfl.trn.starr_cell.Custom.MyTextView
+                            android:id="@+id/tv_detailKaryawan"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/belum_ada_karyawan_yang_sedang_bekerja"
-                            android:textColor="@color/white"
-                            android:textSize="16sp"
-                            android:textStyle="normal"
-                            tools:ignore="SmallSp" />
+                            android:fontFamily="monospace"
+                            android:paddingTop="5dp"
+                            android:text="@string/detail_absensi"
+                            android:textColor="@color/black"
+                            android:textSize="12sp"
+                            android:textStyle="normal" />
 
                     </LinearLayout>
-
-                </LinearLayout>
-
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:layout_marginStart="@dimen/dp_16"
-                android:layout_marginEnd="@dimen/dp_16"
-                android:layout_marginBottom="@dimen/dp_8"
-                android:clickable="true"
-                android:focusable="true"
-                app:cardCornerRadius="@dimen/dp_8"
-                app:cardElevation="@dimen/dp_0">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/gradient_flare" />
-
-                <RelativeLayout
-                    android:id="@+id/layout_absenMasuk"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="?attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:padding="@dimen/dp_8">
-
-                    <ImageView
-                        android:layout_width="120dp"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentEnd="true"
-                        android:padding="@dimen/dp_8"
-                        android:src="@drawable/ic_karyawan" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:paddingStart="@dimen/dp_8"
-                        android:paddingEnd="@dimen/dp_8"
-                        android:layout_marginEnd="120dp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/absen_masuk"
-                            android:gravity="end"
-                            android:textStyle="bold"
-                            android:textSize="24sp"
-                            android:textColor="@color/white"
-                            android:layout_marginBottom="4dp"/>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/silahkan_absen_masuk_jika_anda_akan_mulai_bekerja"
-                            android:gravity="end"
-                            android:textStyle="normal"
-                            android:textSize="16sp"
-                            android:textColor="@color/white"
-                            android:layout_marginBottom="4dp"/>
-
-                    </LinearLayout>
-
                 </RelativeLayout>
-            </android.support.v7.widget.CardView>
+            </LinearLayout>
 
-            <android.support.v7.widget.CardView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:layout_marginStart="@dimen/dp_16"
-                android:layout_marginEnd="@dimen/dp_16"
-                android:layout_marginBottom="@dimen/dp_8"
-                android:clickable="true"
-                android:focusable="true"
-                app:cardCornerRadius="@dimen/dp_8"
-                app:cardElevation="@dimen/dp_0">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <ImageView
+                <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/gradient_scooter" />
-
-                <LinearLayout
-                    android:id="@+id/layout_absenKeluar"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="?attr/selectableItemBackground"
+                    android:layout_height="120dp"
+                    android:layout_marginStart="@dimen/dp_16"
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:layout_marginEnd="@dimen/dp_16"
+                    android:layout_marginBottom="@dimen/dp_8"
                     android:clickable="true"
                     android:focusable="true"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/dp_8">
+                    app:cardCornerRadius="@dimen/dp_8"
+                    app:cardElevation="@dimen/dp_0">
 
                     <ImageView
-                        android:layout_width="120dp"
-                        android:layout_height="match_parent"
-                        android:padding="@dimen/dp_8"
-                        android:src="@drawable/ic_karyawan" />
-
-                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:paddingStart="@dimen/dp_8"
-                        android:paddingEnd="@dimen/dp_8">
+                        android:scaleType="fitXY"
+                        android:src="@drawable/gradient_ultraviolet" />
 
-                        <TextView
+                    <LinearLayout
+                        android:id="@+id/layout_karyawanSaatIni"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dp_8">
+
+                        <ImageView
+                            android:layout_width="120dp"
+                            android:layout_height="match_parent"
+                            android:padding="@dimen/dp_8"
+                            android:src="@drawable/ic_karyawan" />
+
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/absen_keluar"
-                            android:textStyle="bold"
-                            android:textSize="24sp"
-                            android:textColor="@color/white"
-                            android:layout_marginBottom="4dp"/>
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:paddingStart="@dimen/dp_8"
+                            android:paddingEnd="@dimen/dp_8">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/absen_keluar_deskripsi"
-                            android:textStyle="normal"
-                            android:textSize="16sp"
-                            android:textColor="@color/white"
-                            android:layout_marginBottom="4dp"/>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="4dp"
+                                android:text="@string/karyawan_saat_ini"
+                                android:textColor="@color/white"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
 
+                            <TextView
+                                android:id="@+id/tv_karyawan"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/belum_ada_karyawan_yang_sedang_bekerja"
+                                android:textColor="@color/white"
+                                android:textSize="14sp"
+                                android:textStyle="normal"
+                                tools:ignore="SmallSp" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
-                </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+                </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:layout_marginStart="@dimen/dp_16"
-                android:layout_marginEnd="@dimen/dp_16"
-                android:layout_marginBottom="@dimen/dp_8"
-                android:clickable="true"
-                android:focusable="true"
-                app:cardCornerRadius="@dimen/dp_8"
-                app:cardElevation="@dimen/dp_0">
-
-                <ImageView
+                <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/tosca_gradient" />
-
-                <RelativeLayout
-                    android:id="@+id/layout_absenMasukLembur"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="?attr/selectableItemBackground"
+                    android:layout_height="120dp"
+                    android:layout_marginStart="@dimen/dp_16"
+                    android:layout_marginEnd="@dimen/dp_16"
+                    android:layout_marginBottom="@dimen/dp_8"
                     android:clickable="true"
                     android:focusable="true"
-                    android:padding="@dimen/dp_8">
+                    app:cardCornerRadius="@dimen/dp_8"
+                    app:cardElevation="@dimen/dp_0">
 
                     <ImageView
-                        android:layout_width="120dp"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentEnd="true"
-                        android:padding="@dimen/dp_8"
-                        android:src="@drawable/ic_karyawan" />
-
-                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:paddingStart="@dimen/dp_8"
-                        android:paddingEnd="@dimen/dp_8"
-                        android:layout_marginEnd="120dp">
+                        android:scaleType="fitXY"
+                        android:src="@drawable/gradient_flare" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/overtime_in"
-                            android:gravity="end"
-                            android:textStyle="bold"
-                            android:textSize="24sp"
-                            android:textColor="@color/white"
-                            android:layout_marginBottom="4dp"/>
+                    <RelativeLayout
+                        android:id="@+id/layout_absenMasuk"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="@dimen/dp_8">
 
-                        <TextView
+                        <ImageView
+                            android:layout_width="120dp"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentEnd="true"
+                            android:padding="@dimen/dp_8"
+                            android:src="@drawable/ic_karyawan" />
+
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/silahkan_absen_masuk_jika_anda_akan_mulai_bekerja"
-                            android:gravity="end"
-                            android:textStyle="normal"
-                            android:textSize="16sp"
-                            android:textColor="@color/white"
-                            android:layout_marginBottom="4dp"/>
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="120dp"
+                            android:orientation="vertical"
+                            android:paddingStart="@dimen/dp_8"
+                            android:paddingEnd="@dimen/dp_8">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="4dp"
+                                android:gravity="end"
+                                android:text="@string/absen_masuk"
+                                android:textColor="@color/white"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="4dp"
+                                android:gravity="end"
+                                android:text="@string/silahkan_absen_masuk_jika_anda_akan_mulai_bekerja"
+                                android:textColor="@color/white"
+                                android:textSize="14sp"
+                                android:textStyle="normal" />
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_marginStart="@dimen/dp_16"
+                    android:layout_marginEnd="@dimen/dp_16"
+                    android:layout_marginBottom="@dimen/dp_8"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardCornerRadius="@dimen/dp_8"
+                    app:cardElevation="@dimen/dp_0">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/gradient_scooter" />
+
+                    <LinearLayout
+                        android:id="@+id/layout_absenKeluar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dp_8">
+
+                        <ImageView
+                            android:layout_width="120dp"
+                            android:layout_height="match_parent"
+                            android:padding="@dimen/dp_8"
+                            android:src="@drawable/ic_karyawan" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:paddingStart="@dimen/dp_8"
+                            android:paddingEnd="@dimen/dp_8">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="4dp"
+                                android:text="@string/absen_keluar"
+                                android:textColor="@color/white"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="4dp"
+                                android:text="@string/absen_keluar_deskripsi"
+                                android:textColor="@color/white"
+                                android:textSize="14sp"
+                                android:textStyle="normal" />
+
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
+                </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:layout_marginStart="@dimen/dp_16"
-                android:layout_marginEnd="@dimen/dp_16"
-                android:layout_marginBottom="@dimen/dp_8"
-                android:clickable="true"
-                android:focusable="true"
-                app:cardCornerRadius="@dimen/dp_8"
-                app:cardElevation="@dimen/dp_0">
-
-                <ImageView
+                <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/gradient_red_mist" />
-
-                <LinearLayout
-                    android:id="@+id/layout_absenKeluarLembur"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="?attr/selectableItemBackground"
+                    android:layout_height="120dp"
+                    android:layout_marginStart="@dimen/dp_16"
+                    android:layout_marginEnd="@dimen/dp_16"
+                    android:layout_marginBottom="@dimen/dp_8"
                     android:clickable="true"
                     android:focusable="true"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/dp_8">
+                    app:cardCornerRadius="@dimen/dp_8"
+                    app:cardElevation="@dimen/dp_0">
 
                     <ImageView
-                        android:layout_width="120dp"
-                        android:layout_height="match_parent"
-                        android:padding="@dimen/dp_8"
-                        android:src="@drawable/ic_karyawan" />
-
-                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:paddingStart="@dimen/dp_8"
-                        android:paddingEnd="@dimen/dp_8">
+                        android:scaleType="fitXY"
+                        android:src="@drawable/tosca_gradient" />
 
-                        <TextView
+                    <RelativeLayout
+                        android:id="@+id/layout_absenMasukLembur"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="@dimen/dp_8">
+
+                        <ImageView
+                            android:layout_width="120dp"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentEnd="true"
+                            android:padding="@dimen/dp_8"
+                            android:src="@drawable/ic_karyawan" />
+
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/overtime_out"
-                            android:textStyle="bold"
-                            android:textSize="24sp"
-                            android:textColor="@color/white"
-                            android:layout_marginBottom="4dp"/>
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="120dp"
+                            android:orientation="vertical"
+                            android:paddingStart="@dimen/dp_8"
+                            android:paddingEnd="@dimen/dp_8">
 
-                        <TextView
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="4dp"
+                                android:gravity="end"
+                                android:text="@string/overtime_in"
+                                android:textColor="@color/white"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="4dp"
+                                android:gravity="end"
+                                android:text="@string/silahkan_absen_masuk_jika_anda_akan_mulai_bekerja"
+                                android:textColor="@color/white"
+                                android:textSize="14sp"
+                                android:textStyle="normal" />
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_marginStart="@dimen/dp_16"
+                    android:layout_marginEnd="@dimen/dp_16"
+                    android:layout_marginBottom="@dimen/dp_8"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardCornerRadius="@dimen/dp_8"
+                    app:cardElevation="@dimen/dp_0">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/gradient_red_mist" />
+
+                    <LinearLayout
+                        android:id="@+id/layout_absenKeluarLembur"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dp_8">
+
+                        <ImageView
+                            android:layout_width="120dp"
+                            android:layout_height="match_parent"
+                            android:padding="@dimen/dp_8"
+                            android:src="@drawable/ic_karyawan" />
+
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/absen_keluar_deskripsi"
-                            android:textStyle="normal"
-                            android:textSize="16sp"
-                            android:textColor="@color/white"
-                            android:layout_marginBottom="4dp"/>
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:paddingStart="@dimen/dp_8"
+                            android:paddingEnd="@dimen/dp_8">
 
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="4dp"
+                                android:text="@string/overtime_out"
+                                android:textColor="@color/white"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="4dp"
+                                android:text="@string/absen_keluar_deskripsi"
+                                android:textColor="@color/white"
+                                android:textSize="14sp"
+                                android:textStyle="normal" />
+
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
-                </LinearLayout>
+                </android.support.v7.widget.CardView>
 
-            </android.support.v7.widget.CardView>
-
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>
