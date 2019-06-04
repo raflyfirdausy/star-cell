@@ -9,7 +9,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
+import com.rfl.trn.starr_cell.Helper.Bantuan;
 import com.rfl.trn.starr_cell.Model.AbsenModel;
 import com.rfl.trn.starr_cell.R;
 
@@ -21,6 +27,7 @@ import butterknife.ButterKnife;
 public class AdapterCurrentKaryawan extends RecyclerView.Adapter<AdapterCurrentKaryawan.ViewHolder> {
     private Context context;
     private List<AbsenModel> data;
+
 
     public AdapterCurrentKaryawan(Context context, List<AbsenModel> data) {
         this.context = context;
@@ -71,7 +78,38 @@ public class AdapterCurrentKaryawan extends RecyclerView.Adapter<AdapterCurrentK
         }
 
         void setDataKewView(AbsenModel isiData) {
+            if(isiData.getStatus().equalsIgnoreCase("pending")){
+                ivBackground.setImageResource(R.drawable.gradient_scooter);
+            } else if(isiData.getStatus().equalsIgnoreCase("accept")){
+                ivBackground.setImageResource(R.drawable.gradient_flare);
+            } else if(isiData.getStatus().equalsIgnoreCase("reject")){
+                ivBackground.setImageResource(R.drawable.gradient_red_mist);
+            }
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+            databaseReference.child("karyawan")
+                    .child(isiData.getIdKaryawan())
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.exists()){
+                                tvNamaKaryawan.setText(dataSnapshot.child("namaKaryawan").getValue(String.class));
+                            }
+                        }
 
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            //njiot context si piwe :v
+                        }
+                    });
+
+            tvWaktuAbsen.setText(isiData.getWaktuMasuk().toString());
+            if (!isiData.isLembur()) {
+                tvJenisAbsen.setText("Absen Normal");
+            } else {
+                tvJenisAbsen.setText("Absen Lembur");
+            }
+            tvPesanAbsen.setText(isiData.getPesan());
+            tvStatusAbsen.setText(isiData.getStatus());
         }
     }
 }
