@@ -95,8 +95,9 @@ public class ListCurrentKaryawanActivity extends AppCompatActivity {
                                                 AbsenModel absenModel;
                                                 if(dataSnapshot.exists()){
                                                     absenModel = dataSnapshot.getValue(AbsenModel.class);
+                                                    assert absenModel != null;
+                                                    absenModel.setIdAbsen(dataSnapshot.getKey());
                                                     listCurrentKaryawan.add(absenModel);
-//                                                    new Bantuan(context).swal_sukses(String.valueOf(listCurrentKaryawan.get(0).getIdKaryawan()));
                                                     adapterCurrentKaryawan = new AdapterCurrentKaryawan(context, listCurrentKaryawan);
                                                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
                                                     rvAbsen.setLayoutManager(layoutManager);
