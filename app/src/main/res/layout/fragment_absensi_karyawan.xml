@@ -154,7 +154,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="fitXY"
-                        android:src="@drawable/gradient_flare" />
+                        android:src="@drawable/gradient_scooter" />
 
                     <RelativeLayout
                         android:id="@+id/layout_absenMasuk"
@@ -185,7 +185,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="4dp"
                                 android:gravity="end"
-                                android:text="@string/absen_masuk"
+                                android:text="@string/absen_masuk_normal"
                                 android:textColor="@color/white"
                                 android:textSize="20sp"
                                 android:textStyle="bold" />
@@ -220,10 +220,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="fitXY"
-                        android:src="@drawable/gradient_scooter" />
+                        android:src="@drawable/gradient_flare" />
 
                     <LinearLayout
-                        android:id="@+id/layout_absenKeluar"
+                        android:id="@+id/layout_absenMasukLembur"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="?attr/selectableItemBackground"
@@ -249,7 +249,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="4dp"
-                                android:text="@string/absen_keluar"
+                                android:text="@string/absen_masuk_lembur"
                                 android:textColor="@color/white"
                                 android:textSize="20sp"
                                 android:textStyle="bold" />
@@ -258,7 +258,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="4dp"
-                                android:text="@string/absen_keluar_deskripsi"
+                                android:text="@string/deskripsi_absen_lembur"
                                 android:textColor="@color/white"
                                 android:textSize="14sp"
                                 android:textStyle="normal" />
@@ -285,10 +285,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="fitXY"
-                        android:src="@drawable/tosca_gradient" />
+                        android:src="@drawable/gradient_red_mist" />
 
                     <RelativeLayout
-                        android:id="@+id/layout_absenMasukLembur"
+                        android:id="@+id/layout_absenKeluar"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="?attr/selectableItemBackground"
@@ -316,7 +316,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="4dp"
                                 android:gravity="end"
-                                android:text="@string/overtime_in"
+                                android:text="@string/absen_keluar"
                                 android:textColor="@color/white"
                                 android:textSize="20sp"
                                 android:textStyle="bold" />
@@ -326,7 +326,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="4dp"
                                 android:gravity="end"
-                                android:text="@string/silahkan_absen_masuk_jika_anda_akan_mulai_bekerja"
+                                android:text="@string/absen_keluar_deskripsi"
                                 android:textColor="@color/white"
                                 android:textSize="14sp"
                                 android:textStyle="normal" />
@@ -336,7 +336,11 @@
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
 
+                <!--DARI PADA TAK BUANG MENDING VISIBILITY GONE :V-->
+
+
                 <android.support.v7.widget.CardView
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
                     android:layout_marginStart="@dimen/dp_16"

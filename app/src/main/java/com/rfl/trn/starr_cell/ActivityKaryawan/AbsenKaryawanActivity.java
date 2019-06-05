@@ -125,7 +125,7 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
                         .addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if(dataSnapshot.exists()){
+                                if (dataSnapshot.exists()) {
                                     spinnerKaryawan.setEnabled(false);
                                     spinnerKaryawan.setItems(dataSnapshot.child("namaKaryawan").getValue(String.class));
                                     keyKaryawan = dataSnapshot.getKey();
@@ -381,8 +381,8 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
                     if (isSudahAbsen()) {
                         new Bantuan(context).swal_error(getString(R.string.tidak_bisa_absen_lagi));
                     } else {
-//                        simpanKeDatabase(kodeAbsen);
-                        new Bantuan(context).swal_sukses("sabar bwambank");
+                        simpanKeDatabase(kodeAbsen);
+//                        new Bantuan(context).swal_sukses("sabar bwambank");
                     }
                 } else {
                     new Bantuan(context).swal_error(getString(R.string.belum_absen_normal));
@@ -489,19 +489,14 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
                     dataAbsen.setTanggal(new Date().getTime());
                     dataAbsen.setUrlFoto(Objects.requireNonNull(downloadURL).toString());
 
-                    String jenisAbsen = null;
-                    boolean isLembur = false;
-
                     if (kodeAbsen == 0) {
-                        simpanAbsenMasukNormal(dataAbsen, keyPushAbsen, "Masuk", false, loading);
+                        simpanAbsenMasuk(dataAbsen, keyPushAbsen, "Masuk", false, loading);
                     } else if (kodeAbsen == 1) {
-                        simpanAbsenKeluarNormal(dataAbsen, keyPushAbsen, "Keluar", false, loading);
+                        simpanAbsenKeluar(dataAbsen, keyPushAbsen, "Keluar", false, loading);
                     } else if (kodeAbsen == 2) {
-                        jenisAbsen = "Masuk";
-                        isLembur = true;
+                        simpanAbsenMasuk(dataAbsen, keyPushAbsen, "Masuk", true, loading);
                     } else if (kodeAbsen == 3) {
-                        jenisAbsen = "Keluar";
-                        isLembur = true;
+                        simpanAbsenKeluar(dataAbsen, keyPushAbsen, "Keluar", true, loading);
                     }
                 }
             }
@@ -514,7 +509,7 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
         });
     }
 
-    private void simpanAbsenMasukNormal(AbsenModel dataAbsen, String keyPushAbsen, String jenisAbsen, boolean isLembur, final SweetAlertDialog loading) {
+    private void simpanAbsenMasuk(AbsenModel dataAbsen, String keyPushAbsen, String jenisAbsen, final boolean isLembur, final SweetAlertDialog loading) {
 
         dataAbsen.setWaktuMasuk(new Date().getTime());
         dataAbsen.setLembur(isLembur);
@@ -532,7 +527,7 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
                     public void onSuccess(Void aVoid) {
                         databaseReference.child("currentKaryawan")
                                 .child(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid())
-                                .child("ID-" + new Faker(new Locale("in-ID")).random().hex(10))
+                                .child("ID-" + new Faker(new Locale("in-ID")).random().hex(20))
                                 .setValue(dataCurrentKaryawan)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
@@ -540,7 +535,11 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
                                         loading.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
                                         loading.showContentText(true);
                                         loading.setTitleText("Sukses");
-                                        loading.setContentText("Berhasil Absen Masuk Normal");
+                                        if (isLembur) {
+                                            loading.setContentText("Berhasil Absen Masuk Lembur");
+                                        } else {
+                                            loading.setContentText("Berhasil Absen Masuk Normal");
+                                        }
                                         loading.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                             @Override
                                             public void onClick(SweetAlertDialog sweetAlertDialog) {
@@ -564,7 +563,7 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
         });
     }
 
-    private void simpanAbsenKeluarNormal(AbsenModel dataAbsen, String keyPushAbsen, String jenisAbsen, boolean isLembur, final SweetAlertDialog loading) {
+    private void simpanAbsenKeluar(AbsenModel dataAbsen, String keyPushAbsen, String jenisAbsen, final boolean isLembur, final SweetAlertDialog loading) {
         dataAbsen.setWaktuKeluar(new Date().getTime());
         dataAbsen.setLembur(isLembur);
         dataAbsen.setJenisAbsen(jenisAbsen);
@@ -586,7 +585,11 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
                                         loading.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
                                         loading.showContentText(true);
                                         loading.setTitleText("Sukses");
-                                        loading.setContentText("Berhasil Absen Keluar Normal");
+                                        if (isLembur) {
+                                            loading.setContentText("Berhasil Absen Keluar Lembur");
+                                        } else {
+                                            loading.setContentText("Berhasil Absen Keluar Normal");
+                                        }
                                         loading.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                             @Override
                                             public void onClick(SweetAlertDialog sweetAlertDialog) {

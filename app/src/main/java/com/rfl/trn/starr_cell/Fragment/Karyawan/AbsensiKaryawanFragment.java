@@ -4,7 +4,6 @@ package com.rfl.trn.starr_cell.Fragment.Karyawan;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -44,7 +43,7 @@ import butterknife.Unbinder;
  */
 public class AbsensiKaryawanFragment extends Fragment {
 
-
+    private static final int MAX_TOTAL_CURRENT_KARYAWAN = 2;
     @BindView(R.id.iv_karyawan)
     ImageView ivKaryawan;
     @BindView(R.id.tv_namaKonter)
@@ -60,14 +59,14 @@ public class AbsensiKaryawanFragment extends Fragment {
     @BindView(R.id.layout_absenMasuk)
     RelativeLayout layoutAbsenMasuk;
     @BindView(R.id.layout_absenKeluar)
-    LinearLayout layoutAbsenKeluar;
+    RelativeLayout layoutAbsenKeluar;
     Unbinder unbinder;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
     private long totalCurrentKaryawan = 0;
     private List<String> listCurrentKaryawan = new ArrayList<>();
-    private static final int MAX_TOTAL_CURRENT_KARYAWAN = 2;
+
     public AbsensiKaryawanFragment() {
         // Required empty public constructor
     }
