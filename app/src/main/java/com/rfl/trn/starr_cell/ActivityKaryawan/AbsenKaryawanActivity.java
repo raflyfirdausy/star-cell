@@ -144,16 +144,16 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
     private void setJenisAbsen() {
         if (getIntent().hasExtra("jenis")) {
             if (getIntent().getStringExtra("jenis").equalsIgnoreCase("absenMasukNormal")) {
-                getSupportActionBar().setSubtitle("Absen Masuk Normal");
+                Objects.requireNonNull(getSupportActionBar()).setSubtitle("Absen Masuk Normal");
                 kodeAbsen = 0;
             } else if (getIntent().getStringExtra("jenis").equalsIgnoreCase("absenKeluarNormal")) {
-                getSupportActionBar().setSubtitle("Absen Keluar Normal");
+                Objects.requireNonNull(getSupportActionBar()).setSubtitle("Absen Keluar Normal");
                 kodeAbsen = 1;
             } else if (getIntent().getStringExtra("jenis").equalsIgnoreCase("absenMasukLembur")) {
-                getSupportActionBar().setSubtitle("Absen Masuk Lembur");
+                Objects.requireNonNull(getSupportActionBar()).setSubtitle("Absen Masuk Lembur");
                 kodeAbsen = 2;
             } else if (getIntent().getStringExtra("jenis").equalsIgnoreCase("absenKeluarLembur")) {
-                getSupportActionBar().setSubtitle("Absen Keluar Lembur");
+                Objects.requireNonNull(getSupportActionBar()).setSubtitle("Absen Keluar Lembur");
                 kodeAbsen = 3;
             }
         } else {
@@ -366,7 +366,7 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
             });
             dialog.show();
         } else {
-            if (kodeAbsen == 0) {  //absen masuk
+            if (kodeAbsen == 0) {
                 if (isSudahAbsen()) {
                     new Bantuan(context).swal_error(getString(R.string.tidak_bisa_absen_lagi));
                 } else {
@@ -382,7 +382,6 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
                         new Bantuan(context).swal_error(getString(R.string.tidak_bisa_absen_lagi));
                     } else {
                         simpanKeDatabase(kodeAbsen);
-//                        new Bantuan(context).swal_sukses("sabar bwambank");
                     }
                 } else {
                     new Bantuan(context).swal_error(getString(R.string.belum_absen_normal));
@@ -455,7 +454,7 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
             namaFoto = "absenMasukLembur_";
         } else if (kodeAbsen == 3) {
             loading.setContentText("Tunggu beberapa saat, proses absen keluar lembur");
-            namaFoto = "absenKeluarNormal_";
+            namaFoto = "absenKeluarLembur_";
         }
 
         namaFoto += new Date().getTime() + ".jpeg";
