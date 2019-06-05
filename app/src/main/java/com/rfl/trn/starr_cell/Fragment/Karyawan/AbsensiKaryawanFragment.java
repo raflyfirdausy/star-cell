@@ -106,9 +106,6 @@ public class AbsensiKaryawanFragment extends Fragment {
             R.id.layout_absenKeluarLembur})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.layout_karyawanSaatIni:
-                new Bantuan(getActivity()).swal_sukses("karyawan");
-                break;
             case R.id.layout_absenMasuk:
                 if (totalCurrentKaryawan < MAX_TOTAL_CURRENT_KARYAWAN) {
                     Intent intent = new Intent(getActivity(), AbsenKaryawanActivity.class);
@@ -117,9 +114,6 @@ public class AbsensiKaryawanFragment extends Fragment {
                 } else {
                     new Bantuan(getActivity()).swal_error(getString(R.string.karyawan_lebih_dari_dua));
                 }
-                break;
-            case R.id.layout_absenKeluar:
-                startActivity(new Intent(getActivity(), ListCurrentKaryawanActivity.class));
                 break;
             case R.id.layout_absenMasukLembur:
                 if (totalCurrentKaryawan < MAX_TOTAL_CURRENT_KARYAWAN) {
@@ -130,7 +124,7 @@ public class AbsensiKaryawanFragment extends Fragment {
                     new Bantuan(getActivity()).swal_error(getString(R.string.karyawan_lebih_dari_dua));
                 }
                 break;
-            case R.id.layout_absenKeluarLembur:
+            case R.id.layout_absenKeluar:
                 startActivity(new Intent(getActivity(), ListCurrentKaryawanActivity.class));
                 break;
         }
