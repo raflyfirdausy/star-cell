@@ -99,11 +99,7 @@ public class AbsensiKaryawanFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.layout_karyawanSaatIni,
-            R.id.layout_absenMasuk,
-            R.id.layout_absenKeluar,
-            R.id.layout_absenMasukLembur,
-            R.id.layout_absenKeluarLembur})
+    @OnClick({R.id.layout_absenMasuk, R.id.layout_absenMasukLembur, R.id.layout_absenKeluar})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_absenMasuk:
