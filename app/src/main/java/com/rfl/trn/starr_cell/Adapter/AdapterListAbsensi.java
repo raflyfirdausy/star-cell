@@ -18,7 +18,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
-import com.rfl.trn.starr_cell.Helper.Bantuan;
 import com.rfl.trn.starr_cell.Interface.IKonfirmasiAbsen;
 import com.rfl.trn.starr_cell.Model.AbsenModel;
 import com.rfl.trn.starr_cell.Model.KaryawanModel;
@@ -32,12 +31,12 @@ import butterknife.ButterKnife;
 
 public class AdapterListAbsensi extends RecyclerView.Adapter<AdapterListAbsensi.MyViewHolder> {
 
+    private static final int ITEM_PEMISAH = 1;
+    private static final int ITEM_ABSEN = 2;
     private Context context;
     private List<AbsenModel> data;
     private List<String> keyAbsen;
     private IKonfirmasiAbsen listener;
-    private static final int ITEM_PEMISAH = 1;
-    private static final int ITEM_ABSEN = 2;
 
 
     public AdapterListAbsensi(Context context, List<AbsenModel> data, List<String> keyAbsen) {
@@ -56,7 +55,7 @@ public class AdapterListAbsensi extends RecyclerView.Adapter<AdapterListAbsensi.
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-        myViewHolder.setDataKeViewAbsen(data.get(i),keyAbsen.get(i));
+        myViewHolder.setDataKeViewAbsen(data.get(i), keyAbsen.get(i));
 
     }
 
@@ -121,11 +120,11 @@ public class AdapterListAbsensi extends RecyclerView.Adapter<AdapterListAbsensi.
                 @Override
                 public void onClick(View v) {
                     String[] listItem = new String[0];
-                    if (data.getStatus().equalsIgnoreCase("pending")){
-                         listItem = new String[]{"Lihat Data Absen",
+                    if (data.getStatus().equalsIgnoreCase("pending")) {
+                        listItem = new String[]{"Lihat Data Absen",
                                 "Tolak", "Terima", "Batal"};
 
-                    }else {
+                    } else {
                         listItem = new String[]{"Lihat Data Absen"};
                     }
                     AlertDialog.Builder builder;
@@ -139,7 +138,7 @@ public class AdapterListAbsensi extends RecyclerView.Adapter<AdapterListAbsensi.
                                     } else if (which == 1) {
                                         TolakAbsen(data, s);
                                     } else if (which == 2) {
-                                        TerimaAbsen(data,s);
+                                        TerimaAbsen(data, s);
                                     }
                                 }
                             })

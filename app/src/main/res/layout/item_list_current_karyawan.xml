@@ -47,7 +47,7 @@
             android:paddingStart="@dimen/dp_8"
             android:paddingEnd="@dimen/dp_8">
 
-            <com.rfl.trn.starr_cell.Custom.MyTextView
+            <TextView
                 android:id="@+id/tv_namaKaryawan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

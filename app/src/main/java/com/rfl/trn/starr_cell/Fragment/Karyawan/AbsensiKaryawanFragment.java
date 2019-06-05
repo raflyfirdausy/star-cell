@@ -67,7 +67,7 @@ public class AbsensiKaryawanFragment extends Fragment {
     private StorageReference storageReference;
     private long totalCurrentKaryawan = 0;
     private List<String> listCurrentKaryawan = new ArrayList<>();
-
+    private static final int MAX_TOTAL_CURRENT_KARYAWAN = 2;
     public AbsensiKaryawanFragment() {
         // Required empty public constructor
     }
@@ -84,16 +84,14 @@ public class AbsensiKaryawanFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         storageReference = FirebaseStorage.getInstance().getReference();
-
-        getTotalCurrentKaryawan();
-        setAndgetCurrentKaryawan();
         return view;
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-//        setAndgetCurrentKaryawan();
+    public void onStart() {
+        super.onStart();
+        getTotalCurrentKaryawan();
+        setAndgetCurrentKaryawan();
     }
 
     @Override
@@ -102,20 +100,38 @@ public class AbsensiKaryawanFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.layout_karyawanSaatIni, R.id.layout_absenMasuk, R.id.layout_absenKeluar})
+    @OnClick({R.id.layout_karyawanSaatIni,
+            R.id.layout_absenMasuk,
+            R.id.layout_absenKeluar,
+            R.id.layout_absenMasukLembur,
+            R.id.layout_absenKeluarLembur})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.layout_karyawanSaatIni:
                 new Bantuan(getActivity()).swal_sukses("karyawan");
                 break;
             case R.id.layout_absenMasuk:
-                if (totalCurrentKaryawan < 2) {
-                    startActivity(new Intent(getActivity(), AbsenKaryawanActivity.class));
+                if (totalCurrentKaryawan < MAX_TOTAL_CURRENT_KARYAWAN) {
+                    Intent intent = new Intent(getActivity(), AbsenKaryawanActivity.class);
+                    intent.putExtra("jenis", "absenMasukNormal");
+                    startActivity(intent);
                 } else {
                     new Bantuan(getActivity()).swal_error(getString(R.string.karyawan_lebih_dari_dua));
                 }
                 break;
             case R.id.layout_absenKeluar:
+                startActivity(new Intent(getActivity(), ListCurrentKaryawanActivity.class));
+                break;
+            case R.id.layout_absenMasukLembur:
+                if (totalCurrentKaryawan < MAX_TOTAL_CURRENT_KARYAWAN) {
+                    Intent intent = new Intent(getActivity(), AbsenKaryawanActivity.class);
+                    intent.putExtra("jenis", "absenMasukLembur");
+                    startActivity(intent);
+                } else {
+                    new Bantuan(getActivity()).swal_error(getString(R.string.karyawan_lebih_dari_dua));
+                }
+                break;
+            case R.id.layout_absenKeluarLembur:
                 startActivity(new Intent(getActivity(), ListCurrentKaryawanActivity.class));
                 break;
         }

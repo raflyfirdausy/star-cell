@@ -115,4 +115,6 @@
     <string name="absen_normal_lembur">Absen Normal / Lembur</string>
     <string name="pesan_absen">Pesan Absen</string>
     <string name="pending_accept_reject">Pending / Accept / Reject</string>
+    <string name="belum_absen_normal">Maaf anda tidak bisa absen lembur karena anda belum absen normal hari ini</string>
+    <string name="tidak_bisa_absen_lagi">Maaf anda tidak bisa absen lagi, karena status anda masih bekerja</string>
 </resources>

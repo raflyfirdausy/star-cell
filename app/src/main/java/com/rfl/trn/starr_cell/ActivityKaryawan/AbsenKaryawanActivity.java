@@ -39,6 +39,7 @@ import com.rfl.trn.starr_cell.Custom.MyEditText;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
 import com.rfl.trn.starr_cell.Helper.Permissions;
+import com.rfl.trn.starr_cell.Helper.Waktu;
 import com.rfl.trn.starr_cell.Model.AbsenModel;
 import com.rfl.trn.starr_cell.R;
 import com.squareup.picasso.Picasso;
@@ -82,6 +83,7 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
     private Uri downloadURL;
     private long totalCurrentKaryawan = 0;
     private List<String> listKeyCurrentKaryawan = new ArrayList<>();
+    private List<String> listKeyKaryawanSudahAbsenNormalHariIni = new ArrayList<>(); // :v bingung njenengine akwoakwo
     /*
         kodeAbsen
         0 - Absen Masuk Normal
@@ -104,19 +106,95 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         storageReference = FirebaseStorage.getInstance().getReference();
+
+        //TODO : ini urutanya jangan di balik ya bwambank :v
         getTotalAndKeyCurrentKaryawan();
         getDataKaryawan();
+        getKeyKaryawanSudahAbsenNormalHariIni();
+        setJenisAbsen();
+        setSpinnerAndKeyKaryawanJikaJenisAbsenKeluar();
 
-        if (!getIntent().hasExtra("jenis")) {
-            getSupportActionBar().setSubtitle("Absen Masuk Normal");
-            kodeAbsen = 0;
-        } else {
-            if (getIntent().getStringExtra("jenis").equalsIgnoreCase("absenKeluar")) {
-                getSupportActionBar().setSubtitle("Absen Keluar Normal");
-                kodeAbsen = 1;
+    }
+
+    private void setSpinnerAndKeyKaryawanJikaJenisAbsenKeluar() {
+        if (getIntent().hasExtra("jenis")) {
+            if (getIntent().getStringExtra("jenis").equalsIgnoreCase("absenKeluarNormal") ||
+                    getIntent().getStringExtra("jenis").equalsIgnoreCase("absenKeluarLembur")) {
+                databaseReference.child("karyawan")
+                        .child(getIntent().getStringExtra("idKaryawan"))
+                        .addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if(dataSnapshot.exists()){
+                                    spinnerKaryawan.setEnabled(false);
+                                    spinnerKaryawan.setItems(dataSnapshot.child("namaKaryawan").getValue(String.class));
+                                    keyKaryawan = dataSnapshot.getKey();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                new Bantuan(context).swal_error("Error saat get karyawan : " + databaseError.getMessage());
+                            }
+                        });
             }
         }
+    }
 
+    private void setJenisAbsen() {
+        if (getIntent().hasExtra("jenis")) {
+            if (getIntent().getStringExtra("jenis").equalsIgnoreCase("absenMasukNormal")) {
+                getSupportActionBar().setSubtitle("Absen Masuk Normal");
+                kodeAbsen = 0;
+            } else if (getIntent().getStringExtra("jenis").equalsIgnoreCase("absenKeluarNormal")) {
+                getSupportActionBar().setSubtitle("Absen Keluar Normal");
+                kodeAbsen = 1;
+            } else if (getIntent().getStringExtra("jenis").equalsIgnoreCase("absenMasukLembur")) {
+                getSupportActionBar().setSubtitle("Absen Masuk Lembur");
+                kodeAbsen = 2;
+            } else if (getIntent().getStringExtra("jenis").equalsIgnoreCase("absenKeluarLembur")) {
+                getSupportActionBar().setSubtitle("Absen Keluar Lembur");
+                kodeAbsen = 3;
+            }
+        } else {
+            new Bantuan(context).toastLong("Jenis Absen Tidak Diketahui !");
+            finish();
+        }
+    }
+
+    private void getKeyKaryawanSudahAbsenNormalHariIni() {
+        databaseReference.child("absen")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        listKeyKaryawanSudahAbsenNormalHariIni.clear();
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                if (Objects.requireNonNull(data.child("idKonter").getValue(String.class))
+                                        .equalsIgnoreCase(Objects.requireNonNull(firebaseAuth.getCurrentUser())
+                                                .getUid())) {
+                                    if (Objects.requireNonNull(data.child("jenisAbsen").getValue(String.class))
+                                            .equalsIgnoreCase("Masuk")) {
+                                        if (new Waktu(context).isHariSama(new Date().getTime(),
+                                                data.child("tanggal").getValue(long.class))) {
+                                            listKeyKaryawanSudahAbsenNormalHariIni
+                                                    .add(data.child("idKaryawan").getValue(String.class));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        new Bantuan(context).swal_error(databaseError.getMessage());
+                    }
+                });
+    }
+
+    private boolean isSudahAbsenNormalHariIni() {
+        return listKeyKaryawanSudahAbsenNormalHariIni.contains(keyKaryawan);
     }
 
     private void getDataKaryawan() {
@@ -288,15 +366,26 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
             });
             dialog.show();
         } else {
-            if (kodeAbsen == 0 || kodeAbsen == 2) {  //absen masuk
+            if (kodeAbsen == 0) {  //absen masuk
                 if (isSudahAbsen()) {
-                    new Bantuan(context).swal_error("Maaf anda sudah absen");
+                    new Bantuan(context).swal_error(getString(R.string.tidak_bisa_absen_lagi));
                 } else {
                     if (totalCurrentKaryawan == MAX_CURRENT_KARYAWAN) {
                         new Bantuan(context).swal_error(getString(R.string.karyawan_lebih_dari_dua));
                     } else {
                         simpanKeDatabase(kodeAbsen);
                     }
+                }
+            } else if (kodeAbsen == 2) {
+                if (isSudahAbsenNormalHariIni()) {
+                    if (isSudahAbsen()) {
+                        new Bantuan(context).swal_error(getString(R.string.tidak_bisa_absen_lagi));
+                    } else {
+//                        simpanKeDatabase(kodeAbsen);
+                        new Bantuan(context).swal_sukses("sabar bwambank");
+                    }
+                } else {
+                    new Bantuan(context).swal_error(getString(R.string.belum_absen_normal));
                 }
             } else if (kodeAbsen == 1 || kodeAbsen == 3) { //absen keluar
                 simpanKeDatabase(kodeAbsen);
@@ -425,7 +514,7 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
         });
     }
 
-    private void simpanAbsenMasukNormal(AbsenModel dataAbsen, String keyPushAbsen, String jenisAbsen, boolean isLembur, final SweetAlertDialog loading){
+    private void simpanAbsenMasukNormal(AbsenModel dataAbsen, String keyPushAbsen, String jenisAbsen, boolean isLembur, final SweetAlertDialog loading) {
 
         dataAbsen.setWaktuMasuk(new Date().getTime());
         dataAbsen.setLembur(isLembur);
@@ -475,7 +564,7 @@ public class AbsenKaryawanActivity extends AppCompatActivity {
         });
     }
 
-    private void simpanAbsenKeluarNormal(AbsenModel dataAbsen, String keyPushAbsen, String jenisAbsen, boolean isLembur, final SweetAlertDialog loading){
+    private void simpanAbsenKeluarNormal(AbsenModel dataAbsen, String keyPushAbsen, String jenisAbsen, boolean isLembur, final SweetAlertDialog loading) {
         dataAbsen.setWaktuKeluar(new Date().getTime());
         dataAbsen.setLembur(isLembur);
         dataAbsen.setJenisAbsen(jenisAbsen);

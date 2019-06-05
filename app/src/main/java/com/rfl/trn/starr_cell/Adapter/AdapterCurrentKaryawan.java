@@ -1,7 +1,6 @@
 package com.rfl.trn.starr_cell.Adapter;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -11,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,6 +21,7 @@ import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rfl.trn.starr_cell.ActivityKaryawan.AbsenKaryawanActivity;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
+import com.rfl.trn.starr_cell.Helper.Waktu;
 import com.rfl.trn.starr_cell.Model.AbsenModel;
 import com.rfl.trn.starr_cell.R;
 import com.squareup.picasso.Picasso;
@@ -66,7 +67,7 @@ public class AdapterCurrentKaryawan extends RecyclerView.Adapter<AdapterCurrentK
         @BindView(R.id.iv_fotoKaryawan)
         ImageView ivFotoKaryawan;
         @BindView(R.id.tv_namaKaryawan)
-        MyTextView tvNamaKaryawan;
+        TextView tvNamaKaryawan;
         @BindView(R.id.tv_waktuAbsen)
         MyTextView tvWaktuAbsen;
         @BindView(R.id.tv_jenisAbsen)
@@ -87,11 +88,11 @@ public class AdapterCurrentKaryawan extends RecyclerView.Adapter<AdapterCurrentK
 
         @SuppressLint("SetTextI18n")
         void setDataKewView(final Context context, final AbsenModel isiData) {
-            if(isiData.getStatus().equalsIgnoreCase("pending")){
+            if (isiData.getStatus().equalsIgnoreCase("pending")) {
                 ivBackground.setImageResource(R.drawable.gradient_scooter);
-            } else if(isiData.getStatus().equalsIgnoreCase("accept")){
+            } else if (isiData.getStatus().equalsIgnoreCase("accept")) {
                 ivBackground.setImageResource(R.drawable.gradient_flare);
-            } else if(isiData.getStatus().equalsIgnoreCase("reject")){
+            } else if (isiData.getStatus().equalsIgnoreCase("reject")) {
                 ivBackground.setImageResource(R.drawable.gradient_red_mist);
             }
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -100,7 +101,7 @@ public class AdapterCurrentKaryawan extends RecyclerView.Adapter<AdapterCurrentK
                     .addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.exists()){
+                            if (dataSnapshot.exists()) {
                                 namaKaryawan = dataSnapshot.child("namaKaryawan").getValue(String.class);
                                 tvNamaKaryawan.setText(namaKaryawan);
                             }
@@ -112,7 +113,7 @@ public class AdapterCurrentKaryawan extends RecyclerView.Adapter<AdapterCurrentK
                         }
                     });
 
-            tvWaktuAbsen.setText(isiData.getWaktuMasuk().toString());
+            tvWaktuAbsen.setText(new Waktu(context).getWaktuLengkapIndonesia(isiData.getWaktuMasuk()));
             if (!isiData.isLembur()) {
                 tvJenisAbsen.setText("Absen Normal");
             } else {
@@ -143,9 +144,14 @@ public class AdapterCurrentKaryawan extends RecyclerView.Adapter<AdapterCurrentK
                             //TODO : pindah absen keluar
                             sweetAlertDialog.dismissWithAnimation();
                             Intent intent = new Intent(context, AbsenKaryawanActivity.class);
-                            intent.putExtra("jenis", "absenKeluar");
                             intent.putExtra("idCurrentKaryawan", isiData.getIdCurrentKaryawan());
+                            intent.putExtra("idKaryawan", isiData.getIdKaryawan());
                             intent.putExtra("idAbsenMasuk", isiData.getIdAbsen());
+                            if (isiData.isLembur()) {
+                                intent.putExtra("jenis", "absenKeluarLembur");
+                            } else {
+                                intent.putExtra("jenis", "absenKeluarNormal");
+                            }
                             context.startActivity(intent);
                         }
                     });
