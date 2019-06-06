@@ -18,7 +18,7 @@
     <item
         android:id="@+id/action_simpanTransaksi"
         app:showAsAction="ifRoom"
-        android:title="@string/transaksi_tambahan"
+        android:title="@string/simpan_transaksi"
         android:icon="@drawable/ic_save_black_24dp"/>
 
     <item
@@ -31,6 +31,12 @@
         android:id="@+id/action_daftarPesanan"
         app:showAsAction="never"
         android:title="@string/daftar_pesanan"
+        android:icon="@drawable/ic_playlist_add_check_black_24dp"/>
+
+    <item
+        android:id="@+id/action_ubahLayout"
+        app:showAsAction="never"
+        android:title="@string/ubah_layout"
         android:icon="@drawable/ic_playlist_add_check_black_24dp"/>
 
 </menu>

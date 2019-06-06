@@ -30,7 +30,7 @@
         tool:replace="android:icon">
         <activity
             android:name=".Fragment.Karyawan.PenjualanBarangActivity"
-            android:screenOrientation="landscape"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
             tool:ignore="InnerclassSeparator" />
         <activity

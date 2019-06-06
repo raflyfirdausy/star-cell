@@ -127,4 +127,6 @@
     <string name="nama_barang">Nama Barang</string>
     <string name="bayar">BAYAR</string>
     <string name="reset_transaksi">Reset Transaksi</string>
+    <string name="simpan_transaksi">Simpan Transaksi</string>
+    <string name="ubah_layout">Ubah Layout</string>
 </resources>

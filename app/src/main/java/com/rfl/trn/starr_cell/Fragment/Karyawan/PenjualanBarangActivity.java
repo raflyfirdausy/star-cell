@@ -1,6 +1,7 @@
 package com.rfl.trn.starr_cell.Fragment.Karyawan;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -13,12 +14,15 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
+import com.github.clans.fab.FloatingActionButton;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -65,6 +69,18 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
     ImageView ivJumlahItemBayar;
     @BindView(R.id.btnPilihan)
     ImageView btnPilihan;
+    @BindView(R.id.layoutKiri)
+    LinearLayout layoutKiri;
+    @BindView(R.id.layoutKanan)
+    LinearLayout layoutKanan;
+    @BindView(R.id.fabPay)
+    FloatingActionButton fabPay;
+    @BindView(R.id.ivBadgePay)
+    ImageView ivBadgePay;
+    @BindView(R.id.layoutPay)
+    RelativeLayout layoutPay;
+    @BindView(R.id.ivBtnModePilihBarang)
+    ImageView ivBtnModePilihBarang;
 
     private Context context = PenjualanBarangActivity.this;
     private FirebaseAuth firebaseAuth;
@@ -79,13 +95,25 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
     private int PENAMBAHAN_DEFAULT = 1;
     private SearchView searchView;
     private String ID_CURRENT_KATEGORI = "semua";
+    private boolean isPotrait;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_penjualan_barang);
         ButterKnife.bind(this);
+        init();
+    }
 
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        getAndSetKategori();
+        getAndSetBarang();
+        setJumlahBarangSementara();
+    }
+
+    private void init(){
         //firebase
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -97,15 +125,53 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
         getSupportActionBar().setSubtitle("Transaksi Baru");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            isPotrait = true;
+            layoutPay.setVisibility(View.VISIBLE);
+        } else {
+            isPotrait = false;
+            layoutPay.setVisibility(View.GONE);
+        }
 
+        ivBtnModePilihBarang.setVisibility(View.GONE);
+
+        fabPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setModeLihatHarga();
+                ivBtnModePilihBarang.setVisibility(View.VISIBLE);
+            }
+        });
+
+        ivBtnModePilihBarang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setPotrait();
+                ivBtnModePilihBarang.setVisibility(View.GONE);
+            }
+        });
     }
 
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        getAndSetKategori();
-        getAndSetBarang();
-        setJumlahBarangSementara();
+    private void setModeLihatHarga(){
+        layoutKiri.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0f));
+        layoutKanan.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 100f));
+    }
+
+    private void setModePilihBarang(){
+        layoutKiri.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 100f));
+        layoutKanan.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0f));
+    }
+
+    private void setPotrait() {
+        layoutKiri.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 100f));
+        layoutKanan.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 100f));
+        layoutPay.setVisibility(View.VISIBLE);
+    }
+
+    private void setLandscape() {
+        layoutKiri.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 70f));
+        layoutKanan.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 30f));
+        layoutPay.setVisibility(View.GONE);
     }
 
     private void getAndSetBarang() {
@@ -215,8 +281,20 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
             case R.id.action_daftarPesanan:
                 new Bantuan(context).swal_sukses("action_daftarPesanan");
                 return true;
+            case R.id.action_ubahLayout:
+                ubahLayout();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void ubahLayout() {
+        isPotrait = !isPotrait;
+        if (isPotrait) {
+            setPotrait();
+        } else {
+            setLandscape();
         }
     }
 
@@ -237,7 +315,16 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
                 .endConfig()
                 .buildRoundRect(String.valueOf(JUMLAH_BARANG_SEMENTARA),
                         Color.WHITE, 8);
+
+        TextDrawable badge = TextDrawable.builder()
+                .beginConfig()
+                .textColor(Color.WHITE)
+                .useFont(Typeface.DEFAULT)
+                .bold()
+                .endConfig()
+                .buildRound(String.valueOf(JUMLAH_BARANG_SEMENTARA), Color.parseColor("#F79A48"));
         ivJumlahItemBayar.setImageDrawable(gambar);
+        ivBadgePay.setImageDrawable(badge);
     }
 
     private void setJumlahBarangSementaraTambahSatu() {
