@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class BarangModel implements Serializable {
     String namaBarang,stokBarang, harga1,harga2,harga3,idKonter,idKategori;
     Long tanggalDiubah;
+    int jumlahMasukKeranjang = 0;
     public BarangModel() {
     }
 
@@ -81,5 +82,13 @@ public class BarangModel implements Serializable {
 
     public void setTanggalDiubah(Long tanggalDiubah) {
         this.tanggalDiubah = tanggalDiubah;
+    }
+
+    public int getJumlahMasukKeranjang() {
+        return jumlahMasukKeranjang;
+    }
+
+    public void setJumlahMasukKeranjang(int jumlahMasukKeranjang) {
+        this.jumlahMasukKeranjang = jumlahMasukKeranjang;
     }
 }

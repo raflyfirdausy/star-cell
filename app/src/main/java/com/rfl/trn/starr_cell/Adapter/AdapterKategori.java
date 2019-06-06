@@ -9,14 +9,12 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
 import com.rfl.trn.starr_cell.Interface.IDialog;
 import com.rfl.trn.starr_cell.Model.KategoriModel;
 import com.rfl.trn.starr_cell.R;
 
 import java.util.List;
-import java.util.logging.Handler;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,27 +50,6 @@ public class AdapterKategori extends RecyclerView.Adapter<AdapterKategori.MyView
         return data.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.tv_namaKategori)
-        MyTextView tvNamaKategori;
-        @BindView(R.id.ll_parent)
-        LinearLayout llParent;
-        public MyViewHolder(@NonNull View itemView) {
-            super(itemView);
-            ButterKnife.bind(this,itemView);
-        }
-
-        void setData(final KategoriModel s) {
-            tvNamaKategori.setText(s.getNamaKategori());
-
-            llParent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemClick(s.getIdKategori(),s.getNamaKategori(),true);
-                }
-            });
-        }
-    }
     public void removeItem(int position) {
         data.remove(position);
 
@@ -84,7 +61,30 @@ public class AdapterKategori extends RecyclerView.Adapter<AdapterKategori.MyView
         notifyItemInserted(position);
 
     }
-    public List<KategoriModel> getData(){
-        return  data;
+
+    public List<KategoriModel> getData() {
+        return data;
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.tv_namaKategori)
+        MyTextView tvNamaKategori;
+        @BindView(R.id.ll_parent)
+        LinearLayout llParent;
+
+        public MyViewHolder(@NonNull View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+
+        void setData(final KategoriModel s) {
+            tvNamaKategori.setText(s.getNamaKategori());
+            llParent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(s.getIdKategori(), s.getNamaKategori(), true);
+                }
+            });
+        }
     }
 }

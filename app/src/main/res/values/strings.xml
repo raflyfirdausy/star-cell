@@ -124,4 +124,7 @@
     <string name="clear_transaksi">Clear Transaksi</string>
     <string name="daftar_pesanan">Daftar Pesanan</string>
     <string name="kategori">Kategori</string>
+    <string name="nama_barang">Nama Barang</string>
+    <string name="bayar">BAYAR</string>
+    <string name="reset_transaksi">Reset Transaksi</string>
 </resources>

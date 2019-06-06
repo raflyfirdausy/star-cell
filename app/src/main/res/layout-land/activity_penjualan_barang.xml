@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:orientation="horizontal"
     android:weightSum="100"
     tools:context=".Fragment.Karyawan.PenjualanBarangActivity">
@@ -22,7 +21,7 @@
             android:background="@color/colorPrimary"
             android:elevation="@dimen/dp_0"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,12 +36,12 @@
                 <com.rfl.trn.starr_cell.Custom.MyTextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="@string/kategori"
                     android:gravity="center_vertical"
                     android:padding="@dimen/dp_8"
+                    android:text="@string/kategori"
                     android:textColor="@color/colortext"
                     android:textSize="@dimen/sp_16"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <com.cooltechworks.views.shimmer.ShimmerRecyclerView
                     android:id="@+id/rvKategori"
@@ -54,6 +53,17 @@
                     app:shimmer_demo_layout="@layout/item_list_kategori"
                     app:shimmer_demo_layout_manager_type="linear_horizontal" />
             </LinearLayout>
+
+            <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+                android:id="@+id/rvBarangPenjualan"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="@dimen/dp_8"
+                app:shimmer_demo_angle="10"
+                app:shimmer_demo_child_count="10"
+                app:shimmer_demo_grid_child_count="1"
+                app:shimmer_demo_layout="@layout/item_list_placeholder"
+                app:shimmer_demo_layout_manager_type="linear_vertical" />
         </LinearLayout>
 
     </LinearLayout>
@@ -62,8 +72,8 @@
         android:layout_width="@dimen/dp_0"
         android:layout_height="match_parent"
         android:layout_weight="25"
+        android:background="@color/white"
         android:orientation="vertical">
-
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -71,14 +81,19 @@
             android:background="@color/white"
             android:elevation="@dimen/dp_0">
 
-            <TextView
+            <com.wajahatkarim3.easymoneywidgets.EasyMoneyTextView
+                android:id="@+id/tvRupiahSementara"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="Rp 12.000.000"
+                android:text="0"
                 android:textAlignment="center"
                 android:textColor="@color/colortext"
-                android:textStyle="bold" />
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:show_currency="true"
+                app:show_commas="true"
+                app:currency_symbol="Rp"/>
 
             <View
                 android:layout_width="match_parent"
@@ -88,6 +103,101 @@
 
         </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/layoutTombol">
+
+                <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+                    android:id="@+id/rvKeranjangBarang"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:shimmer_demo_angle="10"
+                    app:shimmer_demo_child_count="10"
+                    app:shimmer_demo_grid_child_count="1"
+                    app:shimmer_demo_layout="@layout/item_list_placeholder"
+                    app:shimmer_demo_layout_manager_type="linear_vertical" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutTombol"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_alignParentBottom="true"
+                android:background="@color/bootstrap_gray_lighter"
+                android:orientation="horizontal"
+                android:weightSum="100">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="80">
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/cardButtonBayar"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/dp_8"
+                        android:layout_marginEnd="@dimen/dp_4"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        app:cardBackgroundColor="@color/green"
+                        app:cardCornerRadius="@dimen/dp_4">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerInParent="true"
+                                android:layout_marginStart="@dimen/dp_20"
+                                android:text="@string/bayar"
+                                android:textColor="@color/white"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:id="@+id/ivJumlahItemBayar"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerInParent="true"
+                                android:layout_marginEnd="@dimen/dp_20" />
+                        </RelativeLayout>
+                    </android.support.v7.widget.CardView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="20">
+
+                    <ImageView
+                        android:id="@+id/btnPilihan"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="@dimen/dp_4"
+                        android:src="@drawable/ic_option_menu"
+                        android:tint="@color/green" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
 
 </LinearLayout>

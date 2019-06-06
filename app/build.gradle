@@ -107,5 +107,6 @@ dependencies {
     implementation 'com.ogaclejapan.smarttablayout:library:1.7.0@aar'
 //    implementation 'com.ogaclejapan.smarttablayout:utils-v4:1.7.0@aar' //Optional: see how to use the utility.
 
+    // TODO : https://github.com/traex/RippleEffect
 }
 apply plugin: 'com.google.gms.google-services'

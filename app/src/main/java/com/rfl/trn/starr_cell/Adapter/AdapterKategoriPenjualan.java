@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.rfl.trn.starr_cell.Custom.MyTextView;
+import com.rfl.trn.starr_cell.Fragment.Karyawan.PenjualanBarangActivity;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
 import com.rfl.trn.starr_cell.Model.KategoriModel;
 import com.rfl.trn.starr_cell.R;
@@ -43,10 +44,14 @@ public class AdapterKategoriPenjualan extends RecyclerView.Adapter<AdapterKatego
         viewHolder.cardviewParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (context instanceof PenjualanBarangActivity) {
+                    ((PenjualanBarangActivity) context).onKategoriClick(data.get(i));
+                }
                 index = i;
                 notifyDataSetChanged();
             }
         });
+
         if(index == i){
             viewHolder.cardviewParent.setCardBackgroundColor(Color.parseColor("#185E8B"));
         } else {

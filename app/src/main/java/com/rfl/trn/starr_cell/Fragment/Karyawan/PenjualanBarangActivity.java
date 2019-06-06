@@ -1,16 +1,23 @@
 package com.rfl.trn.starr_cell.Fragment.Karyawan;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,11 +28,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.rfl.trn.starr_cell.Adapter.AdapterCurrentKaryawan;
+import com.rfl.trn.starr_cell.Adapter.AdapterBarangPenjualan;
 import com.rfl.trn.starr_cell.Adapter.AdapterKategoriPenjualan;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
+import com.rfl.trn.starr_cell.Interface.ITransaksi;
+import com.rfl.trn.starr_cell.Model.BarangModel;
 import com.rfl.trn.starr_cell.Model.KategoriModel;
 import com.rfl.trn.starr_cell.R;
+import com.wajahatkarim3.easymoneywidgets.EasyMoneyTextView;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,12 +45,27 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PenjualanBarangActivity extends AppCompatActivity {
+public class PenjualanBarangActivity extends AppCompatActivity implements ITransaksi {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.rvKategori)
     ShimmerRecyclerView rvKategori;
+    @BindView(R.id.rvBarangPenjualan)
+    ShimmerRecyclerView rvBarangPenjualan;
+    @BindView(R.id.tvRupiahSementara)
+    EasyMoneyTextView tvRupiahSementara;
+    @BindView(R.id.layoutTombol)
+    LinearLayout layoutTombol;
+    @BindView(R.id.rvKeranjangBarang)
+    ShimmerRecyclerView rvKeranjangBarang;
+    @BindView(R.id.cardButtonBayar)
+    CardView cardButtonBayar;
+    @BindView(R.id.ivJumlahItemBayar)
+    ImageView ivJumlahItemBayar;
+    @BindView(R.id.btnPilihan)
+    ImageView btnPilihan;
+
     private Context context = PenjualanBarangActivity.this;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
@@ -48,6 +73,12 @@ public class PenjualanBarangActivity extends AppCompatActivity {
     private FirebaseAnalytics firebaseAnalytics;
     private List<KategoriModel> listKategori = new ArrayList<>();
     private AdapterKategoriPenjualan adapterKategoriPenjualan;
+    private List<BarangModel> listBarang = new ArrayList<>();
+    private AdapterBarangPenjualan adapterBarangPenjualan;
+    private int JUMLAH_BARANG_SEMENTARA = 0;
+    private int PENAMBAHAN_DEFAULT = 1;
+    private SearchView searchView;
+    private String ID_CURRENT_KATEGORI = "semua";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +97,48 @@ public class PenjualanBarangActivity extends AppCompatActivity {
         getSupportActionBar().setSubtitle("Transaksi Baru");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
         getAndSetKategori();
+        getAndSetBarang();
+        setJumlahBarangSementara();
+    }
+
+    private void getAndSetBarang() {
+        databaseReference.child("barang")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        listBarang.clear();
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                BarangModel model;
+                                if (Objects.requireNonNull(data.child("idKonter").getValue(String.class))
+                                        .equalsIgnoreCase(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid())) {
+                                    model = data.getValue(BarangModel.class);
+                                    assert model != null;
+                                    model.setJumlahMasukKeranjang(0);
+                                    listBarang.add(model);
+                                }
+                            }
+                            adapterBarangPenjualan = new AdapterBarangPenjualan(context, listBarang);
+                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
+                            rvBarangPenjualan.setLayoutManager(layoutManager);
+                            rvBarangPenjualan.setAdapter(adapterBarangPenjualan);
+                        } else {
+                            new Bantuan(context).swal_error("Belum ada data barang di konter ini");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        new Bantuan(context).swal_error(databaseError.getMessage());
+                    }
+                });
     }
 
     private void getAndSetKategori() {
@@ -75,17 +147,18 @@ public class PenjualanBarangActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         listKategori.clear();
-                        if(dataSnapshot.exists()){
-                            listKategori.add(new KategoriModel("semua","semua", new Date().getTime()));
-                            for(DataSnapshot data : dataSnapshot.getChildren()){
-                             listKategori.add(data.getValue(KategoriModel.class));
+                        if (dataSnapshot.exists()) {
+                            listKategori.add(new KategoriModel("semua", "semua", new Date().getTime()));
+                            for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                listKategori.add(data.getValue(KategoriModel.class));
                             }
                             adapterKategoriPenjualan = new AdapterKategoriPenjualan(context, listKategori);
-                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context,0,false);
+                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, 0, false);
                             rvKategori.setLayoutManager(layoutManager);
                             rvKategori.setAdapter(adapterKategoriPenjualan);
+                        } else {
+                            listKategori.add(new KategoriModel("Belum Ada Kategori", "Belum Ada Kategori", new Date().getTime()));
                         }
-
                     }
 
                     @Override
@@ -100,6 +173,7 @@ public class PenjualanBarangActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_penjualan, menu);
         MenuItem menuItem = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) menuItem.getActionView();
+        this.searchView = searchView;
         searchView.setMaxWidth(Integer.MAX_VALUE);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -112,6 +186,11 @@ public class PenjualanBarangActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 //TODO : Action ketika textnya berubah seperti dia yang sekarang bukan lagi yang dulu :(
+                if (TextUtils.isEmpty(newText)) {
+                    searchBarangByNamaAndKategori("");
+                } else {
+                    searchBarangByNamaAndKategori(newText);
+                }
                 return true;
             }
         });
@@ -131,7 +210,7 @@ public class PenjualanBarangActivity extends AppCompatActivity {
                 new Bantuan(context).swal_sukses("action_simpanTransaksi");
                 return true;
             case R.id.action_clearTransaksi:
-                new Bantuan(context).swal_sukses("action_clearTransaksi");
+                resetTransaksi();
                 return true;
             case R.id.action_daftarPesanan:
                 new Bantuan(context).swal_sukses("action_daftarPesanan");
@@ -139,5 +218,66 @@ public class PenjualanBarangActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void resetTransaksi() {
+        getAndSetBarang();
+        setHargaSementara("0");
+        JUMLAH_BARANG_SEMENTARA = 0;
+        PENAMBAHAN_DEFAULT = 1;
+        setJumlahBarangSementaraTambahSatu();
+    }
+
+    private void setJumlahBarangSementara() {
+        TextDrawable gambar = TextDrawable.builder()
+                .beginConfig()
+                .textColor(Color.BLACK)
+                .useFont(Typeface.DEFAULT)
+                .bold()
+                .endConfig()
+                .buildRoundRect(String.valueOf(JUMLAH_BARANG_SEMENTARA),
+                        Color.WHITE, 8);
+        ivJumlahItemBayar.setImageDrawable(gambar);
+    }
+
+    private void setJumlahBarangSementaraTambahSatu() {
+        JUMLAH_BARANG_SEMENTARA += PENAMBAHAN_DEFAULT;
+        setJumlahBarangSementara();
+    }
+
+    private void jumlahkanHargaSementara(String harga) {
+        double hargaAwal = Double.parseDouble(tvRupiahSementara.getValueString());
+        double hargaSetelahDijumlah = hargaAwal + Double.parseDouble(harga);
+        setHargaSementara(String.valueOf(hargaSetelahDijumlah));
+    }
+
+    private void setHargaSementara(String hargaSementara) {
+        tvRupiahSementara.setText(hargaSementara);
+        tvRupiahSementara.setCurrency("Rp");
+        tvRupiahSementara.showCurrencySymbol();
+        tvRupiahSementara.showCommas();
+    }
+
+    private void clearSearchView() {
+        searchView.setQuery(null, false);
+        searchView.setIconified(true);
+        searchView.clearFocus();
+    }
+
+    private void searchBarangByNamaAndKategori(String text) {
+        adapterBarangPenjualan.search(text, ID_CURRENT_KATEGORI);
+    }
+
+    @Override
+    public void onItemBarangClick(BarangModel barangModel) {
+        jumlahkanHargaSementara(barangModel.getHarga1());
+        setJumlahBarangSementaraTambahSatu();
+    }
+
+    @Override
+    public void onKategoriClick(KategoriModel kategoriModel) {
+        clearSearchView();
+        ID_CURRENT_KATEGORI = kategoriModel.getIdKategori();
+        searchBarangByNamaAndKategori("");
     }
 }
