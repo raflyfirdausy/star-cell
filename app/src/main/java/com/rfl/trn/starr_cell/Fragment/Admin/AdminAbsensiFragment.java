@@ -3,7 +3,9 @@ package com.rfl.trn.starr_cell.Fragment.Admin;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,17 +14,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rfl.trn.starr_cell.Adapter.AdapterListAbsensi;
+import com.rfl.trn.starr_cell.Adapter.AdapterTabAbsen;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
-import com.rfl.trn.starr_cell.Interface.IKonfirmasiAbsen;
 import com.rfl.trn.starr_cell.Model.AbsenModel;
 import com.rfl.trn.starr_cell.R;
 
@@ -35,23 +35,18 @@ import butterknife.Unbinder;
 
 public class AdminAbsensiFragment extends Fragment {
 
-    @BindView(R.id.iv_karyawan)
-    ImageView ivKaryawan;
-    @BindView(R.id.tv_namaKonter)
-    MyTextView tvNamaKonter;
-    @BindView(R.id.tv_detailKaryawan)
-    MyTextView tvDetailKaryawan;
-    @BindView(R.id.ll_header)
-    LinearLayout llHeader;
-    @BindView(R.id.rv_absensi)
-    ShimmerRecyclerView rvAbsensi;
     Unbinder unbinder;
     @BindView(R.id.ll_belum_ada_absen)
     LinearLayout llBelumAdaAbsen;
+    @BindView(R.id.tab_absen)
+    TabLayout tabAbsen;
+    @BindView(R.id.viewpager)
+    ViewPager viewpager;
 
+    private AdapterTabAbsen adapterTabAbsen;
     private DatabaseReference databaseReference;
     private List<AbsenModel> list = new ArrayList<>();
-    private List<String > keyAbsen = new ArrayList<>();
+    private List<String> keyAbsen = new ArrayList<>();
     private AdapterListAbsensi adapterListAbsensi;
 
 
@@ -66,7 +61,10 @@ public class AdminAbsensiFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_admin_absensi, container, false);
         unbinder = ButterKnife.bind(this, view);
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        rvAbsensi.showShimmerAdapter();
+        adapterTabAbsen = new AdapterTabAbsen(getFragmentManager());
+        adapterTabAbsen.addFragment(new TabAdminAbsenMasukFragment(),"Absen Masuk");
+        adapterTabAbsen.addFragment(new TabAdminAbsenKeluarFragment(),"Absen Keluar");
+
         return view;
 
     }
@@ -74,49 +72,13 @@ public class AdminAbsensiFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        semuaAbsen();
+        // semuaAbsen();
+        viewpager.setAdapter(adapterTabAbsen);
+        tabAbsen.setupWithViewPager(viewpager);
 
     }
 
-    private void semuaAbsen() {
-        databaseReference.child("absen")
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()){
-                            try {
-                                llBelumAdaAbsen.setVisibility(View.GONE);
-                                list.clear();
-                                keyAbsen.clear();
-                                AbsenModel model = null;
-                                for (DataSnapshot data : dataSnapshot.getChildren()){
-                                    String key = data.getKey();
-                                    model = data.getValue(AbsenModel.class);
-                                    list.add(model);
-                                    keyAbsen.add(key);
-                                }
-                                adapterListAbsensi = new AdapterListAbsensi(getActivity(),list,keyAbsen);
-                                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                                rvAbsensi.setLayoutManager(layoutManager);
-                                rvAbsensi.setAdapter(adapterListAbsensi);
-                            }catch (NullPointerException e){
-                                new Bantuan(getContext()).swal_error(e.getMessage());
-                            }
 
-
-                        }else {
-                            rvAbsensi.setVisibility(View.GONE);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        new Bantuan(getActivity()).swal_error(databaseError.getMessage());
-                    }
-                });
-
-
-    }
 
     @Override
     public void onDestroyView() {

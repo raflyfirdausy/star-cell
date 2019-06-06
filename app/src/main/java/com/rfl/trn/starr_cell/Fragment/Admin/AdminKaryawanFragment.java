@@ -85,7 +85,7 @@ public class AdminKaryawanFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        rvKaryawan.showShimmerAdapter();
+
         return view;
     }
 
@@ -95,24 +95,25 @@ public class AdminKaryawanFragment extends Fragment {
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        list.clear();
+                        listKey.clear();
+                        KaryawanModel model;
                         if (dataSnapshot.exists()) {
-                            llBelumAdaKaryawan.setVisibility(View.GONE);
-                            list.clear();
-                            listKey.clear();
-                            KaryawanModel model;
-                            for (DataSnapshot data : dataSnapshot.getChildren()) {
-                                model = data.getValue(KaryawanModel.class);
-                                String key = data.getKey();
-                                list.add(model);
-                                listKey.add(key);
-
+                            try {
+                                llBelumAdaKaryawan.setVisibility(View.GONE);
+                                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                    model = data.getValue(KaryawanModel.class);
+                                    String key = data.getKey();
+                                    list.add(model);
+                                    listKey.add(key);
+                                }
+                                adapterListKaryawan = new AdapterListKaryawan(getActivity(), list, listKey);
+                                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                                rvKaryawan.setLayoutManager(layoutManager);
+                                rvKaryawan.setAdapter(adapterListKaryawan);
+                            }catch (NullPointerException e){
+                                new Bantuan(getActivity()).swal_error(e.getMessage());
                             }
-
-
-                            adapterListKaryawan = new AdapterListKaryawan(getActivity(), list, listKey);
-                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                            rvKaryawan.setLayoutManager(layoutManager);
-                            rvKaryawan.setAdapter(adapterListKaryawan);
                         }
                     }
 

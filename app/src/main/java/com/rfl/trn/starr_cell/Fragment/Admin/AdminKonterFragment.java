@@ -74,8 +74,13 @@ public class AdminKonterFragment extends Fragment {
         //firebase
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        rvKonter.showShimmerAdapter();
+
         return view;
+    }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getDataKonter();
     }
 
     //TODO :: Fetch Data
@@ -84,21 +89,25 @@ public class AdminKonterFragment extends Fragment {
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        KonterModel konterModel = null;
+                        KonterModel konterModel ;
                         list.clear();
                         if (dataSnapshot.exists()) {
-                            rlBelumadaKonter.setVisibility(View.GONE);
-                            rvKonter.setVisibility(View.VISIBLE);
-
-                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                konterModel = ds.getValue(KonterModel.class);
-                                Objects.requireNonNull(konterModel).setKey(ds.getKey());
-                                list.add(konterModel);
+                            try {
+                                rlBelumadaKonter.setVisibility(View.GONE);
+                                rvKonter.setVisibility(View.VISIBLE);
+                                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                    konterModel = ds.getValue(KonterModel.class);
+                                    Objects.requireNonNull(konterModel).setKey(ds.getKey());
+                                    list.add(konterModel);
+                                }
+                                adapterListKonter = new AdapterListKonter(getActivity(), list);
+                                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                                rvKonter.setLayoutManager(layoutManager);
+                                rvKonter.setAdapter(adapterListKonter);
+                            }catch (NullPointerException e){
+                                new Bantuan(getActivity()).swal_error(e.getMessage());
                             }
-                            adapterListKonter = new AdapterListKonter(getActivity(), list);
-                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                            rvKonter.setLayoutManager(layoutManager);
-                            rvKonter.setAdapter(adapterListKonter);
+
                         } else {
                             rlBelumadaKonter.setVisibility(View.VISIBLE);
                             rvKonter.setVisibility(View.GONE);
@@ -119,11 +128,7 @@ public class AdminKonterFragment extends Fragment {
     }
 
     //TODO :: LifeCycle
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        getDataKonter();
-    }
+
 
     @Override
     public void onDestroyView() {

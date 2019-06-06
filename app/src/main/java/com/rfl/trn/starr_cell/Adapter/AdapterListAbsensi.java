@@ -114,7 +114,7 @@ public class AdapterListAbsensi extends RecyclerView.Adapter<AdapterListAbsensi.
 
             tvPesanAbsen.setText(data.getPesan());
             tvJenisAbsen.setText(data.getJenisAbsen());
-            tvWaktuAbsen.setText(data.getWaktuMasuk().toString());
+//            tvWaktuAbsen.setText(data.getWaktuMasuk().toString());
             tvStatusAbsen.setText(data.getStatus());
             layoutCurrentKaryawan.setOnClickListener(new View.OnClickListener() {
                 @Override
