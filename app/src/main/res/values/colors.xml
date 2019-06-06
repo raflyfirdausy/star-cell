@@ -17,5 +17,6 @@
     <color name="red_accent">#EB5F5F</color>
 
     <color name="background">#dddddd</color>
+    <color name="gray_muda">#BDBDBD</color>
 
 </resources>

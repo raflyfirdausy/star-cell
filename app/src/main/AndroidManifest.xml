@@ -28,8 +28,23 @@
         android:theme="@style/AppTheme"
         tool:ignore="GoogleAppIndexingWarning"
         tool:replace="android:icon">
-        <activity android:name=".ActivityKaryawan.ListCurrentKaryawanActivity"></activity>
-        <activity android:name=".ActivityKaryawan.AbsenKaryawanActivity" />
+        <activity
+            android:name=".Fragment.Karyawan.PenjualanBarangActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+            tool:ignore="InnerclassSeparator" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ActivityKaryawan.ListCurrentKaryawanActivity"
+            tool:ignore="InnerclassSeparator" />
+        <activity
+            android:name=".ActivityKaryawan.AbsenKaryawanActivity"
+            tool:ignore="InnerclassSeparator" />
         <activity
             android:name=".ActivityKaryawan.MainActivityKaryawan"
             android:label="@string/title_activity_dashboard"
@@ -80,11 +95,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBarTransparent"
             tool:ignore="InnerclassSeparator">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <service

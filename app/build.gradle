@@ -95,8 +95,17 @@ dependencies {
     //TODO : https://github.com/jaredrummler/MaterialSpinne
     implementation 'com.jaredrummler:material-spinner:1.3.1'
     implementation 'com.google.firebase:firebase-messaging:18.0.0'
+
     //TODO : https://github.com/sharish/ShimmerRecyclerView
     implementation 'com.github.sharish:ShimmerRecyclerView:v1.3'
     implementation 'io.supercharge:shimmerlayout:2.1.0'
+
+    //TODO : https://github.com/danielfelgar/DrawReceipt
+    implementation 'com.github.danielfelgar:draw-receipt:0.1.3'
+
+    //TODO : https://github.com/ogaclejapan/SmartTabLayout
+    implementation 'com.ogaclejapan.smarttablayout:library:1.7.0@aar'
+//    implementation 'com.ogaclejapan.smarttablayout:utils-v4:1.7.0@aar' //Optional: see how to use the utility.
+
 }
 apply plugin: 'com.google.gms.google-services'

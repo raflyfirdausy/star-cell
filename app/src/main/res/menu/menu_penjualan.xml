@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_search"
+        android:icon="@android:drawable/ic_menu_search"
+        app:showAsAction="ifRoom"
+        android:title="@string/search"
+        app:actionViewClass="android.widget.SearchView"
+        android:actionLayout="@layout/my_search_view">
+    </item>
+    <item
+        android:id="@+id/action_transaksiTambahan"
+        app:showAsAction="ifRoom"
+        android:title="@string/transaksi_tambahan"
+        android:icon="@drawable/add"/>
+
+    <item
+        android:id="@+id/action_simpanTransaksi"
+        app:showAsAction="ifRoom"
+        android:title="@string/transaksi_tambahan"
+        android:icon="@drawable/ic_save_black_24dp"/>
+
+    <item
+        android:id="@+id/action_clearTransaksi"
+        app:showAsAction="never"
+        android:title="@string/clear_transaksi"
+        android:icon="@drawable/ic_clear_all_black_24dp"/>
+
+    <item
+        android:id="@+id/action_daftarPesanan"
+        app:showAsAction="never"
+        android:title="@string/daftar_pesanan"
+        android:icon="@drawable/ic_playlist_add_check_black_24dp"/>
+
+</menu>

@@ -30,6 +30,7 @@ import com.rfl.trn.starr_cell.Activity.LoginActivity;
 import com.rfl.trn.starr_cell.Fragment.Karyawan.AbsensiKaryawanFragment;
 import com.rfl.trn.starr_cell.Fragment.Karyawan.BarangKaryawanFragment;
 import com.rfl.trn.starr_cell.Fragment.Karyawan.DashboardKaryawanFragment;
+import com.rfl.trn.starr_cell.Fragment.Karyawan.PenjualanBarangActivity;
 import com.rfl.trn.starr_cell.Fragment.Karyawan.PenjualanKaryawanFragment;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
 import com.rfl.trn.starr_cell.R;
@@ -168,8 +169,9 @@ public class MainActivityKaryawan extends AppCompatActivity
             Objects.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.barang));
             FT.replace(R.id.fl_content, new BarangKaryawanFragment(), "karyawan_barang").commit();
         } else if (id == R.id.nav_penjualan) {
-            Objects.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.penjualan));
-            FT.replace(R.id.fl_content, new PenjualanKaryawanFragment(), "karyawan_penjualan").commit();
+            startActivity(new Intent(context, PenjualanBarangActivity.class));
+//            Objects.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.penjualan));
+//            FT.replace(R.id.fl_content, new PenjualanKaryawanFragment(), "karyawan_penjualan").commit();
         } else if (id == R.id.nav_logout) {
             new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
                     .setTitleText("Peringatan")

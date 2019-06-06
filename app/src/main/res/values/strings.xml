@@ -120,4 +120,8 @@
     <string name="absen_masuk_normal">Absen Masuk Normal</string>
     <string name="absen_masuk_lembur">Absen Masuk Lembur</string>
     <string name="deskripsi_absen_lembur">Silahkan absen lembur jika anda ada jadwal lembur dan sudah absen pada jadwal normal</string>
+    <string name="transaksi_tambahan">Transaksi Tambahan</string>
+    <string name="clear_transaksi">Clear Transaksi</string>
+    <string name="daftar_pesanan">Daftar Pesanan</string>
+    <string name="kategori">Kategori</string>
 </resources>
