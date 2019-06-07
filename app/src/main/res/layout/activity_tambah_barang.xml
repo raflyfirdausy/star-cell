@@ -219,7 +219,7 @@
                             android:drawableStart="@drawable/ic_price_tag"
                             android:drawablePadding="15dp"
                             android:drawableTint="@color/colorPrimaryDark"
-                            android:hint="harga 2(Opsional)"
+                            android:hint="Harga Jual"
                             android:inputType="number"
                             android:paddingTop="10dp"
                             android:paddingBottom="10dp"
@@ -250,7 +250,7 @@
                             android:drawableStart="@drawable/ic_price_tag"
                             android:drawablePadding="15dp"
                             android:drawableTint="@color/colorPrimaryDark"
-                            android:hint="harga 3(Opsional)"
+                            android:hint="harga Beli"
                             android:inputType="number"
                             android:paddingTop="10dp"
                             android:paddingBottom="10dp"
@@ -262,60 +262,11 @@
                             tools:targetApi="m" />
 
                     </android.support.design.widget.TextInputLayout>
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:theme="@style/daftar"
-                        android:layout_weight="1">
 
-                        <com.wajahatkarim3.easymoneywidgets.EasyMoneyEditText
-                            android:id="@+id/myet_hargaJual"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:drawableStart="@drawable/ic_price_tag"
-                            android:drawablePadding="15dp"
-                            android:drawableTint="@color/colorPrimaryDark"
-                            android:hint="Harga Jual"
-                            android:inputType="number"
-                            android:paddingTop="10dp"
-                            android:paddingBottom="10dp"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textColorHint="@color/colorPrimaryDark"
-                            app:currency_symbol="Rp"
-                            app:show_commas="false"
-                            app:show_currency="true"
-                            tools:targetApi="m" />
-
-                    </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
 
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:theme="@style/daftar">
 
-                    <com.wajahatkarim3.easymoneywidgets.EasyMoneyEditText
-                        android:id="@+id/myet_hargaBeli"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_price_tag"
-                        android:drawablePadding="15dp"
-                        android:drawableTint="@color/colorPrimaryDark"
-                        android:hint="Harga Beli"
-                        android:inputType="number"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textColorHint="@color/colorPrimaryDark"
-                        app:currency_symbol="Rp"
-                        app:show_commas="false"
-                        app:show_currency="true"
-                        tools:targetApi="m" />
-
-                </android.support.design.widget.TextInputLayout>
 
                 <com.rfl.trn.starr_cell.Custom.MyTextView
                     android:id="@+id/btn_tambahBarang"

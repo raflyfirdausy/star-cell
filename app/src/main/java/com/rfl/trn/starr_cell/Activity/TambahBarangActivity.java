@@ -83,10 +83,6 @@ public class TambahBarangActivity extends AppCompatActivity {
     LinearLayout layoutTambahItemDialog;
     FloatingActionButton buttonTambahItem;
     MyTextView judulDialog, dialogKosong;
-    @BindView(R.id.myet_hargaJual)
-    EasyMoneyEditText myetHargaJual;
-    @BindView(R.id.myet_hargaBeli)
-    EasyMoneyEditText myetHargaBeli;
 
     private Dialog dialog;
     private Context context = TambahBarangActivity.this;
@@ -155,8 +151,6 @@ public class TambahBarangActivity extends AppCompatActivity {
                             myetHarga1.setText(String.valueOf(model.getHarga1()));
                             myetHarga2.setText(String.valueOf(model.getHarga2()));
                             myetHarga3.setText(String.valueOf(model.getHarga3()));
-                            myetHargaBeli.setText(String.valueOf(model.getHargaBeli()));
-                            myetHargaJual.setText(String.valueOf(model.getHargaJual()));
                             idKategori = model.getIdKategori();
                             idKonter = model.getIdKonter();
                             timestamp = model.getTanggalDiubah();
@@ -436,8 +430,6 @@ public class TambahBarangActivity extends AppCompatActivity {
             model.setHarga1(myetHarga1.getValueString());
             model.setHarga2(myetHarga2.getValueString());
             model.setHarga3(myetHarga3.getValueString());
-            model.setHargaBeli(myetHargaBeli.getValueString());
-            model.setHargaJual(myetHargaJual.getValueString());
             model.setIdKonter(idKonter);
             model.setIdKategori(idKategori);
             model.setTanggalDiubah(timestamp);
@@ -484,9 +476,7 @@ public class TambahBarangActivity extends AppCompatActivity {
                 !TextUtils.isEmpty(myetStokBarang.getText()) &&
                 !TextUtils.isEmpty(myetKategori.getText()) &&
                 !TextUtils.isEmpty(myetKonter.getText()) &&
-                !TextUtils.isEmpty(myetHarga1.getText()) &&
-                !TextUtils.isEmpty(myetHargaBeli.getText()) &&
-                !TextUtils.isEmpty(myetHargaJual.getText());
+                !TextUtils.isEmpty(myetHarga1.getText());
     }
 
     //TODO :: LifeCycle
