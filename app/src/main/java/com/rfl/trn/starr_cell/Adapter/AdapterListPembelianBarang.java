@@ -67,7 +67,7 @@ public class AdapterListPembelianBarang extends RecyclerView.Adapter<AdapterList
         @SuppressLint("SetTextI18n")
         public void setDatakeView(Context context, ListPembelianBarangModel data) {
             String duaHuruf = data.getNamaBarang().substring(0, 2);
-            TextDrawable gambar = TextDrawable.builder().buildRoundRect(duaHuruf, Color.parseColor("#2980b9"), 8);
+            TextDrawable gambar = TextDrawable.builder().buildRoundRect(duaHuruf, Color.parseColor("#3498db"), 8);
             ivGambarBarangSementara.setImageDrawable(gambar);
 
             double jumlahKaliHarga = data.getJumlahMasukKeranjang() * Double.parseDouble(data.getHargaBarang());
