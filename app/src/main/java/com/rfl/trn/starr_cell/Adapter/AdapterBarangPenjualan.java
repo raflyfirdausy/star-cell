@@ -4,17 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
@@ -22,7 +17,6 @@ import com.rfl.trn.starr_cell.Fragment.Karyawan.PenjualanBarangActivity;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
 import com.rfl.trn.starr_cell.Model.BarangModel;
 import com.rfl.trn.starr_cell.R;
-import com.wajahatkarim3.easymoneywidgets.EasyMoneyEditText;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +33,6 @@ public class AdapterBarangPenjualan extends RecyclerView.Adapter<AdapterBarangPe
 
 
     public AdapterBarangPenjualan(Context context, List<BarangModel> data) {
-        super();
         this.context = context;
         this.data = data;
         this.dataSementara = new ArrayList<>();
@@ -90,7 +83,7 @@ public class AdapterBarangPenjualan extends RecyclerView.Adapter<AdapterBarangPe
             public void onClick(View v) {
                 data.get(i).setJumlahMasukKeranjang(data.get(i).getJumlahMasukKeranjang() + 1);
                 if (context instanceof PenjualanBarangActivity) {
-                    ((PenjualanBarangActivity) context).onItemBarangClick(data.get(i));
+                    ((PenjualanBarangActivity) context).onItemBarangClick(data.get(i), i);
                 }
                 notifyDataSetChanged();
             }
@@ -121,7 +114,7 @@ public class AdapterBarangPenjualan extends RecyclerView.Adapter<AdapterBarangPe
         return data.size();
     }
 
-    public void notifyDataChanged(){
+    public void notifyDataChanged() {
         notifyDataSetChanged();
     }
 

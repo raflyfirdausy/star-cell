@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.rfl.trn.starr_cell.Fragment.Karyawan.PenjualanBarangActivity;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
 import com.rfl.trn.starr_cell.Model.ListPembelianBarangModel;
 import com.rfl.trn.starr_cell.R;
@@ -40,7 +41,7 @@ public class AdapterListPembelianBarang extends RecyclerView.Adapter<AdapterList
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.setDatakeView(context, data.get(i));
+        viewHolder.setDatakeView(context, data.get(i), i);
     }
 
     @Override
@@ -64,7 +65,7 @@ public class AdapterListPembelianBarang extends RecyclerView.Adapter<AdapterList
         }
 
         @SuppressLint("SetTextI18n")
-        public void setDatakeView(Context context, ListPembelianBarangModel data) {
+        public void setDatakeView(final Context context, final ListPembelianBarangModel data, final int posisi) {
             String duaHuruf = data.getNamaBarang().substring(0, 2);
             TextDrawable gambar = TextDrawable.builder().buildRoundRect(duaHuruf, Color.parseColor("#3498db"), 8);
             ivGambarBarangSementara.setImageDrawable(gambar);
@@ -77,6 +78,15 @@ public class AdapterListPembelianBarang extends RecyclerView.Adapter<AdapterList
                             "Rp " + new Bantuan(context).formatHarga(data.getHargaBarang())
                             + " = Rp " + new Bantuan(context).formatHarga(String.valueOf(jumlahKaliHarga))
             );
+
+            layoutParent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (context instanceof PenjualanBarangActivity) {
+                        ((PenjualanBarangActivity) context).onItemBarangDiKeranjangClick(data, posisi);
+                    }
+                }
+            });
         }
     }
 }
