@@ -3,9 +3,9 @@ package com.rfl.trn.starr_cell.Model;
 import java.io.Serializable;
 
 public class BarangModel implements Serializable {
-    String namaBarang,stokBarang, harga1,harga2,harga3,idKonter,idKategori;
-    Long tanggalDiubah;
-    int jumlahMasukKeranjang = 0;
+    private String namaBarang,stokBarang, harga1,harga2,harga3,idKonter,idKategori, idBarang;
+    private Long tanggalDiubah;
+    private int jumlahMasukKeranjang;
     public BarangModel() {
     }
 
@@ -90,5 +90,13 @@ public class BarangModel implements Serializable {
 
     public void setJumlahMasukKeranjang(int jumlahMasukKeranjang) {
         this.jumlahMasukKeranjang = jumlahMasukKeranjang;
+    }
+
+    public String getIdBarang() {
+        return idBarang;
+    }
+
+    public void setIdBarang(String idBarang) {
+        this.idBarang = idBarang;
     }
 }

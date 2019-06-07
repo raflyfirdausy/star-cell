@@ -32,18 +32,22 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rfl.trn.starr_cell.Adapter.AdapterBarangPenjualan;
 import com.rfl.trn.starr_cell.Adapter.AdapterKategoriPenjualan;
+import com.rfl.trn.starr_cell.Adapter.AdapterListPembelianBarang;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
 import com.rfl.trn.starr_cell.Interface.ITransaksi;
 import com.rfl.trn.starr_cell.Model.BarangModel;
 import com.rfl.trn.starr_cell.Model.KategoriModel;
+import com.rfl.trn.starr_cell.Model.ListPembelianBarangModel;
 import com.rfl.trn.starr_cell.R;
 import com.wajahatkarim3.easymoneywidgets.EasyMoneyTextView;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -91,6 +95,8 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
     private AdapterKategoriPenjualan adapterKategoriPenjualan;
     private List<BarangModel> listBarang = new ArrayList<>();
     private AdapterBarangPenjualan adapterBarangPenjualan;
+    private List<ListPembelianBarangModel> listPembelianBarang = new ArrayList<>();
+    private AdapterListPembelianBarang adapterListPembelianBarang;
     private int JUMLAH_BARANG_SEMENTARA = 0;
     private int PENAMBAHAN_DEFAULT = 1;
     private SearchView searchView;
@@ -111,9 +117,10 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
         getAndSetKategori();
         getAndSetBarang();
         setJumlahBarangSementara();
+        getAndSetListPembelianSementara();
     }
 
-    private void init(){
+    private void init() {
         //firebase
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -152,14 +159,9 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
         });
     }
 
-    private void setModeLihatHarga(){
+    private void setModeLihatHarga() {
         layoutKiri.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0f));
         layoutKanan.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 100f));
-    }
-
-    private void setModePilihBarang(){
-        layoutKiri.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 100f));
-        layoutKanan.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 0f));
     }
 
     private void setPotrait() {
@@ -187,6 +189,7 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
                                         .equalsIgnoreCase(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid())) {
                                     model = data.getValue(BarangModel.class);
                                     assert model != null;
+                                    model.setIdBarang(data.getKey());
                                     model.setJumlahMasukKeranjang(0);
                                     listBarang.add(model);
                                 }
@@ -234,6 +237,40 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
                 });
     }
 
+    private void getAndSetListPembelianSementara() {
+        adapterListPembelianBarang = new AdapterListPembelianBarang(context, this.listPembelianBarang);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
+        rvKeranjangBarang.setLayoutManager(layoutManager);
+        rvKeranjangBarang.setAdapter(adapterListPembelianBarang);
+    }
+
+    private void addIntoListPembelian(BarangModel barangModel) {
+        boolean isSudahAda = false;
+        int index = -1;
+        for (int i = 0; i < listPembelianBarang.size(); i++) {
+            if (listPembelianBarang.get(i).getIdBarang().toLowerCase(Locale.getDefault())
+                    .contains(barangModel.getIdBarang().toLowerCase())) {
+                index = i;
+                isSudahAda = true;
+                break;
+            }
+        }
+
+        if (isSudahAda) {
+            listPembelianBarang.get(index).setJumlahMasukKeranjang(
+                    listPembelianBarang.get(index).getJumlahMasukKeranjang() + 1
+            );
+        } else {
+            listPembelianBarang.add(new ListPembelianBarangModel(
+                    barangModel.getIdBarang(),
+                    barangModel.getNamaBarang(),
+                    barangModel.getHarga1(),
+                    barangModel.getJumlahMasukKeranjang()
+            ));
+        }
+        getAndSetListPembelianSementara();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_penjualan, menu);
@@ -267,7 +304,7 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                tanyaKeluar();
                 return true;
             case R.id.action_transaksiTambahan:
                 new Bantuan(context).swal_sukses("action_transaksiTambahan");
@@ -276,7 +313,7 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
                 new Bantuan(context).swal_sukses("action_simpanTransaksi");
                 return true;
             case R.id.action_clearTransaksi:
-                resetTransaksi();
+                resetTransaksi(false);
                 return true;
             case R.id.action_daftarPesanan:
                 new Bantuan(context).swal_sukses("action_daftarPesanan");
@@ -298,12 +335,52 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
         }
     }
 
-    private void resetTransaksi() {
-        getAndSetBarang();
-        setHargaSementara("0");
-        JUMLAH_BARANG_SEMENTARA = 0;
-        PENAMBAHAN_DEFAULT = 1;
-        setJumlahBarangSementaraTambahSatu();
+    private void resetTransaksi(final boolean isKeluar) {
+        SweetAlertDialog dialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("Perhatian")
+                .setContentText("Apakah kamu ingin menyimpan transaksi ini untuk sementara ?\n")
+                .setConfirmText("Iya, Simpan")
+                .setCancelText("Tidak, Hapus saja")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismissWithAnimation();
+                        new Bantuan(context).swal_sukses("Sabar ya bwambank :v");
+                    }
+                })
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        getAndSetBarang();
+                        setHargaSementara("0");
+                        JUMLAH_BARANG_SEMENTARA = 0;
+                        PENAMBAHAN_DEFAULT = 1;
+                        setJumlahBarangSementara();
+                        listPembelianBarang.clear();
+                        getAndSetListPembelianSementara();
+
+                        if (isKeluar) {
+                            finish();
+                        }
+                    }
+                });
+        dialog.show();
+    }
+
+    private void tanyaKeluar() {
+        SweetAlertDialog dialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("Perhatian")
+                .setContentText("Transaksi belum selesai, apakah kamu ingin tetap keluar ?\n")
+                .setConfirmText("Iya, Keluar")
+                .setCancelText("Batal")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        resetTransaksi(true);
+                    }
+                })
+                .setCancelClickListener(null);
+        dialog.show();
     }
 
     private void setJumlahBarangSementara() {
@@ -356,9 +433,15 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
     }
 
     @Override
+    public void onBackPressed() {
+        tanyaKeluar();
+    }
+
+    @Override
     public void onItemBarangClick(BarangModel barangModel) {
         jumlahkanHargaSementara(barangModel.getHarga1());
         setJumlahBarangSementaraTambahSatu();
+        addIntoListPembelian(barangModel);
     }
 
     @Override

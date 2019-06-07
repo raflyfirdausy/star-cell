@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
 import com.rfl.trn.starr_cell.Fragment.Karyawan.PenjualanBarangActivity;
+import com.rfl.trn.starr_cell.Helper.Bantuan;
 import com.rfl.trn.starr_cell.Model.BarangModel;
 import com.rfl.trn.starr_cell.R;
 
@@ -62,8 +63,9 @@ public class AdapterBarangPenjualan extends RecyclerView.Adapter<AdapterBarangPe
         viewHolder.tvNamaBarang.setText(data.get(i).getNamaBarang());
         viewHolder.tvStokHarga.setText(
                 "Stok : " + data.get(i).getStokBarang() + " | Rp " +
-                        data.get(i).getHarga1() + " | Rp " + data.get(i).getHarga2() +
-                        " | Rp " + data.get(i).getHarga3()
+                        new Bantuan(context).formatHarga(data.get(i).getHarga1()) +
+                        " | Rp " + new Bantuan(context).formatHarga(data.get(i).getHarga2()) +
+                        " | Rp " + new Bantuan(context).formatHarga(data.get(i).getHarga3())
         );
 
         viewHolder.llParent.setOnClickListener(new View.OnClickListener() {

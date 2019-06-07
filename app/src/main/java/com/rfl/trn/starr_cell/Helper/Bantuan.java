@@ -26,6 +26,9 @@ import org.joda.time.format.DateTimeFormatter;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
+import java.util.Locale;
+
+import naturalizer.separator.Separator;
 
 public class Bantuan {
 
@@ -202,6 +205,10 @@ public class Bantuan {
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
+    }
+
+    public String formatHarga(String s){
+        return Separator.getInstance().doSeparate(s, Locale.GERMANY);
     }
 
 
