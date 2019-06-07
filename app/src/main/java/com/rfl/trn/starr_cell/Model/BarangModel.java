@@ -3,21 +3,41 @@ package com.rfl.trn.starr_cell.Model;
 import java.io.Serializable;
 
 public class BarangModel implements Serializable {
-    private String namaBarang,stokBarang, harga1,harga2,harga3,idKonter,idKategori, idBarang;
+    private String namaBarang,stokBarang, harga1,harga2,harga3,hargaBeli,hargaJual,idKonter,idKategori, idBarang;
     private Long tanggalDiubah;
     private int jumlahMasukKeranjang;
     public BarangModel() {
     }
 
-    public BarangModel(String namaBarang, String stokBarang, String harga1, String harga2, String harga3, String idKonter, String idKategori, Long tanggalDiubah) {
+    public BarangModel(String namaBarang, String stokBarang, String harga1, String harga2, String harga3, String hargaBeli, String hargaJual, String idKonter, String idKategori, String idBarang, Long tanggalDiubah, int jumlahMasukKeranjang) {
         this.namaBarang = namaBarang;
         this.stokBarang = stokBarang;
         this.harga1 = harga1;
         this.harga2 = harga2;
         this.harga3 = harga3;
+        this.hargaBeli = hargaBeli;
+        this.hargaJual = hargaJual;
         this.idKonter = idKonter;
         this.idKategori = idKategori;
+        this.idBarang = idBarang;
         this.tanggalDiubah = tanggalDiubah;
+        this.jumlahMasukKeranjang = jumlahMasukKeranjang;
+    }
+
+    public String getHargaBeli() {
+        return hargaBeli;
+    }
+
+    public void setHargaBeli(String hargaBeli) {
+        this.hargaBeli = hargaBeli;
+    }
+
+    public String getHargaJual() {
+        return hargaJual;
+    }
+
+    public void setHargaJual(String hargaJual) {
+        this.hargaJual = hargaJual;
     }
 
     public String getNamaBarang() {

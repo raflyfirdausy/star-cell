@@ -170,13 +170,11 @@ public class TabAdminAbsenKeluarFragment extends Fragment {
                             llBelumAdaAbsen.setVisibility(View.VISIBLE);
                         }
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                         new Bantuan(getActivity()).swal_error(databaseError.getMessage());
                     }
                 });
-
     }
 
     private void semuaRejectAbsen() {

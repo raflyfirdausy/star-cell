@@ -29,7 +29,7 @@
         tool:ignore="GoogleAppIndexingWarning"
         tool:replace="android:icon">
         <activity
-            android:name=".Fragment.Karyawan.PenjualanBarangActivity"
+            android:name=".Activity.SplashActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
             tool:ignore="InnerclassSeparator">
@@ -90,7 +90,7 @@
             android:theme="@style/AppTheme.NoActionBar"
             tool:ignore="InnerclassSeparator" />
         <activity
-            android:name=".Activity.SplashActivity"
+            android:name=".Fragment.Karyawan.PenjualanBarangActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBarTransparent"

@@ -3,11 +3,8 @@ package com.rfl.trn.starr_cell.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -86,8 +83,13 @@ public class TambahBarangActivity extends AppCompatActivity {
     LinearLayout layoutTambahItemDialog;
     FloatingActionButton buttonTambahItem;
     MyTextView judulDialog, dialogKosong;
-    Dialog dialog;
-    Context context = TambahBarangActivity.this;
+    @BindView(R.id.myet_hargaJual)
+    EasyMoneyEditText myetHargaJual;
+    @BindView(R.id.myet_hargaBeli)
+    EasyMoneyEditText myetHargaBeli;
+
+    private Dialog dialog;
+    private Context context = TambahBarangActivity.this;
     private FirebaseAnalytics mFirebaseAnalytics;
     private DatabaseReference databaseReference;
     private List<KategoriModel> listKategori;
@@ -99,7 +101,8 @@ public class TambahBarangActivity extends AppCompatActivity {
     private String idBarang = null;
     private Date date = new Date();
     private Long timestamp;
-    private  AdapterKategori adapterKategori;;
+    private AdapterKategori adapterKategori;
+    ;
     private View dialogView;
 
     @Override
@@ -139,7 +142,6 @@ public class TambahBarangActivity extends AppCompatActivity {
     }
 
 
-
     private void setField(String id) {
         databaseReference.child("barang")
                 .child(id)
@@ -153,6 +155,8 @@ public class TambahBarangActivity extends AppCompatActivity {
                             myetHarga1.setText(String.valueOf(model.getHarga1()));
                             myetHarga2.setText(String.valueOf(model.getHarga2()));
                             myetHarga3.setText(String.valueOf(model.getHarga3()));
+                            myetHargaBeli.setText(String.valueOf(model.getHargaBeli()));
+                            myetHargaJual.setText(String.valueOf(model.getHargaJual()));
                             idKategori = model.getIdKategori();
                             idKonter = model.getIdKonter();
                             timestamp = model.getTanggalDiubah();
@@ -231,7 +235,7 @@ public class TambahBarangActivity extends AppCompatActivity {
                                 model = data.getValue(KategoriModel.class);
                                 listKategori.add(model);
                             }
-                             adapterKategori = new AdapterKategori(listKategori, context, new IDialog() {
+                            adapterKategori = new AdapterKategori(listKategori, context, new IDialog() {
                                 @Override
                                 public void onItemClick(String id, String nama, boolean isDismiss) {
                                     myetKategori.setText(nama);
@@ -276,9 +280,9 @@ public class TambahBarangActivity extends AppCompatActivity {
                         .addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.exists()){
+                                if (dataSnapshot.exists()) {
                                     dialog.setTitleText("Peringatan");
-                                    dialog.setContentText("Masih ada barang dengan kategori "+item.getNamaKategori()+".\nSilahkan hapus terlebih dahulu barangnya..");
+                                    dialog.setContentText("Masih ada barang dengan kategori " + item.getNamaKategori() + ".\nSilahkan hapus terlebih dahulu barangnya..");
                                     dialog.setConfirmText("Ke daftar Barang");
                                     dialog.setCancelText("Ga jadi hapus");
                                     dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -295,9 +299,9 @@ public class TambahBarangActivity extends AppCompatActivity {
                                             dialog.dismissWithAnimation();
                                         }
                                     });
-                                }else {
+                                } else {
                                     dialog.setTitleText("Peringatan");
-                                    dialog.setContentText("Anda akan menghapus kategori "+item.getNamaKategori()+".\nLanjutkan ?");
+                                    dialog.setContentText("Anda akan menghapus kategori " + item.getNamaKategori() + ".\nLanjutkan ?");
                                     dialog.setConfirmText("Iya, Hapus");
                                     dialog.setCancelText("Nggak jadi ");
                                     dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -319,13 +323,14 @@ public class TambahBarangActivity extends AppCompatActivity {
                                 }
                                 dialog.show();
                             }
+
                             @Override
                             public void onCancelled(@NonNull DatabaseError databaseError) {
                                 new Bantuan(context).swal_error(databaseError.getMessage());
                             }
                         });
 
-                        rvDialog.scrollToPosition(position);
+                rvDialog.scrollToPosition(position);
             }
         };
 
@@ -335,9 +340,9 @@ public class TambahBarangActivity extends AppCompatActivity {
         tambahItemDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(namaDialog.getText())){
+                if (TextUtils.isEmpty(namaDialog.getText())) {
                     new Bantuan(context).swal_error("Nama kategori tidak boleh Kosong !");
-                }else {
+                } else {
                     String idKategori = databaseReference.push().getKey();
                     KategoriModel model = new KategoriModel(idKategori,
                             namaDialog.getText().toString(),
@@ -424,16 +429,19 @@ public class TambahBarangActivity extends AppCompatActivity {
         if (cekInput()) {
             final SweetAlertDialog loading = new Bantuan(context).swal_loading("Tunggu beberapa saat, proses menyimpan barang");
             loading.show();
-            BarangModel model = new BarangModel(
-                    myetNamaBarang.getText().toString(),
-                    myetStokBarang.getText().toString(),
-                    myetHarga1.getValueString(),
-                    myetHarga2.getValueString(),
-                    myetHarga3.getValueString(),
-                    idKonter,
-                    idKategori,
-                    timestamp
-            );
+            BarangModel model = new BarangModel();
+
+            model.setNamaBarang(myetNamaBarang.getText().toString());
+            model.setStokBarang(myetStokBarang.getText().toString());
+            model.setHarga1(myetHarga1.getValueString());
+            model.setHarga2(myetHarga2.getValueString());
+            model.setHarga3(myetHarga3.getValueString());
+            model.setHargaBeli(myetHargaBeli.getValueString());
+            model.setHargaJual(myetHargaJual.getValueString());
+            model.setIdKonter(idKonter);
+            model.setIdKategori(idKategori);
+            model.setTanggalDiubah(timestamp);
+
             databaseReference.child("barang")
                     .child(idBarang)
                     .setValue(model)
@@ -476,7 +484,9 @@ public class TambahBarangActivity extends AppCompatActivity {
                 !TextUtils.isEmpty(myetStokBarang.getText()) &&
                 !TextUtils.isEmpty(myetKategori.getText()) &&
                 !TextUtils.isEmpty(myetKonter.getText()) &&
-                !TextUtils.isEmpty(myetHarga1.getText());
+                !TextUtils.isEmpty(myetHarga1.getText()) &&
+                !TextUtils.isEmpty(myetHargaBeli.getText()) &&
+                !TextUtils.isEmpty(myetHargaJual.getText());
     }
 
     //TODO :: LifeCycle
