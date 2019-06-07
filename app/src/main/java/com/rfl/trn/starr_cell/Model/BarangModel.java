@@ -9,7 +9,7 @@ public class BarangModel implements Serializable {
     public BarangModel() {
     }
 
-    public BarangModel(String namaBarang, String stokBarang, String harga1, String harga2, String harga3, String idKonter, String idKategori, Long tanggalDiubah) {
+    public BarangModel(String namaBarang, String stokBarang, String harga1, String harga2, String harga3,String idKonter, String idKategori, String idBarang, Long tanggalDiubah, int jumlahMasukKeranjang) {
         this.namaBarang = namaBarang;
         this.stokBarang = stokBarang;
         this.harga1 = harga1;
@@ -17,8 +17,11 @@ public class BarangModel implements Serializable {
         this.harga3 = harga3;
         this.idKonter = idKonter;
         this.idKategori = idKategori;
+        this.idBarang = idBarang;
         this.tanggalDiubah = tanggalDiubah;
+        this.jumlahMasukKeranjang = jumlahMasukKeranjang;
     }
+
 
     public String getNamaBarang() {
         return namaBarang;
