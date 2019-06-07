@@ -6,4 +6,5 @@ import com.rfl.trn.starr_cell.Model.KategoriModel;
 public interface ITransaksi {
     void onItemBarangClick(BarangModel barangModel);
     void onKategoriClick(KategoriModel kategoriModel);
+    void onItemBarangLongClick(BarangModel barangModel, int posisi);
 }

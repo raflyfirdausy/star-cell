@@ -9,8 +9,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
@@ -18,6 +22,7 @@ import com.rfl.trn.starr_cell.Fragment.Karyawan.PenjualanBarangActivity;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
 import com.rfl.trn.starr_cell.Model.BarangModel;
 import com.rfl.trn.starr_cell.R;
+import com.wajahatkarim3.easymoneywidgets.EasyMoneyEditText;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +39,7 @@ public class AdapterBarangPenjualan extends RecyclerView.Adapter<AdapterBarangPe
 
 
     public AdapterBarangPenjualan(Context context, List<BarangModel> data) {
+        super();
         this.context = context;
         this.data = data;
         this.dataSementara = new ArrayList<>();
@@ -49,17 +55,27 @@ public class AdapterBarangPenjualan extends RecyclerView.Adapter<AdapterBarangPe
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, @SuppressLint("RecyclerView") final int i) {
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, @SuppressLint("RecyclerView") final int i) {
         String duaHuruf = data.get(i).getNamaBarang().substring(0, 2);
         TextDrawable gambar = TextDrawable.builder().buildRoundRect(duaHuruf, Color.parseColor("#2980b9"), 8);
         viewHolder.ivBarang.setImageDrawable(gambar);
 
         TextDrawable gambarJumlah = TextDrawable.builder()
+                .beginConfig()
+                .bold()
+                .endConfig()
                 .buildRound(String.valueOf(data.get(i).getJumlahMasukKeranjang()),
-                        Color.parseColor("#2980b9"));
+                        Color.parseColor("#3498db"));
         if (data.get(i).getJumlahMasukKeranjang() > 0) {
             viewHolder.ivMasukKeranjang.setImageDrawable(gambarJumlah);
         }
+
+        TextDrawable gambarTambah = TextDrawable.builder()
+                .beginConfig()
+                .bold()
+                .endConfig()
+                .buildRoundRect("+", Color.parseColor("#2980b9"), 10);
+        viewHolder.ivBtnTambahBanyak.setImageDrawable(gambarTambah);
 
         viewHolder.tvNamaBarang.setText(data.get(i).getNamaBarang());
         viewHolder.tvStokHarga.setText(
@@ -73,36 +89,40 @@ public class AdapterBarangPenjualan extends RecyclerView.Adapter<AdapterBarangPe
             @Override
             public void onClick(View v) {
                 data.get(i).setJumlahMasukKeranjang(data.get(i).getJumlahMasukKeranjang() + 1);
-
                 if (context instanceof PenjualanBarangActivity) {
                     ((PenjualanBarangActivity) context).onItemBarangClick(data.get(i));
                 }
-
                 notifyDataSetChanged();
+            }
+        });
+
+        viewHolder.ivBtnTambahBanyak.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (context instanceof PenjualanBarangActivity) {
+                    ((PenjualanBarangActivity) context).onItemBarangLongClick(data.get(i), i);
+                }
             }
         });
 
         viewHolder.llParent.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View view = inflater.inflate(R.layout.dialog_tambah_barang_banyak, null);
-                final AlertDialog dialog = new AlertDialog.Builder(context)
-                        .setView(view)
-                        .setCancelable(true)
-                        .create();
-                dialog.show();
-
-
+                if (context instanceof PenjualanBarangActivity) {
+                    ((PenjualanBarangActivity) context).onItemBarangLongClick(data.get(i), i);
+                }
                 return true;
             }
         });
-
     }
 
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    public void notifyDataChanged(){
+        notifyDataSetChanged();
     }
 
     public void search(String namaBarang, String idKategori) {
@@ -139,8 +159,8 @@ public class AdapterBarangPenjualan extends RecyclerView.Adapter<AdapterBarangPe
         notifyDataSetChanged();
     }
 
-
     class ViewHolder extends RecyclerView.ViewHolder {
+        public View view;
         @BindView(R.id.ivBarang)
         ImageView ivBarang;
         @BindView(R.id.tvNamaBarang)
@@ -151,9 +171,12 @@ public class AdapterBarangPenjualan extends RecyclerView.Adapter<AdapterBarangPe
         ImageView ivMasukKeranjang;
         @BindView(R.id.ll_parent)
         LinearLayout llParent;
+        @BindView(R.id.ivBtnTambahBanyak)
+        ImageView ivBtnTambahBanyak;
 
         ViewHolder(View view) {
             super(view);
+            this.view = view;
             ButterKnife.bind(this, view);
         }
     }

@@ -140,7 +140,7 @@
                 android:text="0"
                 android:textAlignment="center"
                 android:textColor="@color/colortext"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 app:currency_symbol="Rp"
                 app:show_commas="true"
