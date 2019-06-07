@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +49,7 @@ public class AdapterBarangPenjualan extends RecyclerView.Adapter<AdapterBarangPe
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, @SuppressLint("RecyclerView") final int i) {
         String duaHuruf = data.get(i).getNamaBarang().substring(0, 2);
         TextDrawable gambar = TextDrawable.builder().buildRoundRect(duaHuruf, Color.parseColor("#2980b9"), 8);
         viewHolder.ivBarang.setImageDrawable(gambar);
@@ -78,6 +79,22 @@ public class AdapterBarangPenjualan extends RecyclerView.Adapter<AdapterBarangPe
                 }
 
                 notifyDataSetChanged();
+            }
+        });
+
+        viewHolder.llParent.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View view = inflater.inflate(R.layout.dialog_tambah_barang_banyak, null);
+                final AlertDialog dialog = new AlertDialog.Builder(context)
+                        .setView(view)
+                        .setCancelable(true)
+                        .create();
+                dialog.show();
+
+
+                return true;
             }
         });
 

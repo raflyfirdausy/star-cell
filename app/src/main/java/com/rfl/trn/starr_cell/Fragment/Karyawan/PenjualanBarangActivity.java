@@ -385,6 +385,7 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
                     model.setStokBarang("1");
 
                     addIntoListPembelian(model);
+                    jumlahkanHargaSementara(model.getHarga1(), model.getJumlahMasukKeranjang());
                     dialog.dismiss();
                 }
             }
@@ -459,7 +460,7 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
                         setJumlahBarangSementara();
                         listPembelianBarang.clear();
                         getAndSetListPembelianSementara();
-
+                        sweetAlertDialog.dismissWithAnimation();
                         if (isKeluar) {
                             finish();
                         }
@@ -511,8 +512,13 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
     }
 
     private void jumlahkanHargaSementara(String harga) {
+        jumlahkanHargaSementara(harga, 1);
+    }
+
+    private void jumlahkanHargaSementara(String harga, int jumlah) {
         double hargaAwal = Double.parseDouble(tvRupiahSementara.getValueString());
-        double hargaSetelahDijumlah = hargaAwal + Double.parseDouble(harga);
+        double totalHargaTambahan = jumlah * Double.parseDouble(harga);
+        double hargaSetelahDijumlah = hargaAwal + totalHargaTambahan;
         setHargaSementara(String.valueOf(hargaSetelahDijumlah));
     }
 

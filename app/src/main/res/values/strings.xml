@@ -135,4 +135,6 @@
     <string name="harga_beli">Harga Beli</string>
     <string name="_0">0</string>
     <string name="_1">1</string>
+    <string name="harga_sementara">Harga Sementara</string>
+    <string name="ubah_harga_sementara">Ubah harga sementara</string>
 </resources>

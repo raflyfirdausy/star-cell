@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -14,115 +15,68 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.rfl.trn.starr_cell.Custom.MyTextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="@dimen/dp_16"
-                android:text="@string/transaksi_tambahan"
-                android:textColor="@color/colortext"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/dp_8"
+                android:paddingStart="@dimen/dp_8"
+                android:paddingEnd="@dimen/dp_8">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/ivGambarBarangSementara"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="@dimen/dp_4"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/tvNamaBarangSementara"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/nama_barang"
+                        android:textStyle="bold"
+                        android:textColor="@color/colortext"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:id="@+id/tvRincianHarga"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_10_x_rp_12_0000_120_000"
+                        android:textStyle="normal"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingStart="@dimen/dp_8"
-                android:paddingEnd="@dimen/dp_8">
+                android:paddingEnd="@dimen/dp_8"
+                android:layout_marginBottom="@dimen/dp_12">
 
-                <android.support.design.widget.TextInputLayout
+                <view
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/daftar">
-
-                    <com.rfl.trn.starr_cell.Custom.MyEditText
-                        android:id="@+id/myetNamaBarang"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_pay"
-                        android:drawablePadding="15dp"
-                        android:drawableTint="@color/colorPrimaryDark"
-                        android:hint="@string/nama_barang"
-                        android:inputType="text"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textColorHint="@color/colorPrimaryDark"
-                        tools:targetApi="m" />
-
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/daftar">
-
-                    <com.rfl.trn.starr_cell.Custom.MyEditText
-                        android:id="@+id/myetKodeBarang"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_pay"
-                        android:drawablePadding="15dp"
-                        android:drawableTint="@color/colorPrimaryDark"
-                        android:hint="@string/kode_barang_opsional"
-                        android:inputType="text"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textColorHint="@color/colorPrimaryDark"
-                        tools:targetApi="m" />
-
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/daftar">
-
-                    <com.rfl.trn.starr_cell.Custom.MyEditText
-                        android:id="@+id/myetHargaBeli"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_pay"
-                        android:drawablePadding="15dp"
-                        android:drawableTint="@color/colorPrimaryDark"
-                        android:hint="@string/harga_beli"
-                        android:inputType="number"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textColorHint="@color/colorPrimaryDark"
-                        tools:targetApi="m" />
-
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/daftar">
-
-                    <com.rfl.trn.starr_cell.Custom.MyEditText
-                        android:id="@+id/myetHargaJual"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_pay"
-                        android:drawablePadding="15dp"
-                        android:drawableTint="@color/colorPrimaryDark"
-                        android:hint="@string/harga_jual"
-                        android:inputType="number"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textColorHint="@color/colorPrimaryDark"
-                        tools:targetApi="m" />
-
-                </android.support.design.widget.TextInputLayout>
+                    android:layout_height="@dimen/dp_1"
+                    android:background="@color/colortext"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:layout_marginBottom="@dimen/dp_12"
                     android:orientation="horizontal"
                     android:weightSum="100">
 
@@ -177,6 +131,37 @@
                             android:tint="@color/colortext" />
                     </LinearLayout>
                 </LinearLayout>
+                <view
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_1"
+                    android:background="@color/colortext"/>
+
+                <CheckBox
+                    android:id="@+id/cbUbahHargaSementara"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:text="@string/ubah_harga_sementara"/>
+
+                <com.wajahatkarim3.easymoneywidgets.EasyMoneyEditText
+                    android:id="@+id/etUbahHarga"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_pay"
+                    android:drawablePadding="15dp"
+                    android:drawableTint="@color/colorPrimaryDark"
+                    android:hint="@string/harga_sementara"
+                    android:inputType="text"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorHint="@color/colorPrimaryDark"
+                    app:currency_symbol="Rp "
+                    app:show_commas="true"
+                    app:show_currency="true"
+                    tools:targetApi="m"
+                    android:visibility="gone"/>
+
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
