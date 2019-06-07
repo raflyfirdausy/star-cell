@@ -130,4 +130,9 @@
     <string name="simpan_transaksi">Simpan Transaksi</string>
     <string name="ubah_layout">Ubah Layout</string>
     <string name="_10_x_rp_12_0000_120_000">10 x Rp 12,0000 = 120,000</string>
+    <string name="kode_barang_opsional">Kode Barang (opsional)</string>
+    <string name="harga_jual">Harga Jual</string>
+    <string name="harga_beli">Harga Beli</string>
+    <string name="_0">0</string>
+    <string name="_1">1</string>
 </resources>

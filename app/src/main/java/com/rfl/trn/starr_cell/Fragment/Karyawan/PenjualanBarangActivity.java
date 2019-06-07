@@ -1,11 +1,13 @@
 package com.rfl.trn.starr_cell.Fragment.Karyawan;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +17,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -23,6 +26,7 @@ import android.widget.SearchView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.github.clans.fab.FloatingActionButton;
+import com.github.javafaker.Faker;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -36,6 +40,7 @@ import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.rfl.trn.starr_cell.Adapter.AdapterBarangPenjualan;
 import com.rfl.trn.starr_cell.Adapter.AdapterKategoriPenjualan;
 import com.rfl.trn.starr_cell.Adapter.AdapterListPembelianBarang;
+import com.rfl.trn.starr_cell.Custom.MyEditText;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
 import com.rfl.trn.starr_cell.Interface.ITransaksi;
 import com.rfl.trn.starr_cell.Model.BarangModel;
@@ -307,7 +312,7 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
                 tanyaKeluar();
                 return true;
             case R.id.action_transaksiTambahan:
-                new Bantuan(context).swal_sukses("action_transaksiTambahan");
+                showDialogTransaksiTambahan();
                 return true;
             case R.id.action_simpanTransaksi:
                 new Bantuan(context).swal_sukses("action_simpanTransaksi");
@@ -324,6 +329,102 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @SuppressLint("InflateParams")
+    private void showDialogTransaksiTambahan() {
+        View view = getLayoutInflater().inflate(R.layout.dialog_transaksi_tambahan, null);
+        final AlertDialog dialog = new AlertDialog.Builder(context)
+                .setView(view)
+                .setCancelable(true)
+                .create();
+        dialog.show();
+
+        final MyEditText myetNamaBarang = view.findViewById(R.id.myetNamaBarang);
+        final MyEditText myetKodeBarang = view.findViewById(R.id.myetKodeBarang);
+        final MyEditText myetHargaJual = view.findViewById(R.id.myetHargaJual);
+        final EditText etJumlahBarang = view.findViewById(R.id.etJumlahBarang);
+        final ImageView btnKurang = view.findViewById(R.id.btnKurang);
+        final ImageView btnTambah = view.findViewById(R.id.btnTambah);
+        final LinearLayout btnBatal = view.findViewById(R.id.btnBatal);
+        final LinearLayout btnOk = view.findViewById(R.id.btnOk);
+
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (TextUtils.isEmpty(Objects.requireNonNull(myetNamaBarang.getText()).toString())
+                        || TextUtils.isEmpty(Objects.requireNonNull(myetHargaJual.getText()).toString())) {
+                    new Bantuan(context).toastLong("Nama barang dan Harga jual tidak boleh kosong !");
+                } else if (TextUtils.isEmpty(Objects.requireNonNull(etJumlahBarang.getText()).toString())) {
+                    new Bantuan(context).toastLong("Jumlah barang tidak boleh kosong !");
+                } else {
+                    String kodeBarang = null;
+                    if (TextUtils.isEmpty(Objects.requireNonNull(myetKodeBarang.getText()).toString())) {
+                        kodeBarang = "ID-" + new Faker().random().hex(10);
+                    } else {
+                        kodeBarang = myetKodeBarang.getText().toString();
+                    }
+
+                    String hargaBarang = null;
+                    if (TextUtils.isEmpty(Objects.requireNonNull(myetHargaJual.getText()).toString())) {
+                        hargaBarang = "0";
+                    } else {
+                        hargaBarang = myetHargaJual.getText().toString();
+                    }
+
+                    BarangModel model = new BarangModel();
+                    model.setIdBarang(kodeBarang);
+                    model.setNamaBarang(myetNamaBarang.getText().toString());
+                    model.setHarga1(hargaBarang);
+                    model.setHarga2(hargaBarang);
+                    model.setHarga3(hargaBarang);
+                    model.setJumlahMasukKeranjang(Integer.parseInt(etJumlahBarang.getText().toString()));
+                    model.setIdKonter(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid());
+                    model.setIdKategori("ID-" + new Faker().random().hex(10));
+                    model.setTanggalDiubah(new Date().getTime());
+                    model.setStokBarang("1");
+
+                    addIntoListPembelian(model);
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        btnKurang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (TextUtils.isEmpty(etJumlahBarang.getText().toString()) ||
+                        etJumlahBarang.getText().toString().equalsIgnoreCase("1")) {
+                    etJumlahBarang.setText("1");
+                } else {
+                    etJumlahBarang.setText(
+                            String.valueOf(Integer.parseInt(etJumlahBarang.getText().toString()) - 1)
+                    );
+                }
+            }
+        });
+
+        btnTambah.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (TextUtils.isEmpty(etJumlahBarang.getText().toString())) {
+                    etJumlahBarang.setText("1");
+                } else {
+                    etJumlahBarang.setText(
+                            String.valueOf(Integer.parseInt(etJumlahBarang.getText().toString()) + 1)
+                    );
+                }
+            }
+        });
+
+        btnBatal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+
     }
 
     private void ubahLayout() {
