@@ -2,6 +2,7 @@ package com.rfl.trn.starr_cell.Fragment.Karyawan;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -49,6 +50,7 @@ import com.rfl.trn.starr_cell.Interface.ITransaksi;
 import com.rfl.trn.starr_cell.Model.BarangModel;
 import com.rfl.trn.starr_cell.Model.KategoriModel;
 import com.rfl.trn.starr_cell.Model.ListPembelianBarangModel;
+import com.rfl.trn.starr_cell.PembayaranActivity;
 import com.rfl.trn.starr_cell.R;
 import com.wajahatkarim3.easymoneywidgets.EasyMoneyTextView;
 
@@ -108,6 +110,8 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
     private SearchView searchView;
     private String ID_CURRENT_KATEGORI = "semua";
     private boolean isPotrait;
+    private String namaCustomer = "";
+    private String keteranganNota = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +119,7 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
         setContentView(R.layout.activity_penjualan_barang);
         ButterKnife.bind(this);
         init();
+
     }
 
     @Override
@@ -161,6 +166,54 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
             public void onClick(View v) {
                 setPotrait();
                 ivBtnModePilihBarang.setVisibility(View.GONE);
+            }
+        });
+
+        btnPilihan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View view = getLayoutInflater().inflate(R.layout.dialog_informasi_tambahan, null);
+                final AlertDialog dialog = new AlertDialog.Builder(context)
+                        .setView(view)
+                        .setCancelable(true)
+                        .create();
+                dialog.show();
+
+                final MyEditText myetNamaCustomer = view.findViewById(R.id.myetNamaCustomer);
+                final MyEditText myetKeteranganNota = view.findViewById(R.id.myetKeteranganNota);
+                final LinearLayout btnBatal = view.findViewById(R.id.btnBatal);
+                final LinearLayout btnOk = view.findViewById(R.id.btnOk);
+
+                if(!namaCustomer.equalsIgnoreCase("")){
+                    myetNamaCustomer.setText(namaCustomer);
+                }
+
+                if(!keteranganNota.equalsIgnoreCase("")){
+                    myetKeteranganNota.setText(keteranganNota);
+                }
+
+                btnOk.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        namaCustomer = Objects.requireNonNull(myetNamaCustomer.getText()).toString();
+                        keteranganNota = Objects.requireNonNull(myetNamaCustomer.getText()).toString();
+                        dialog.dismiss();
+                    }
+                });
+
+                btnBatal.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
+
+        cardButtonBayar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(context, PembayaranActivity.class));
             }
         });
     }
@@ -248,6 +301,7 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
         rvKeranjangBarang.setLayoutManager(layoutManager);
         rvKeranjangBarang.setAdapter(adapterListPembelianBarang);
+        setBadge();
     }
 
     private void addIntoListPembelian(BarangModel barangModel, boolean isFromDialog, int posisi) {
@@ -306,7 +360,6 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
         }
         getAndSetListPembelianSementara(listPembelianBarang);
         setHargaSementara(String.valueOf(getTotalHargaDiKeranjang()));
-        setBadge();
     }
 
     @Override
@@ -393,6 +446,8 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
                         listPembelianBarang.clear();
                         setHargaSementara("0");
                         getAndSetListPembelianSementara(listPembelianBarang);
+                        namaCustomer = "";
+                        keteranganNota = "";
                         sweetAlertDialog.dismissWithAnimation();
                         if (isKeluar) {
                             finish();

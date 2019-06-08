@@ -138,4 +138,15 @@
     <string name="harga_sementara">Harga Sementara</string>
     <string name="ubah_harga_sementara">Ubah harga sementara</string>
     <string name="Pengaturan">Pengaturan</string>
+    <string name="tekan_dan_tahan_barang_untuk_opsi_lanjutan">Tekan dan tahan lama daftar barang untuk opsi lanjutan</string>
+    <string name="tipe_pembeli">Tipe Pembeli</string>
+    <string name="item">item</string>
+    <string name="nama_customer">Nama Customer</string>
+    <string name="keterangan_nota">Keterangan Nota</string>
+    <string name="total_rp_123_456_789">Total : Rp 123.456.789</string>
+    <string name="rp_123_456_789">Rp 123.456.789</string>
+    <string name="jenis_pembayaran">Jenis pembayaran</string>
+    <string name="cash">Cash</string>
+    <string name="transfer">Transfer</string>
+    <string name="_123456789">123456789</string>
 </resources>

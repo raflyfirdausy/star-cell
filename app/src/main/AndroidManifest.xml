@@ -28,12 +28,19 @@
         android:theme="@style/AppTheme"
         tool:ignore="GoogleAppIndexingWarning"
         tool:replace="android:icon">
+        <activity android:name=".PembayaranActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+            tool:ignore="InnerclassSeparator"/>
         <activity
             android:name=".Fragment.Karyawan.PenjualanBarangActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
             tool:ignore="InnerclassSeparator">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".ActivityKaryawan.ListCurrentKaryawanActivity"
@@ -88,22 +95,17 @@
         <activity
             android:name=".Activity.PengaturanUmumActivity"
             android:screenOrientation="portrait"
-            tool:ignore="InnerclassSeparator"/>
-        <activity android:name=".Activity.PengaturanKonterActivity"
+            tool:ignore="InnerclassSeparator" />
+        <activity
+            android:name=".Activity.PengaturanKonterActivity"
             android:screenOrientation="portrait"
-            tool:ignore="InnerclassSeparator"/>
+            tool:ignore="InnerclassSeparator" />
         <activity
             android:name=".Activity.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBarTransparent"
-            tool:ignore="InnerclassSeparator">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            tool:ignore="InnerclassSeparator"></activity>
 
         <service
             android:name=".Service.MyFirebaseMessagingService"

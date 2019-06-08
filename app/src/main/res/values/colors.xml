@@ -18,6 +18,7 @@
 
     <color name="background">#dddddd</color>
     <color name="gray_muda">#BDBDBD</color>
+    <color name="gray_tua">#979797</color>
 
     <color name="green">#23A352</color>
     <color name="greenDark">#0E5A29</color>

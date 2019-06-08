@@ -45,7 +45,7 @@
                         android:padding="@dimen/dp_8"
                         android:text="@string/kategori"
                         android:textColor="@color/colortext"
-                        android:textSize="@dimen/sp_16"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
 
                     <com.cooltechworks.views.shimmer.ShimmerRecyclerView
@@ -58,6 +58,14 @@
                         app:shimmer_demo_layout="@layout/item_list_kategori"
                         app:shimmer_demo_layout_manager_type="linear_horizontal" />
                 </LinearLayout>
+
+                <com.rfl.trn.starr_cell.Custom.MyTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/dp_8"
+                    android:text="@string/tekan_dan_tahan_barang_untuk_opsi_lanjutan"
+                    android:textSize="10sp"
+                    tools:ignore="SmallSp" />
 
                 <com.cooltechworks.views.shimmer.ShimmerRecyclerView
                     android:id="@+id/rvBarangPenjualan"
@@ -86,22 +94,22 @@
                     android:layout_alignParentBottom="true"
                     android:layout_marginEnd="@dimen/dp_16"
                     android:layout_marginBottom="@dimen/dp_16"
+                    android:rotation="-10"
+                    android:src="@drawable/ic_pay"
                     app:fabSize="normal"
+                    app:fab_colorDisabled="@color/gray_btn_bg_pressed_color"
                     app:fab_colorNormal="@color/green"
                     app:fab_colorPressed="@color/greenDark"
-                    app:fab_colorDisabled="@color/gray_btn_bg_pressed_color"
-                    android:src="@drawable/ic_pay"
-                    app:fab_showShadow="false"
-                    android:rotation="-10"/>
+                    app:fab_showShadow="false" />
 
                 <ImageView
                     android:id="@+id/ivBadgePay"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginEnd="8dp"
                     android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"/>
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="8dp" />
             </RelativeLayout>
 
 
@@ -127,10 +135,10 @@
                 android:id="@+id/ivBtnModePilihBarang"
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="?attr/actionBarSize"
+                android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="?attr/selectableItemBackground"
-                android:src="@drawable/ic_keyboard_arrow_left_black_24dp"/>
+                android:src="@drawable/ic_keyboard_arrow_left_black_24dp" />
 
             <com.wajahatkarim3.easymoneywidgets.EasyMoneyTextView
                 android:id="@+id/tvRupiahSementara"
@@ -200,7 +208,8 @@
                         android:focusable="true"
                         android:foreground="?attr/selectableItemBackground"
                         app:cardBackgroundColor="@color/green"
-                        app:cardCornerRadius="@dimen/dp_4">
+                        app:cardCornerRadius="@dimen/dp_4"
+                        app:cardElevation="@dimen/dp_0">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -209,21 +218,41 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentStart="true"
-                                android:layout_centerInParent="true"
-                                android:layout_marginStart="@dimen/dp_20"
-                                android:text="@string/bayar"
-                                android:textColor="@color/white"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-
-                            <ImageView
-                                android:id="@+id/ivJumlahItemBayar"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
                                 android:layout_alignParentEnd="true"
                                 android:layout_centerInParent="true"
-                                android:layout_marginEnd="@dimen/dp_20" />
+                                android:layout_marginEnd="@dimen/dp_8"
+                                android:drawableEnd="@drawable/ic_keyboard_arrow_right_black_24dp"
+                                android:gravity="center"
+                                android:text="@string/bayar"
+                                android:textColor="@color/white"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerInParent="true"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:id="@+id/ivJumlahItemBayar"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="@dimen/dp_8" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:gravity="bottom"
+                                    android:paddingStart="4dp"
+                                    android:text="@string/item"
+                                    android:textColor="@color/white"
+                                    android:textSize="12sp"
+                                    android:textStyle="normal"
+                                    tools:ignore="RtlSymmetry,SmallSp" />
+                            </LinearLayout>
                         </RelativeLayout>
                     </android.support.v7.widget.CardView>
 
