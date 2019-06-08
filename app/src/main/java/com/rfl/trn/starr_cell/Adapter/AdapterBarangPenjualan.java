@@ -60,7 +60,10 @@ public class AdapterBarangPenjualan extends RecyclerView.Adapter<AdapterBarangPe
                 .buildRound(String.valueOf(data.get(i).getJumlahMasukKeranjang()),
                         Color.parseColor("#3498db"));
         if (data.get(i).getJumlahMasukKeranjang() > 0) {
+            viewHolder.ivMasukKeranjang.setVisibility(View.VISIBLE);
             viewHolder.ivMasukKeranjang.setImageDrawable(gambarJumlah);
+        } else {
+            viewHolder.ivMasukKeranjang.setVisibility(View.GONE);
         }
 
         TextDrawable gambarTambah = TextDrawable.builder()
@@ -85,7 +88,7 @@ public class AdapterBarangPenjualan extends RecyclerView.Adapter<AdapterBarangPe
                 if (context instanceof PenjualanBarangActivity) {
                     ((PenjualanBarangActivity) context).onItemBarangClick(data.get(i), i);
                 }
-                notifyDataSetChanged();
+                notifyDataChanged();
             }
         });
 
@@ -107,6 +110,12 @@ public class AdapterBarangPenjualan extends RecyclerView.Adapter<AdapterBarangPe
                 return true;
             }
         });
+    }
+
+
+    public void ubahDataMasuk(int posisi, int dataMasuk){
+        data.get(posisi).setJumlahMasukKeranjang(dataMasuk);
+        notifyDataSetChanged();
     }
 
     @Override

@@ -252,21 +252,12 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
 
     private void addIntoListPembelian(BarangModel barangModel, boolean isFromDialog, int posisi) {
         boolean isSudahAda = false;
-        boolean isBarangTambahan = true;
         int index = -1;
         for (int i = 0; i < listPembelianBarang.size(); i++) {
             if (listPembelianBarang.get(i).getIdBarang().toLowerCase(Locale.getDefault())
                     .contains(barangModel.getIdBarang().toLowerCase())) {
                 index = i;
                 isSudahAda = true;
-                break;
-            }
-        }
-
-        for (int i = 0; i < listBarang.size(); i++) {
-            if (listBarang.get(i).getIdBarang().toLowerCase(Locale.getDefault())
-                    .contains(barangModel.getIdBarang().toLowerCase())) {
-                isBarangTambahan = false;
                 break;
             }
         }
@@ -288,7 +279,7 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
             if (barangModel.getJumlahMasukKeranjang() == 0) {
                 if (isSudahAda) {
                     listPembelianBarang.remove(index);
-                    if(posisi >= 0){
+                    if (posisi >= 0) {
                         listBarang.get(posisi).setJumlahMasukKeranjang(0);
                         adapterBarangPenjualan.notifyDataChanged();
                     }
@@ -400,6 +391,7 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                         getAndSetBarang();
                         listPembelianBarang.clear();
+                        setHargaSementara("0");
                         getAndSetListPembelianSementara(listPembelianBarang);
                         sweetAlertDialog.dismissWithAnimation();
                         if (isKeluar) {
@@ -615,8 +607,9 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
                 addIntoListPembelian(model, true, posisi);
 //                jumlahkanHargaSementara(model.getHarga1(), model.getJumlahMasukKeranjang());
                 dialog.dismiss();
-                listBarang.get(posisi).setJumlahMasukKeranjang(Integer.parseInt(etJumlahBarang.getText().toString()));
-                adapterBarangPenjualan.notifyDataChanged();
+                adapterBarangPenjualan.ubahDataMasuk(posisi, Integer.parseInt(etJumlahBarang.getText().toString()));
+//                listBarang.get(posisi).setJumlahMasukKeranjang(Integer.parseInt(etJumlahBarang.getText().toString()));
+//                adapterBarangPenjualan.notifyDataChanged();
             }
         });
     }
@@ -686,17 +679,9 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
                 model.setNamaBarang(listPembelianBarangModel.getNamaBarang());
                 model.setJumlahMasukKeranjang(0); //intine neng kene :v
                 model.setHarga1(listPembelianBarangModel.getHargaBarang());
-//                model.setHarga2(listBarang.get(posisi).getHarga2());
-//                model.setHarga3(listBarang.get(posisi).getHarga3());
-//                model.setIdKonter(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid());
-//                model.setIdKategori(listBarang.get(posisi).getIdKategori());
-//                model.setTanggalDiubah(listBarang.get(posisi).getTanggalDiubah());
-//                model.setStokBarang(listBarang.get(posisi).getStokBarang());
-
                 addIntoListPembelian(model, true, posisi);
-                if(!finalIsBarangTambahan){
-                    listBarang.get(posisi).setJumlahMasukKeranjang(0);
-                    adapterBarangPenjualan.notifyDataChanged();
+                if (!finalIsBarangTambahan) {
+                    adapterBarangPenjualan.ubahDataMasuk(posisi, model.getJumlahMasukKeranjang());
                 }
                 dialog.dismiss();
             }
@@ -705,31 +690,31 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String harga;
-                if (cbUbahHargaSementara.isChecked()) {
-                    harga = etUbahHarga.getText().toString();
+                if (TextUtils.isEmpty(etJumlahBarang.getText())) {
+                    new Bantuan(context).toastLong("Jumlah barang tidak boleh kosong!");
                 } else {
-                    harga = listPembelianBarangModel.getHargaBarang();
-                }
+                    String harga;
+                    if (cbUbahHargaSementara.isChecked()) {
+                        harga = etUbahHarga.getText().toString();
+                    } else {
+                        harga = listPembelianBarangModel.getHargaBarang();
+                    }
 
-                BarangModel model = new BarangModel();
-                model.setIdBarang(listPembelianBarangModel.getIdBarang());
-                model.setNamaBarang(listPembelianBarangModel.getNamaBarang());
-                model.setJumlahMasukKeranjang(Integer.parseInt(etJumlahBarang.getText().toString()));
-                model.setHarga1(harga);
-//                model.setHarga2(listBarang.get(posisi).getHarga2());
-//                model.setHarga3(listBarang.get(posisi).getHarga3());
-//                model.setIdKonter(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid());
-//                model.setIdKategori(listBarang.get(posisi).getIdKategori());
-//                model.setTanggalDiubah(listBarang.get(posisi).getTanggalDiubah());
-//                model.setStokBarang(listBarang.get(posisi).getStokBarang());
-
-                addIntoListPembelian(model, true, posisi);
-                if(!finalIsBarangTambahan){
-                    listBarang.get(posisi).setJumlahMasukKeranjang(0);
-                    adapterBarangPenjualan.notifyDataChanged();
+                    if (TextUtils.isEmpty(harga)) {
+                        new Bantuan(context).toastLong("Harga baru tidak boleh kosong !");
+                    } else {
+                        BarangModel model = new BarangModel();
+                        model.setIdBarang(listPembelianBarangModel.getIdBarang());
+                        model.setNamaBarang(listPembelianBarangModel.getNamaBarang());
+                        model.setJumlahMasukKeranjang(Integer.parseInt(etJumlahBarang.getText().toString()));
+                        model.setHarga1(harga);
+                        addIntoListPembelian(model, true, posisi);
+                        if (!finalIsBarangTambahan) {
+                            adapterBarangPenjualan.ubahDataMasuk(posisi, model.getJumlahMasukKeranjang());
+                        }
+                        dialog.dismiss();
+                    }
                 }
-                dialog.dismiss();
             }
         });
     }
