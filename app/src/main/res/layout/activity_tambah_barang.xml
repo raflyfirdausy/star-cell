@@ -174,37 +174,38 @@
 
 
                 </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:theme="@style/daftar"
+                    android:layout_weight="1">
+
+                    <com.wajahatkarim3.easymoneywidgets.EasyMoneyEditText
+                        android:id="@+id/myet_harga1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_price_tag"
+                        android:drawablePadding="15dp"
+                        android:drawableTint="@color/colorPrimaryDark"
+                        android:hint="Harga Jual"
+                        android:inputType="numberDecimal"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textColorHint="@color/colorPrimaryDark"
+                        app:currency_symbol="Rp"
+                        app:show_commas="false"
+                        app:show_currency="true"
+                        tools:targetApi="m" />
+
+                </android.support.design.widget.TextInputLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:theme="@style/daftar"
-                        android:layout_weight="1">
 
-                        <com.wajahatkarim3.easymoneywidgets.EasyMoneyEditText
-                            android:id="@+id/myet_harga1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:drawableStart="@drawable/ic_price_tag"
-                            android:drawablePadding="15dp"
-                            android:drawableTint="@color/colorPrimaryDark"
-                            android:hint="Harga 1"
-                            android:inputType="numberDecimal"
-                            android:paddingTop="10dp"
-                            android:paddingBottom="10dp"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textColorHint="@color/colorPrimaryDark"
-                            app:currency_symbol="Rp"
-                            app:show_commas="false"
-                            app:show_currency="true"
-                            tools:targetApi="m" />
-
-                    </android.support.design.widget.TextInputLayout>
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -219,7 +220,7 @@
                             android:drawableStart="@drawable/ic_price_tag"
                             android:drawablePadding="15dp"
                             android:drawableTint="@color/colorPrimaryDark"
-                            android:hint="Harga Jual"
+                            android:hint="Harga Jual 2 (Opsional)"
                             android:inputType="number"
                             android:paddingTop="10dp"
                             android:paddingBottom="10dp"
@@ -231,11 +232,6 @@
                             tools:targetApi="m" />
 
                     </android.support.design.widget.TextInputLayout>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -250,7 +246,7 @@
                             android:drawableStart="@drawable/ic_price_tag"
                             android:drawablePadding="15dp"
                             android:drawableTint="@color/colorPrimaryDark"
-                            android:hint="harga Beli"
+                            android:hint="Harga Jual 3(Opsional)"
                             android:inputType="number"
                             android:paddingTop="10dp"
                             android:paddingBottom="10dp"
@@ -262,8 +258,36 @@
                             tools:targetApi="m" />
 
                     </android.support.design.widget.TextInputLayout>
-
                 </LinearLayout>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:theme="@style/daftar"
+                    android:layout_weight="1">
+
+                    <com.wajahatkarim3.easymoneywidgets.EasyMoneyEditText
+                        android:id="@+id/myet_hargabeli"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_price_tag"
+                        android:drawablePadding="15dp"
+                        android:drawableTint="@color/colorPrimaryDark"
+                        android:hint="Harga Beli"
+                        android:inputType="number"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textColorHint="@color/colorPrimaryDark"
+                        app:currency_symbol="Rp"
+                        app:show_commas="false"
+                        app:show_currency="true"
+                        tools:targetApi="m" />
+
+                </android.support.design.widget.TextInputLayout>
+
 
 
 

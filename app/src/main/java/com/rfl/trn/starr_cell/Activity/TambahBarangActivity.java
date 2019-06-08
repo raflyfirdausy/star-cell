@@ -83,6 +83,9 @@ public class TambahBarangActivity extends AppCompatActivity {
     LinearLayout layoutTambahItemDialog;
     FloatingActionButton buttonTambahItem;
     MyTextView judulDialog, dialogKosong;
+    @BindView(R.id.myet_hargabeli)
+    EasyMoneyEditText myetHargabeli;
+
 
     private Dialog dialog;
     private Context context = TambahBarangActivity.this;
@@ -151,6 +154,7 @@ public class TambahBarangActivity extends AppCompatActivity {
                             myetHarga1.setText(String.valueOf(model.getHarga1()));
                             myetHarga2.setText(String.valueOf(model.getHarga2()));
                             myetHarga3.setText(String.valueOf(model.getHarga3()));
+                            myetHargabeli.setText(String.valueOf(model.getHargaBeli()));
                             idKategori = model.getIdKategori();
                             idKonter = model.getIdKonter();
                             timestamp = model.getTanggalDiubah();
@@ -349,7 +353,6 @@ public class TambahBarangActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     public void DialogKonter() {
@@ -430,6 +433,7 @@ public class TambahBarangActivity extends AppCompatActivity {
             model.setHarga1(myetHarga1.getValueString());
             model.setHarga2(myetHarga2.getValueString());
             model.setHarga3(myetHarga3.getValueString());
+            model.setHargaBeli(myetHargabeli.getValueString());
             model.setIdKonter(idKonter);
             model.setIdKategori(idKategori);
             model.setTanggalDiubah(timestamp);
@@ -472,11 +476,12 @@ public class TambahBarangActivity extends AppCompatActivity {
     }
 
     private boolean cekInput() {
-        return !TextUtils.isEmpty(myetNamaBarang.getText()) &&
+        return  !TextUtils.isEmpty(myetNamaBarang.getText()) &&
                 !TextUtils.isEmpty(myetStokBarang.getText()) &&
                 !TextUtils.isEmpty(myetKategori.getText()) &&
                 !TextUtils.isEmpty(myetKonter.getText()) &&
-                !TextUtils.isEmpty(myetHarga1.getText());
+                !TextUtils.isEmpty(myetHarga1.getText()) &&
+                !TextUtils.isEmpty(myetHargabeli.getText());
     }
 
     //TODO :: LifeCycle

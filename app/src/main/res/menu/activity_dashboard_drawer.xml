@@ -40,6 +40,10 @@
     <item android:title="@string/lain_lain">
         <menu>
             <item
+                android:id="@+id/nav_Pengaturan"
+                android:icon="@drawable/ic_option_menu"
+                android:title="Pengaturan"/>
+            <item
                 android:id="@+id/nav_ubahKataSandi"
                 android:icon="@drawable/ic_pass"
                 android:title="@string/ubah_kata_sandi" />

@@ -35,6 +35,7 @@ import com.rfl.trn.starr_cell.Fragment.Admin.AdminBarangFragment;
 import com.rfl.trn.starr_cell.Fragment.Admin.AdminDashboardFragment;
 import com.rfl.trn.starr_cell.Fragment.Admin.AdminKaryawanFragment;
 import com.rfl.trn.starr_cell.Fragment.Admin.AdminKonterFragment;
+import com.rfl.trn.starr_cell.Fragment.Admin.AdminPengaturanFragment;
 import com.rfl.trn.starr_cell.Fragment.Admin.AdminTransaksiFragment;
 import com.rfl.trn.starr_cell.Fragment.Admin.AdminUbahKataSandiFragment;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
@@ -184,7 +185,10 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_transaksi) {
             Objects.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.transaksi));
             FT.replace(R.id.fl_content, new AdminTransaksiFragment(), "admin_transaksi").commit();
-        } else if (id == R.id.nav_logout) {
+        } else if (id == R.id.nav_Pengaturan){
+            Objects.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.Pengaturan));
+            FT.replace(R.id.fl_content, new AdminPengaturanFragment(),"admin_pengaturan").commit();
+        }else if (id == R.id.nav_logout) {
             new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
                     .setTitleText("Peringatan")
                     .setContentText("Apakah kamu ingin logout dari aplikasi ?")
