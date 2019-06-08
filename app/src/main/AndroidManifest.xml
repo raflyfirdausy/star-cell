@@ -33,11 +33,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
             tool:ignore="InnerclassSeparator">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ActivityKaryawan.ListCurrentKaryawanActivity"
@@ -95,7 +91,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBarTransparent"
             tool:ignore="InnerclassSeparator">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <service
