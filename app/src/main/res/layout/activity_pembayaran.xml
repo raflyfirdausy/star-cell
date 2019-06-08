@@ -58,7 +58,7 @@
         android:textStyle="bold"
         app:show_currency="true"
         app:show_commas="true"
-        app:currency_symbol="Rp"/>
+        app:currency_symbol="Rp" />
 
     <LinearLayout
         android:layout_width="match_parent"

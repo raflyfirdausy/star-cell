@@ -213,7 +213,9 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
         cardButtonBayar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(context, PembayaranActivity.class));
+                Intent intent = new Intent(context, PembayaranActivity.class);
+                intent.putExtra("jumlah", tvRupiahSementara.getValueString());
+                startActivity(intent);
             }
         });
     }

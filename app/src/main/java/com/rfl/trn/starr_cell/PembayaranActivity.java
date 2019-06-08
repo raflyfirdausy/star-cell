@@ -1,6 +1,7 @@
 package com.rfl.trn.starr_cell;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.rfl.trn.starr_cell.Helper.Bantuan;
 import com.wajahatkarim3.easymoneywidgets.EasyMoneyTextView;
 
 import butterknife.BindView;
@@ -62,6 +64,8 @@ public class PembayaranActivity extends AppCompatActivity {
     LinearLayout btn000;
     @BindView(R.id.btnKosongManing)
     LinearLayout btnKosongManing;
+    private Context context = PembayaranActivity.this;
+    private String jenisPembayaran = "Cash";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,8 +83,10 @@ public class PembayaranActivity extends AppCompatActivity {
             case R.id.btnLanjut:
                 break;
             case R.id.btnCash:
+                setJenisPembayaran("Cash");
                 break;
             case R.id.btnTransfer:
+                setJenisPembayaran("Transfer");
                 break;
             case R.id.btn7:
                 tulisAngka("7");
@@ -92,6 +98,9 @@ public class PembayaranActivity extends AppCompatActivity {
                 tulisAngka("9");
                 break;
             case R.id.btnC:
+                tvRpBayar.setText(hapusSatu(tvRpBayar.getValueString()));
+                setFormatCurrency();
+                setWarnaAndTombol();
                 break;
             case R.id.btn4:
                 tulisAngka("4");
@@ -103,6 +112,7 @@ public class PembayaranActivity extends AppCompatActivity {
                 tulisAngka("6");
                 break;
             case R.id.btnHapus:
+                setAwal();
                 break;
             case R.id.btn1:
                 tulisAngka("1");
@@ -125,32 +135,71 @@ public class PembayaranActivity extends AppCompatActivity {
         }
     }
 
-    private void init(){
+
+    @SuppressLint("SetTextI18n")
+    private void init() {
+        setAwal();
+        tvTotal.setText("Total : Rp " +
+                new Bantuan(context).formatHarga(getIntent().getStringExtra("jumlah")));
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    private void setJenisPembayaran(String jenisPembayaran) {
+        this.jenisPembayaran = jenisPembayaran;
+        if (jenisPembayaran.equalsIgnoreCase("cash")) {
+            btnCash.setCardBackgroundColor(Color.parseColor("#23A352"));
+            btnTransfer.setCardBackgroundColor(Color.parseColor("#979797"));
+        } else if (jenisPembayaran.equalsIgnoreCase("transfer")) {
+            btnCash.setCardBackgroundColor(Color.parseColor("#979797"));
+            btnTransfer.setCardBackgroundColor(Color.parseColor("#23A352"));
+        }
+    }
+
+    private void setAwal() {
         tvRpBayar.setText("0");
         setFormatCurrency();
         setWarnaAndTombol();
     }
 
+
     @SuppressLint("SetTextI18n")
-    private void tulisAngka(String angka){
+    private void tulisAngka(String angka) {
         tvRpBayar.setText(tvRpBayar.getValueString() + angka);
         setFormatCurrency();
         setWarnaAndTombol();
     }
 
-    private void setWarnaAndTombol(){
-        if(Double.parseDouble(tvRpBayar.getValueString()) <= 0){
-            tvRpBayar.setTextColor(Color.parseColor("#55595c"));
+    public String hapusSatu(String str) {
+        if (str != null && str.length() > 0) {
+            str = str.substring(0, str.length() - 1);
+        }
+        return str;
+    }
+
+    private void setWarnaAndTombol() {
+        if (Double.parseDouble(tvRpBayar.getValueString()) <
+                Double.parseDouble(getIntent().getStringExtra("jumlah"))) {
             btnLanjut.setBackgroundColor(Color.parseColor("#55595c"));
             btnLanjut.setEnabled(false);
         } else {
-            tvRpBayar.setTextColor(Color.parseColor("#23A352"));
             btnLanjut.setBackgroundColor(Color.parseColor("#23A352"));
             btnLanjut.setEnabled(true);
         }
+
+        if (Double.parseDouble(tvRpBayar.getValueString()) <= 0) {
+            tvRpBayar.setTextColor(Color.parseColor("#55595c"));
+        } else {
+            tvRpBayar.setTextColor(Color.parseColor("#23A352"));
+        }
     }
 
-    private void setFormatCurrency(){
+    private void setFormatCurrency() {
         tvRpBayar.setCurrency("Rp");
         tvRpBayar.showCurrencySymbol();
         tvRpBayar.showCommas();
