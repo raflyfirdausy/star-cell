@@ -17,11 +17,14 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
@@ -102,8 +105,6 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
     private AdapterBarangPenjualan adapterBarangPenjualan;
     private List<ListPembelianBarangModel> listPembelianBarang = new ArrayList<>();
     private AdapterListPembelianBarang adapterListPembelianBarang;
-    private int JUMLAH_BARANG_SEMENTARA = 0;
-    private int PENAMBAHAN_DEFAULT = 1;
     private SearchView searchView;
     private String ID_CURRENT_KATEGORI = "semua";
     private boolean isPotrait;
@@ -121,8 +122,8 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
         super.onPostResume();
         getAndSetKategori();
         getAndSetBarang();
-        setJumlahBarangSementara();
-        getAndSetListPembelianSementara();
+        setHargaSementara(String.valueOf(getTotalHargaDiKeranjang()));
+        getAndSetListPembelianSementara(listPembelianBarang);
     }
 
     private void init() {
@@ -199,7 +200,7 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
                                     listBarang.add(model);
                                 }
                             }
-                            adapterBarangPenjualan = new AdapterBarangPenjualan(context, listBarang);
+                            adapterBarangPenjualan = new AdapterBarangPenjualan(PenjualanBarangActivity.this, listBarang);
                             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
                             rvBarangPenjualan.setLayoutManager(layoutManager);
                             rvBarangPenjualan.setAdapter(adapterBarangPenjualan);
@@ -242,14 +243,14 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
                 });
     }
 
-    private void getAndSetListPembelianSementara() {
-        adapterListPembelianBarang = new AdapterListPembelianBarang(context, this.listPembelianBarang);
+    private void getAndSetListPembelianSementara(List<ListPembelianBarangModel> listPembelianBarang) {
+        adapterListPembelianBarang = new AdapterListPembelianBarang(context, listPembelianBarang);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
         rvKeranjangBarang.setLayoutManager(layoutManager);
         rvKeranjangBarang.setAdapter(adapterListPembelianBarang);
     }
 
-    private void addIntoListPembelian(BarangModel barangModel) {
+    private void addIntoListPembelian(BarangModel barangModel, boolean isFromDialog, int posisi) {
         boolean isSudahAda = false;
         int index = -1;
         for (int i = 0; i < listPembelianBarang.size(); i++) {
@@ -261,19 +262,51 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
             }
         }
 
-        if (isSudahAda) {
-            listPembelianBarang.get(index).setJumlahMasukKeranjang(
-                    listPembelianBarang.get(index).getJumlahMasukKeranjang() + 1
-            );
+        if (!isFromDialog) {
+            if (isSudahAda) {
+                listPembelianBarang.get(index).setJumlahMasukKeranjang(
+                        listPembelianBarang.get(index).getJumlahMasukKeranjang() + 1
+                );
+            } else {
+                listPembelianBarang.add(new ListPembelianBarangModel(
+                        barangModel.getIdBarang(),
+                        barangModel.getNamaBarang(),
+                        barangModel.getHarga1(),
+                        barangModel.getJumlahMasukKeranjang()
+                ));
+            }
         } else {
-            listPembelianBarang.add(new ListPembelianBarangModel(
-                    barangModel.getIdBarang(),
-                    barangModel.getNamaBarang(),
-                    barangModel.getHarga1(),
-                    barangModel.getJumlahMasukKeranjang()
-            ));
+            if (barangModel.getJumlahMasukKeranjang() == 0) {
+                if (isSudahAda) {
+                    listPembelianBarang.remove(index);
+                    if (posisi >= 0) {
+                        listBarang.get(posisi).setJumlahMasukKeranjang(0);
+                        adapterBarangPenjualan.notifyDataChanged();
+                    }
+                } else {
+                    new Bantuan(context).swal_error("Jumlah barang tidak boleh 0");
+                }
+            } else {
+                if (isSudahAda) {
+                    listPembelianBarang.get(index).setJumlahMasukKeranjang(
+                            barangModel.getJumlahMasukKeranjang()
+                    );
+                    listPembelianBarang.get(index).setHargaBarang(
+                            barangModel.getHarga1()
+                    );
+                } else {
+                    listPembelianBarang.add(new ListPembelianBarangModel(
+                            barangModel.getIdBarang(),
+                            barangModel.getNamaBarang(),
+                            barangModel.getHarga1(),
+                            barangModel.getJumlahMasukKeranjang()
+                    ));
+                }
+            }
         }
-        getAndSetListPembelianSementara();
+        getAndSetListPembelianSementara(listPembelianBarang);
+        setHargaSementara(String.valueOf(getTotalHargaDiKeranjang()));
+        setBadge();
     }
 
     @Override
@@ -331,6 +364,98 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
         }
     }
 
+    private void ubahLayout() {
+        isPotrait = !isPotrait;
+        if (isPotrait) {
+            setPotrait();
+        } else {
+            setLandscape();
+        }
+    }
+
+    private void resetTransaksi(final boolean isKeluar) {
+        SweetAlertDialog dialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("Perhatian")
+                .setContentText("Apakah kamu ingin menyimpan transaksi ini untuk sementara ?\n")
+                .setConfirmText("Simpan")
+                .setCancelText("Hapus")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismissWithAnimation();
+                        new Bantuan(context).swal_sukses("Sabar ya bwambank :v");
+                    }
+                })
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        getAndSetBarang();
+                        listPembelianBarang.clear();
+                        setHargaSementara("0");
+                        getAndSetListPembelianSementara(listPembelianBarang);
+                        sweetAlertDialog.dismissWithAnimation();
+                        if (isKeluar) {
+                            finish();
+                        }
+                    }
+                });
+        dialog.show();
+    }
+
+    private void tanyaKeluar() {
+        SweetAlertDialog dialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("Perhatian")
+                .setContentText("Transaksi belum selesai, apakah kamu ingin tetap keluar ?\n")
+                .setConfirmText("Iya, Keluar")
+                .setCancelText("Batal")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        resetTransaksi(true);
+                    }
+                })
+                .setCancelClickListener(null);
+        dialog.show();
+    }
+
+    private void setBadge() {
+        TextDrawable gambar = TextDrawable.builder()
+                .beginConfig()
+                .textColor(Color.BLACK)
+                .useFont(Typeface.DEFAULT)
+                .bold()
+                .endConfig()
+                .buildRoundRect(String.valueOf(getJumlahBarangDiKeranjang()),
+                        Color.WHITE, 8);
+
+        TextDrawable badge = TextDrawable.builder()
+                .beginConfig()
+                .textColor(Color.WHITE)
+                .useFont(Typeface.DEFAULT)
+                .bold()
+                .endConfig()
+                .buildRound(String.valueOf(getJumlahBarangDiKeranjang()), Color.parseColor("#F79A48"));
+        ivJumlahItemBayar.setImageDrawable(gambar);
+        ivBadgePay.setImageDrawable(badge);
+    }
+
+    private void setHargaSementara(String hargaSementara) {
+        tvRupiahSementara.setText(hargaSementara);
+        tvRupiahSementara.setCurrency("Rp");
+        tvRupiahSementara.showCurrencySymbol();
+        tvRupiahSementara.showCommas();
+    }
+
+    private void clearSearchView() {
+        searchView.setQuery(null, false);
+        searchView.setIconified(true);
+        searchView.clearFocus();
+    }
+
+    private void searchBarangByNamaAndKategori(String text) {
+        adapterBarangPenjualan.search(text, ID_CURRENT_KATEGORI);
+    }
+
     @SuppressLint("InflateParams")
     private void showDialogTransaksiTambahan() {
         View view = getLayoutInflater().inflate(R.layout.dialog_transaksi_tambahan, null);
@@ -349,13 +474,17 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
         final LinearLayout btnBatal = view.findViewById(R.id.btnBatal);
         final LinearLayout btnOk = view.findViewById(R.id.btnOk);
 
+        setButtonKurang(btnKurang, etJumlahBarang);
+        setButtonTambah(btnTambah, etJumlahBarang);
+
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(Objects.requireNonNull(myetNamaBarang.getText()).toString())
                         || TextUtils.isEmpty(Objects.requireNonNull(myetHargaJual.getText()).toString())) {
                     new Bantuan(context).toastLong("Nama barang dan Harga jual tidak boleh kosong !");
-                } else if (TextUtils.isEmpty(Objects.requireNonNull(etJumlahBarang.getText()).toString())) {
+                } else if (TextUtils.isEmpty(Objects.requireNonNull(etJumlahBarang.getText()).toString())
+                        || etJumlahBarang.getText().toString().equalsIgnoreCase("0")) {
                     new Bantuan(context).toastLong("Jumlah barang tidak boleh kosong !");
                 } else {
                     String kodeBarang = null;
@@ -384,35 +513,65 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
                     model.setTanggalDiubah(new Date().getTime());
                     model.setStokBarang("1");
 
-                    addIntoListPembelian(model);
+                    addIntoListPembelian(model, false, -1);
                     dialog.dismiss();
                 }
             }
         });
 
-        btnKurang.setOnClickListener(new View.OnClickListener() {
+        btnBatal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(etJumlahBarang.getText().toString()) ||
-                        etJumlahBarang.getText().toString().equalsIgnoreCase("1")) {
-                    etJumlahBarang.setText("1");
-                } else {
-                    etJumlahBarang.setText(
-                            String.valueOf(Integer.parseInt(etJumlahBarang.getText().toString()) - 1)
-                    );
-                }
+                dialog.dismiss();
             }
         });
+    }
 
-        btnTambah.setOnClickListener(new View.OnClickListener() {
+    @SuppressLint("SetTextI18n")
+    private void showOptionTambahBarang(final BarangModel barangModel, final int posisi) {
+        @SuppressLint("InflateParams")
+        View view = getLayoutInflater().inflate(R.layout.dialog_tambah_barang_banyak, null);
+        final AlertDialog dialog = new AlertDialog.Builder(context)
+                .setView(view)
+                .setCancelable(true)
+                .create();
+        dialog.show();
+
+        final ImageView ivGambarBarangSementara = view.findViewById(R.id.ivGambarBarangSementara);
+        final TextView tvNamaBarangSementara = view.findViewById(R.id.tvNamaBarangSementara);
+        final TextView tvRincianHarga = view.findViewById(R.id.tvRincianHarga);
+        final ImageView btnKurang = view.findViewById(R.id.btnKurang);
+        final EditText etJumlahBarang = view.findViewById(R.id.etJumlahBarang);
+        final ImageView btnTambah = view.findViewById(R.id.btnTambah);
+        final CheckBox cbUbahHargaSementara = view.findViewById(R.id.cbUbahHargaSementara);
+        final EditText etUbahHarga = view.findViewById(R.id.etUbahHarga);
+        final LinearLayout btnBatal = view.findViewById(R.id.btnBatal);
+        final LinearLayout btnOk = view.findViewById(R.id.btnOk);
+
+        String duaHuruf = barangModel.getNamaBarang().substring(0, 2);
+        TextDrawable gambar = TextDrawable.builder().buildRoundRect(duaHuruf, Color.parseColor("#2980b9"), 8);
+        ivGambarBarangSementara.setImageDrawable(gambar);
+
+        tvNamaBarangSementara.setText(barangModel.getNamaBarang());
+        tvRincianHarga.setText(
+                "Stok : " + barangModel.getStokBarang() + " | Rp " +
+                        new Bantuan(context).formatHarga(barangModel.getHarga1()) +
+                        " | Rp " + new Bantuan(context).formatHarga(barangModel.getHarga2()) +
+                        " | Rp " + new Bantuan(context).formatHarga(barangModel.getHarga3())
+        );
+
+        etJumlahBarang.setText(String.valueOf(barangModel.getJumlahMasukKeranjang()));
+
+        setButtonKurang(btnKurang, etJumlahBarang);
+        setButtonTambah(btnTambah, etJumlahBarang);
+
+        cbUbahHargaSementara.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                if (TextUtils.isEmpty(etJumlahBarang.getText().toString())) {
-                    etJumlahBarang.setText("1");
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    etUbahHarga.setVisibility(View.VISIBLE);
                 } else {
-                    etJumlahBarang.setText(
-                            String.valueOf(Integer.parseInt(etJumlahBarang.getText().toString()) + 1)
-                    );
+                    etUbahHarga.setVisibility(View.GONE);
                 }
             }
         });
@@ -424,113 +583,190 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
             }
         });
 
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String harga;
+                if (cbUbahHargaSementara.isChecked()) {
+                    harga = etUbahHarga.getText().toString();
+                } else {
+                    harga = barangModel.getHarga1();
+                }
 
+                BarangModel model = new BarangModel();
+                model.setIdBarang(barangModel.getIdBarang());
+                model.setNamaBarang(barangModel.getNamaBarang());
+                model.setHarga1(harga);
+                model.setHarga2(barangModel.getHarga2());
+                model.setHarga3(barangModel.getHarga3());
+                model.setJumlahMasukKeranjang(Integer.parseInt(etJumlahBarang.getText().toString()));
+                model.setIdKonter(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid());
+                model.setIdKategori(barangModel.getIdKategori());
+                model.setTanggalDiubah(barangModel.getTanggalDiubah());
+                model.setStokBarang(barangModel.getStokBarang());
+
+                addIntoListPembelian(model, true, posisi);
+//                jumlahkanHargaSementara(model.getHarga1(), model.getJumlahMasukKeranjang());
+                dialog.dismiss();
+                adapterBarangPenjualan.ubahDataMasuk(posisi, Integer.parseInt(etJumlahBarang.getText().toString()));
+//                listBarang.get(posisi).setJumlahMasukKeranjang(Integer.parseInt(etJumlahBarang.getText().toString()));
+//                adapterBarangPenjualan.notifyDataChanged();
+            }
+        });
     }
 
-    private void ubahLayout() {
-        isPotrait = !isPotrait;
-        if (isPotrait) {
-            setPotrait();
-        } else {
-            setLandscape();
+    @SuppressLint("SetTextI18n")
+    private void showDialogEditBarang(final ListPembelianBarangModel listPembelianBarangModel, final int posisi) {
+        @SuppressLint("InflateParams")
+        View view = getLayoutInflater().inflate(R.layout.dialog_edit_data_transaksi, null);
+        final AlertDialog dialog = new AlertDialog.Builder(context)
+                .setView(view)
+                .setCancelable(true)
+                .create();
+        dialog.show();
+
+        final ImageView ivGambarBarangSementara = view.findViewById(R.id.ivGambarBarangSementara);
+        final TextView tvNamaBarangSementara = view.findViewById(R.id.tvNamaBarangSementara);
+        final TextView tvRincianHarga = view.findViewById(R.id.tvRincianHarga);
+        final ImageView btnKurang = view.findViewById(R.id.btnKurang);
+        final EditText etJumlahBarang = view.findViewById(R.id.etJumlahBarang);
+        final ImageView btnTambah = view.findViewById(R.id.btnTambah);
+        final CheckBox cbUbahHargaSementara = view.findViewById(R.id.cbUbahHargaSementara);
+        final EditText etUbahHarga = view.findViewById(R.id.etUbahHarga);
+        final LinearLayout btnHapus = view.findViewById(R.id.btnHapus);
+        final LinearLayout btnOk = view.findViewById(R.id.btnOk);
+
+        String duaHuruf = listPembelianBarangModel.getNamaBarang().substring(0, 2);
+        TextDrawable gambar = TextDrawable.builder().buildRoundRect(duaHuruf, Color.parseColor("#2980b9"), 8);
+        ivGambarBarangSementara.setImageDrawable(gambar);
+
+        tvNamaBarangSementara.setText(listPembelianBarangModel.getNamaBarang());
+        tvRincianHarga.setText(
+                "Rp " + new Bantuan(context).formatHarga(listPembelianBarangModel.getHargaBarang())
+        );
+
+        etJumlahBarang.setText(String.valueOf(listPembelianBarangModel.getJumlahMasukKeranjang()));
+
+        setButtonKurang(btnKurang, etJumlahBarang);
+        setButtonTambah(btnTambah, etJumlahBarang);
+
+        cbUbahHargaSementara.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    etUbahHarga.setVisibility(View.VISIBLE);
+                } else {
+                    etUbahHarga.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        boolean isBarangTambahan = true;
+        for (int i = 0; i < listBarang.size(); i++) {
+            if (listBarang.get(i).getIdBarang().toLowerCase(Locale.getDefault())
+                    .contains(listPembelianBarangModel.getIdBarang().toLowerCase())) {
+                isBarangTambahan = false;
+                break;
+            }
         }
-    }
 
-    private void resetTransaksi(final boolean isKeluar) {
-        SweetAlertDialog dialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
-                .setTitleText("Perhatian")
-                .setContentText("Apakah kamu ingin menyimpan transaksi ini untuk sementara ?\n")
-                .setConfirmText("Iya, Simpan")
-                .setCancelText("Tidak, Hapus saja")
-                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        sweetAlertDialog.dismissWithAnimation();
-                        new Bantuan(context).swal_sukses("Sabar ya bwambank :v");
+        final boolean finalIsBarangTambahan = isBarangTambahan;
+        btnHapus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO : hapus dari daftar
+                BarangModel model = new BarangModel();
+                model.setIdBarang(listPembelianBarangModel.getIdBarang());
+                model.setNamaBarang(listPembelianBarangModel.getNamaBarang());
+                model.setJumlahMasukKeranjang(0); //intine neng kene :v
+                model.setHarga1(listPembelianBarangModel.getHargaBarang());
+                addIntoListPembelian(model, true, posisi);
+                if (!finalIsBarangTambahan) {
+                    adapterBarangPenjualan.ubahDataMasuk(posisi, model.getJumlahMasukKeranjang());
+                }
+                dialog.dismiss();
+            }
+        });
+
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (TextUtils.isEmpty(etJumlahBarang.getText())
+                        || etJumlahBarang.getText().toString().equalsIgnoreCase("0")) {
+                    new Bantuan(context).toastLong("Jumlah barang tidak boleh kosong!");
+                } else {
+                    String harga;
+                    if (cbUbahHargaSementara.isChecked()) {
+                        harga = etUbahHarga.getText().toString();
+                    } else {
+                        harga = listPembelianBarangModel.getHargaBarang();
                     }
-                })
-                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        getAndSetBarang();
-                        setHargaSementara("0");
-                        JUMLAH_BARANG_SEMENTARA = 0;
-                        PENAMBAHAN_DEFAULT = 1;
-                        setJumlahBarangSementara();
-                        listPembelianBarang.clear();
-                        getAndSetListPembelianSementara();
 
-                        if (isKeluar) {
-                            finish();
+                    if (TextUtils.isEmpty(harga)) {
+                        new Bantuan(context).toastLong("Harga baru tidak boleh kosong !");
+                    } else {
+                        BarangModel model = new BarangModel();
+                        model.setIdBarang(listPembelianBarangModel.getIdBarang());
+                        model.setNamaBarang(listPembelianBarangModel.getNamaBarang());
+                        model.setJumlahMasukKeranjang(Integer.parseInt(etJumlahBarang.getText().toString()));
+                        model.setHarga1(harga);
+                        addIntoListPembelian(model, true, posisi);
+                        if (!finalIsBarangTambahan) {
+                            adapterBarangPenjualan.ubahDataMasuk(posisi, model.getJumlahMasukKeranjang());
                         }
+                        dialog.dismiss();
                     }
-                });
-        dialog.show();
+                }
+            }
+        });
     }
 
-    private void tanyaKeluar() {
-        SweetAlertDialog dialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
-                .setTitleText("Perhatian")
-                .setContentText("Transaksi belum selesai, apakah kamu ingin tetap keluar ?\n")
-                .setConfirmText("Iya, Keluar")
-                .setCancelText("Batal")
-                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        resetTransaksi(true);
-                    }
-                })
-                .setCancelClickListener(null);
-        dialog.show();
+    private void setButtonKurang(ImageView button, final EditText editText) {
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (TextUtils.isEmpty(editText.getText().toString()) ||
+                        editText.getText().toString().equalsIgnoreCase("0")) {
+                    editText.setText("0");
+                } else {
+                    editText.setText(
+                            String.valueOf(Integer.parseInt(editText.getText().toString()) - 1)
+                    );
+                }
+            }
+        });
     }
 
-    private void setJumlahBarangSementara() {
-        TextDrawable gambar = TextDrawable.builder()
-                .beginConfig()
-                .textColor(Color.BLACK)
-                .useFont(Typeface.DEFAULT)
-                .bold()
-                .endConfig()
-                .buildRoundRect(String.valueOf(JUMLAH_BARANG_SEMENTARA),
-                        Color.WHITE, 8);
-
-        TextDrawable badge = TextDrawable.builder()
-                .beginConfig()
-                .textColor(Color.WHITE)
-                .useFont(Typeface.DEFAULT)
-                .bold()
-                .endConfig()
-                .buildRound(String.valueOf(JUMLAH_BARANG_SEMENTARA), Color.parseColor("#F79A48"));
-        ivJumlahItemBayar.setImageDrawable(gambar);
-        ivBadgePay.setImageDrawable(badge);
+    private void setButtonTambah(ImageView button, final EditText editText) {
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (TextUtils.isEmpty(editText.getText().toString())) {
+                    editText.setText("1");
+                } else {
+                    editText.setText(
+                            String.valueOf(Integer.parseInt(editText.getText().toString()) + 1)
+                    );
+                }
+            }
+        });
     }
 
-    private void setJumlahBarangSementaraTambahSatu() {
-        JUMLAH_BARANG_SEMENTARA += PENAMBAHAN_DEFAULT;
-        setJumlahBarangSementara();
+    private int getJumlahBarangDiKeranjang() {
+        int jumlah = 0;
+        for (int i = 0; i < listPembelianBarang.size(); i++) {
+            jumlah += listPembelianBarang.get(i).getJumlahMasukKeranjang();
+        }
+        return jumlah;
     }
 
-    private void jumlahkanHargaSementara(String harga) {
-        double hargaAwal = Double.parseDouble(tvRupiahSementara.getValueString());
-        double hargaSetelahDijumlah = hargaAwal + Double.parseDouble(harga);
-        setHargaSementara(String.valueOf(hargaSetelahDijumlah));
-    }
-
-    private void setHargaSementara(String hargaSementara) {
-        tvRupiahSementara.setText(hargaSementara);
-        tvRupiahSementara.setCurrency("Rp");
-        tvRupiahSementara.showCurrencySymbol();
-        tvRupiahSementara.showCommas();
-    }
-
-    private void clearSearchView() {
-        searchView.setQuery(null, false);
-        searchView.setIconified(true);
-        searchView.clearFocus();
-    }
-
-    private void searchBarangByNamaAndKategori(String text) {
-        adapterBarangPenjualan.search(text, ID_CURRENT_KATEGORI);
+    private int getTotalHargaDiKeranjang() {
+        int totalHarga = 0;
+        for (int i = 0; i < listPembelianBarang.size(); i++) {
+            totalHarga += listPembelianBarang.get(i).getJumlahMasukKeranjang() *
+                    Integer.parseInt(listPembelianBarang.get(i).getHargaBarang());
+        }
+        return totalHarga;
     }
 
     @Override
@@ -539,10 +775,18 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
     }
 
     @Override
-    public void onItemBarangClick(BarangModel barangModel) {
-        jumlahkanHargaSementara(barangModel.getHarga1());
-        setJumlahBarangSementaraTambahSatu();
-        addIntoListPembelian(barangModel);
+    public void onItemBarangClick(BarangModel barangModel, int posisi) {
+        addIntoListPembelian(barangModel, false, posisi);
+    }
+
+    @Override
+    public void onItemBarangLongClick(BarangModel barangModel, int posisi) {
+        showOptionTambahBarang(barangModel, posisi);
+    }
+
+    @Override
+    public void onItemBarangDiKeranjangClick(ListPembelianBarangModel listPembelianBarangModel, int posisi) {
+        showDialogEditBarang(listPembelianBarangModel, posisi);
     }
 
     @Override

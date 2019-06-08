@@ -109,6 +109,10 @@
                 android:id="@+id/rl_rvKonter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:background="#AB585858"/>
                 <com.cooltechworks.views.shimmer.ShimmerRecyclerView
                     xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/rv_konterPengaturan"

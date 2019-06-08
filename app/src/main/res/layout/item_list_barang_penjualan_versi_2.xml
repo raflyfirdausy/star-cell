@@ -4,21 +4,34 @@
     android:id="@+id/ll_parent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:paddingStart="@dimen/dp_16"
-    android:paddingEnd="@dimen/dp_16"
+    android:background="?attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
     android:minHeight="@dimen/dp_60"
-    android:background="?attr/selectableItemBackground">
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/dp_16"
+    android:paddingEnd="@dimen/dp_16">
 
-    <ImageView
-        android:id="@+id/ivBarang"
+    <RelativeLayout
         android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:padding="5dp"
-        android:tint="@color/colorPrimary"
-        app:srcCompat="@drawable/ic_user" />
+        android:layout_height="60dp">
+
+        <ImageView
+            android:id="@+id/ivBarang"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="5dp"
+            android:tint="@color/colorPrimary"
+            app:srcCompat="@drawable/ic_user" />
+
+        <ImageView
+            android:id="@+id/ivMasukKeranjang"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -54,15 +67,7 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/ivMasukKeranjang"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true"/>
-
-        <ImageView
             android:id="@+id/ivBtnTambahBanyak"
-            android:visibility="gone"
             android:layout_width="@dimen/dp_40"
             android:layout_height="@dimen/dp_40"
             android:background="?attr/selectableItemBackground"

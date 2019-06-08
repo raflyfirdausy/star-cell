@@ -17,7 +17,7 @@
             android:padding="@dimen/dp_16"
             android:text="@string/transaksi_tambahan"
             android:textColor="@color/colortext"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -36,13 +36,14 @@
                     android:id="@+id/myetNamaBarang"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_pay"
+                    android:drawableStart="@drawable/ic_pay_biru"
                     android:drawablePadding="15dp"
                     android:drawableTint="@color/colorPrimaryDark"
                     android:hint="@string/nama_barang"
                     android:inputType="text"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
+                    android:textSize="@dimen/sp_12"
                     android:textColor="@color/colorPrimaryDark"
                     android:textColorHint="@color/colorPrimaryDark"
                     tools:targetApi="m" />
@@ -58,13 +59,14 @@
                     android:id="@+id/myetKodeBarang"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_pay"
+                    android:drawableStart="@drawable/ic_pay_biru"
                     android:drawablePadding="15dp"
                     android:drawableTint="@color/colorPrimaryDark"
                     android:hint="@string/kode_barang_opsional"
                     android:inputType="text"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
+                    android:textSize="@dimen/sp_12"
                     android:textColor="@color/colorPrimaryDark"
                     android:textColorHint="@color/colorPrimaryDark"
                     tools:targetApi="m" />
@@ -80,13 +82,14 @@
                     android:id="@+id/myetHargaBeli"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_pay"
+                    android:drawableStart="@drawable/ic_pay_biru"
                     android:drawablePadding="15dp"
                     android:drawableTint="@color/colorPrimaryDark"
                     android:hint="@string/harga_beli"
                     android:inputType="number"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
+                    android:textSize="@dimen/sp_12"
                     android:textColor="@color/colorPrimaryDark"
                     android:textColorHint="@color/colorPrimaryDark"
                     tools:targetApi="m" />
@@ -102,13 +105,14 @@
                     android:id="@+id/myetHargaJual"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_pay"
+                    android:drawableStart="@drawable/ic_pay_biru"
                     android:drawablePadding="15dp"
                     android:drawableTint="@color/colorPrimaryDark"
                     android:hint="@string/harga_jual"
                     android:inputType="number"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
+                    android:textSize="@dimen/sp_12"
                     android:textColor="@color/colorPrimaryDark"
                     android:textColorHint="@color/colorPrimaryDark"
                     tools:targetApi="m" />
@@ -117,7 +121,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="50dp"
                 android:layout_marginBottom="@dimen/dp_12"
                 android:orientation="horizontal"
                 android:weightSum="100">
@@ -152,7 +156,7 @@
                         android:inputType="number"
                         android:text="@string/_1"
                         android:textColor="@color/colortext"
-                        android:textSize="30sp"
+                        android:textSize="25sp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
