@@ -483,7 +483,8 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
                 if (TextUtils.isEmpty(Objects.requireNonNull(myetNamaBarang.getText()).toString())
                         || TextUtils.isEmpty(Objects.requireNonNull(myetHargaJual.getText()).toString())) {
                     new Bantuan(context).toastLong("Nama barang dan Harga jual tidak boleh kosong !");
-                } else if (TextUtils.isEmpty(Objects.requireNonNull(etJumlahBarang.getText()).toString())) {
+                } else if (TextUtils.isEmpty(Objects.requireNonNull(etJumlahBarang.getText()).toString())
+                        || etJumlahBarang.getText().toString().equalsIgnoreCase("0")) {
                     new Bantuan(context).toastLong("Jumlah barang tidak boleh kosong !");
                 } else {
                     String kodeBarang = null;
@@ -690,7 +691,8 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(etJumlahBarang.getText())) {
+                if (TextUtils.isEmpty(etJumlahBarang.getText())
+                        || etJumlahBarang.getText().toString().equalsIgnoreCase("0")) {
                     new Bantuan(context).toastLong("Jumlah barang tidak boleh kosong!");
                 } else {
                     String harga;
