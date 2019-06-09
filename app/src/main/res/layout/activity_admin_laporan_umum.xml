@@ -15,26 +15,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:shimmer_animation_duration="1200">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_20"
                 android:orientation="vertical">
-                <com.rfl.trn.starr_cell.Custom.MyTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    android:textStyle="bold"
-                    android:text="Laporan Hari Ini"
-                    android:textSize="@dimen/dp_20"/>
-                <com.rfl.trn.starr_cell.Custom.MyTextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textStyle="italic"
-                    android:textSize="@dimen/dp_16"
-                    android:textAlignment="center"
-                    android:text="09 Juni 2019"/>
+                    android:orientation="vertical"
+                    android:layout_margin="@dimen/dp_20">
+                    <com.rfl.trn.starr_cell.Custom.MyTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:textStyle="bold"
+                        android:text="Laporan Hari Ini"
+                        android:textSize="@dimen/dp_20"/>
+                    <com.rfl.trn.starr_cell.Custom.MyTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="italic"
+                        android:textSize="@dimen/dp_16"
+                        android:textAlignment="center"
+                        android:text="09 Juni 2019"/>
+                </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -263,49 +270,65 @@
 
 
                 </LinearLayout>
-                <com.rfl.trn.starr_cell.Custom.MyTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/dp_20"
-                    android:textStyle="bold"
-                    android:text="Laporan Transaksi Per Jam"
-                    android:textAlignment="center"/>
-                <com.rfl.trn.starr_cell.Custom.MyTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/dp_16"
-                    android:textStyle="italic"
-                    android:text="09 Juni 2019"
-                    android:textAlignment="center"/>
+
                 <LinearLayout
-                    android:layout_marginTop="@dimen/dp_16"
-                    android:layout_marginBottom="@dimen/dp_16"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_margin="@dimen/dp_20">
+                    <com.rfl.trn.starr_cell.Custom.MyTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/dp_20"
+                        android:textStyle="bold"
+                        android:text="Laporan Transaksi Per Jam"
+                        android:textAlignment="center"/>
+                    <com.rfl.trn.starr_cell.Custom.MyTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/dp_16"
+                        android:textStyle="italic"
+                        android:text="09 Juni 2019"
+                        android:textAlignment="center"/>
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
-                    android:orientation="vertical">
-                    \
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:layout_marginBottom="@dimen/dp_16"
+                    android:layout_marginStart="@dimen/dp_16"
+                    android:layout_marginEnd="@dimen/dp_16">
                         <com.anychart.AnyChartView
                             android:id="@+id/cv_beratBadan"
                             android:layout_width="match_parent"
                             android:layout_height="300dp"
                             android:layout_alignParentTop="true"
                             android:background="@color/colorPrimary">
-                            <ProgressBar
-                                android:id="@+id/progress_bar2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                />
+                            <!--<ProgressBar-->
+                                <!--android:id="@+id/progress_bar2"-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_gravity="center"-->
+                                <!--/>-->
                         </com.anychart.AnyChartView>
 
                 </LinearLayout>
-                <com.rfl.trn.starr_cell.Custom.MyTextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/dp_20"
-                    android:textStyle="bold"
-                    android:text="Perhitungan Sisa Modal"
-                    android:textAlignment="center"/>
+                    android:orientation="vertical"
+                    android:layout_margin="@dimen/dp_20">
+                    <com.rfl.trn.starr_cell.Custom.MyTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/dp_20"
+                        android:textStyle="bold"
+                        android:text="Perhitungan Sisa Modal"
+                        android:textAlignment="center"/>
+                </LinearLayout>
+
                 <com.rfl.trn.starr_cell.Custom.MyTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -363,7 +386,7 @@
                                 android:textStyle="bold" />
 
                             <com.rfl.trn.starr_cell.Custom.MyTextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text=" Rp 200000"
                                 android:drawablePadding="@dimen/dp_8"
