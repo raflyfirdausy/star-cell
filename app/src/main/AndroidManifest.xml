@@ -36,11 +36,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
             tool:ignore="InnerclassSeparator">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ActivityKaryawan.ListCurrentKaryawanActivity"
@@ -105,7 +101,13 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBarTransparent"
-            tool:ignore="InnerclassSeparator"></activity>
+            tool:ignore="InnerclassSeparator">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <service
             android:name=".Service.MyFirebaseMessagingService"
