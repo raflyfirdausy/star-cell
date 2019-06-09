@@ -215,6 +215,8 @@ public class PenjualanBarangActivity extends AppCompatActivity implements ITrans
             public void onClick(View v) {
                 Intent intent = new Intent(context, PembayaranActivity.class);
                 intent.putExtra("jumlah", tvRupiahSementara.getValueString());
+                intent.putExtra("namaCustomer", namaCustomer);
+                intent.putExtra("namaCustomer", keteranganNota);
                 startActivity(intent);
             }
         });
