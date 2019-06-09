@@ -327,15 +327,16 @@
                         android:textStyle="bold"
                         android:text="Perhitungan Sisa Modal"
                         android:textAlignment="center"/>
+                    <com.rfl.trn.starr_cell.Custom.MyTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/dp_16"
+                        android:textStyle="italic"
+                        android:text="sisa modal dari total(struk x harga beli)"
+                        android:textAlignment="center"/>
                 </LinearLayout>
 
-                <com.rfl.trn.starr_cell.Custom.MyTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/dp_16"
-                    android:textStyle="italic"
-                    android:text="sisa modal dari total(struk x harga beli)"
-                    android:textAlignment="center"/>
+
 
                 <android.support.v7.widget.CardView
 
@@ -397,9 +398,6 @@
                                 android:textStyle="normal"
                                 tools:targetApi="m"
                                 android:layout_marginBottom="@dimen/dp_4"/>
-
-
-
                         </LinearLayout>
 
                     </LinearLayout>
@@ -407,8 +405,6 @@
 
                 </android.support.v7.widget.CardView>
             </LinearLayout>
-
-
         </io.supercharge.shimmerlayout.ShimmerLayout>
     </ScrollView>
 

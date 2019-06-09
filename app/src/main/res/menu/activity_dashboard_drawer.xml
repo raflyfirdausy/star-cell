@@ -34,6 +34,10 @@
             android:id="@+id/nav_transaksi"
             android:icon="@drawable/ic_transaksi"
             android:title="@string/transaksi" />
+        <item
+            android:id="@+id/nav_laporan"
+            android:icon="@drawable/ic_transaksi"
+            android:title="@string/laporan" />
 
     </group>
 
