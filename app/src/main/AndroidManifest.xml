@@ -28,12 +28,14 @@
         android:theme="@style/AppTheme"
         tool:ignore="GoogleAppIndexingWarning"
         tool:replace="android:icon">
-        <activity android:name=".Activity.AdminLaporanUmumActivity"></activity>
+        <activity android:name=".Activity.AdminSemuaLaporanLayoutActivity"></activity>
+        <activity android:name=".Activity.AdminLaporanSemuaActivity" />
+        <activity android:name=".Activity.AdminLaporanUmumActivity" />
         <activity
             android:name=".Fragment.Karyawan.PenjualanBarangActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
-            tool:ignore="InnerclassSeparator"></activity>
+            tool:ignore="InnerclassSeparator" />
         <activity
             android:name=".ActivityKaryawan.ListCurrentKaryawanActivity"
             tool:ignore="InnerclassSeparator" />

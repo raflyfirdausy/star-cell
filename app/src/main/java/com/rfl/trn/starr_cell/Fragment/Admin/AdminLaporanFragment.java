@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.google.firebase.database.DatabaseReference;
+import com.rfl.trn.starr_cell.Activity.AdminLaporanSemuaActivity;
 import com.rfl.trn.starr_cell.Activity.AdminLaporanUmumActivity;
 import com.rfl.trn.starr_cell.Custom.MyTextView;
 import com.rfl.trn.starr_cell.R;
@@ -33,26 +34,8 @@ import butterknife.Unbinder;
 public class AdminLaporanFragment extends Fragment {
 
 
-    @BindView(R.id.iv_karyawan)
-    ImageView ivKaryawan;
-    @BindView(R.id.tv_namaKonter)
-    MyTextView tvNamaKonter;
-    @BindView(R.id.tv_detailKaryawan)
-    MyTextView tvDetailKaryawan;
-    @BindView(R.id.ll_header)
-    LinearLayout llHeader;
-    @BindView(R.id.iv_icon_card)
-    ImageView ivIconCard;
-    @BindView(R.id.iv_arrowUmum)
-    ImageView ivArrowUmum;
-    @BindView(R.id.cv_laporan_umum)
-    CardView cvLaporanUmum;
-    @BindView(R.id.iv_icon_card2)
-    ImageView ivIconCard2;
     @BindView(R.id.rl_laporanSemua)
     RelativeLayout rlLaporanSemua;
-    @BindView(R.id.cv_laporan_semua)
-    CardView cvLaporanSemua;
     @BindView(R.id.rl_laporanUmum)
     RelativeLayout rlLaporanUmum;
     private Unbinder unbinder;
@@ -89,8 +72,9 @@ public class AdminLaporanFragment extends Fragment {
         startActivity(new Intent(getActivity(), AdminLaporanUmumActivity.class));
     }
 
+    @OnClick(R.id.rl_laporanSemua)
     public void kelaporanSemua() {
-
+        startActivity(new Intent(getActivity(), AdminLaporanSemuaActivity.class));
     }
 
     @Override

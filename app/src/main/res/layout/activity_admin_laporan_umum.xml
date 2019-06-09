@@ -94,7 +94,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginBottom="4dp"
-                                    android:text="@string/nama_karyawan"
+                                    android:text="200"
                                     android:textColor="@color/white"
                                     android:textSize="20sp"
                                     android:textStyle="bold" />
@@ -102,7 +102,7 @@
                                 <com.rfl.trn.starr_cell.Custom.MyTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/_12_12_2017_12_12_wib"
+                                    android:text="Jumlah transaksi"
                                     android:drawablePadding="@dimen/dp_8"
                                     android:gravity="center_vertical"
                                     android:drawableStart="@drawable/ic_access_time_black_24dp"
@@ -167,7 +167,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginBottom="4dp"
-                                    android:text="@string/nama_karyawan"
+                                    android:text="Rp -2536253"
                                     android:textColor="@color/white"
                                     android:textSize="20sp"
                                     android:textStyle="bold" />
@@ -175,7 +175,7 @@
                                 <com.rfl.trn.starr_cell.Custom.MyTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/_12_12_2017_12_12_wib"
+                                    android:text="Keuntungan"
                                     android:drawablePadding="@dimen/dp_8"
                                     android:gravity="center_vertical"
                                     android:drawableStart="@drawable/ic_access_time_black_24dp"
@@ -240,7 +240,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginBottom="4dp"
-                                    android:text="@string/nama_karyawan"
+                                    android:text="Rp 3243545"
                                     android:textColor="@color/white"
                                     android:textSize="20sp"
                                     android:textStyle="bold" />
@@ -248,7 +248,7 @@
                                 <com.rfl.trn.starr_cell.Custom.MyTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/_12_12_2017_12_12_wib"
+                                    android:text="Pendapatan"
                                     android:drawablePadding="@dimen/dp_8"
                                     android:gravity="center_vertical"
                                     android:drawableStart="@drawable/ic_access_time_black_24dp"
@@ -304,12 +304,6 @@
                             android:layout_height="300dp"
                             android:layout_alignParentTop="true"
                             android:background="@color/colorPrimary">
-                            <!--<ProgressBar-->
-                                <!--android:id="@+id/progress_bar2"-->
-                                <!--android:layout_width="wrap_content"-->
-                                <!--android:layout_height="wrap_content"-->
-                                <!--android:layout_gravity="center"-->
-                                <!--/>-->
                         </com.anychart.AnyChartView>
 
                 </LinearLayout>

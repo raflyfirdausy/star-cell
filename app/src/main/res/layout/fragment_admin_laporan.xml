@@ -35,11 +35,10 @@
                 android:padding="10dp">
 
                 <com.rfl.trn.starr_cell.Custom.MyTextView
-                    android:id="@+id/tv_namaKonter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="monospace"
-                    android:text="@string/absensi"
+                    android:text="Owner Star Cell Report"
                     android:textColor="@color/colorPrimary"
                     android:textSize="23sp"
                     android:textStyle="bold" />
@@ -75,7 +74,6 @@
                 android:layout_marginStart="@dimen/dp_4"
                 android:layout_marginEnd="@dimen/dp_4"
                 android:layout_marginBottom="@dimen/dp_2"
-                android:elevation="@dimen/dp_4"
                 app:cardElevation="@dimen/dp_4"
                 android:clickable="true"
                 android:background="?selectableItemBackground">
@@ -128,7 +126,6 @@
                 android:layout_marginStart="@dimen/dp_4"
                 android:layout_marginEnd="@dimen/dp_4"
                 android:layout_marginBottom="@dimen/dp_2"
-                android:elevation="@dimen/dp_4"
                 android:clickable="true"
                 android:background="?selectableItemBackground">
                 <RelativeLayout
