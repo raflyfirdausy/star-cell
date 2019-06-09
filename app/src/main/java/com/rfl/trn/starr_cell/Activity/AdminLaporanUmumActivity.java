@@ -23,6 +23,5 @@ public class AdminLaporanUmumActivity extends AppCompatActivity {
         setContentView(R.layout.activity_admin_laporan_umum);
         ButterKnife.bind(this);
 
-        shimmerText.startShimmerAnimation();
     }
 }

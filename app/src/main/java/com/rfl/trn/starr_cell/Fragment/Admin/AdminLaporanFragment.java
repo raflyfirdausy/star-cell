@@ -45,8 +45,6 @@ public class AdminLaporanFragment extends Fragment {
     ImageView ivIconCard;
     @BindView(R.id.iv_arrowUmum)
     ImageView ivArrowUmum;
-    @BindView(R.id.rl_pengaturanUmum)
-    RelativeLayout rlPengaturanUmum;
     @BindView(R.id.cv_laporan_umum)
     CardView cvLaporanUmum;
     @BindView(R.id.iv_icon_card2)
@@ -55,6 +53,8 @@ public class AdminLaporanFragment extends Fragment {
     RelativeLayout rlLaporanSemua;
     @BindView(R.id.cv_laporan_semua)
     CardView cvLaporanSemua;
+    @BindView(R.id.rl_laporanUmum)
+    RelativeLayout rlLaporanUmum;
     private Unbinder unbinder;
 
     private boolean arrowIsUp = true;
@@ -84,11 +84,12 @@ public class AdminLaporanFragment extends Fragment {
 
     //TODO :: FetchData
     //TODO :: Bind
-    @OnClick(R.id.cv_laporan_semua)
-    public void kelaporanUmum(){
+    @OnClick(R.id.rl_laporanUmum)
+    public void kelaporanUmum() {
         startActivity(new Intent(getActivity(), AdminLaporanUmumActivity.class));
     }
-    public void  kelaporanSemua(){
+
+    public void kelaporanSemua() {
 
     }
 
