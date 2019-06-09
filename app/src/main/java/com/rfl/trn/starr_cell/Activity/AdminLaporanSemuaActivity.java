@@ -24,7 +24,7 @@ public class AdminLaporanSemuaActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.rl_laporanHariIni)
-    private void laporanHariIni(){
+    public void laporanHariIni(){
         startActivity(new Intent(context,AdminSemuaLaporanLayoutActivity.class));
     }
 }
