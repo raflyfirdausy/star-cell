@@ -110,5 +110,7 @@ dependencies {
     // TODO : https://github.com/traex/RippleEffect
     // TODO : https://github.com/NaturalizerINA/AndroidNumberSeparator
     implementation 'com.github.NaturalizerINA:AndroidNumberSeparator:1.0.2'
+
+    implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
 }
 apply plugin: 'com.google.gms.google-services'
