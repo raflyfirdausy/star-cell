@@ -241,7 +241,8 @@ public class AdapterListPengaturanKonter extends RecyclerView.Adapter<AdapterLis
             rlItemParent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    context.startActivity(new Intent(context, PengaturanKonterActivity.class));
+                    context.startActivity(new Intent(context, PengaturanKonterActivity.class)
+                    .putExtra("key",konterModel.getKey()));
                 }
             });
 

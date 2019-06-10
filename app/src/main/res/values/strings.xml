@@ -149,4 +149,6 @@
     <string name="cash">Cash</string>
     <string name="transfer">Transfer</string>
     <string name="_123456789">123456789</string>
+    <string name="pengaturan">Pengaturan</string>
+    <string name="laporan">Laporan</string>
 </resources>

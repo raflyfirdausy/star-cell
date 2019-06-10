@@ -28,9 +28,19 @@
         android:theme="@style/AppTheme"
         tool:ignore="GoogleAppIndexingWarning"
         tool:replace="android:icon">
-        <activity android:name=".PembayaranActivity"
+        <activity
+            android:name=".Activity.AdminSemuaLaporanLayoutActivity"
+            tool:ignore="InnerclassSeparator" />
+        <activity
+            android:name=".Activity.AdminLaporanSemuaActivity"
+            tool:ignore="InnerclassSeparator" />
+        <activity
+            android:name=".Activity.AdminLaporanUmumActivity"
+            tool:ignore="InnerclassSeparator" />
+        <activity
+            android:name=".PembayaranActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
-            tool:ignore="InnerclassSeparator"/>
+            tool:ignore="InnerclassSeparator" />
         <activity
             android:name=".Fragment.Karyawan.PenjualanBarangActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

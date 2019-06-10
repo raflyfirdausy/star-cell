@@ -34,6 +34,10 @@
             android:id="@+id/nav_transaksi"
             android:icon="@drawable/ic_transaksi"
             android:title="@string/transaksi" />
+        <item
+            android:id="@+id/nav_laporan"
+            android:icon="@drawable/ic_transaksi"
+            android:title="@string/laporan" />
 
     </group>
 
@@ -41,8 +45,8 @@
         <menu>
             <item
                 android:id="@+id/nav_Pengaturan"
-                android:icon="@drawable/ic_option_menu"
-                android:title="Pengaturan"/>
+                android:icon="@drawable/ic_settings_black"
+                android:title="@string/pengaturan"/>
             <item
                 android:id="@+id/nav_ubahKataSandi"
                 android:icon="@drawable/ic_pass"

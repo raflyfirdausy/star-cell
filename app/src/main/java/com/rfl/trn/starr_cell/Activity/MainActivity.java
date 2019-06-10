@@ -35,6 +35,7 @@ import com.rfl.trn.starr_cell.Fragment.Admin.AdminBarangFragment;
 import com.rfl.trn.starr_cell.Fragment.Admin.AdminDashboardFragment;
 import com.rfl.trn.starr_cell.Fragment.Admin.AdminKaryawanFragment;
 import com.rfl.trn.starr_cell.Fragment.Admin.AdminKonterFragment;
+import com.rfl.trn.starr_cell.Fragment.Admin.AdminLaporanFragment;
 import com.rfl.trn.starr_cell.Fragment.Admin.AdminPengaturanFragment;
 import com.rfl.trn.starr_cell.Fragment.Admin.AdminTransaksiFragment;
 import com.rfl.trn.starr_cell.Fragment.Admin.AdminUbahKataSandiFragment;
@@ -188,6 +189,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_Pengaturan){
             Objects.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.Pengaturan));
             FT.replace(R.id.fl_content, new AdminPengaturanFragment(),"admin_pengaturan").commit();
+        }else if (id == R.id.nav_laporan){
+            Objects.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.Pengaturan));
+            FT.replace(R.id.fl_content, new AdminLaporanFragment(),"admin_laporan").commit();
         }else if (id == R.id.nav_logout) {
             new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
                     .setTitleText("Peringatan")
