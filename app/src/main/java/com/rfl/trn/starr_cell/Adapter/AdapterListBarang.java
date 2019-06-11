@@ -182,6 +182,50 @@ public class AdapterListBarang extends RecyclerView.Adapter<AdapterListBarang.My
         }
         notifyDataSetChanged();
     }
+    public void filterKonter(String idKonter){
+        data.clear();
+        if (idKonter.length() == 0){
+            data.addAll(dataSementara);
+        }else {
+            for (int i = 0; i < dataSementara.size(); i++){
+                if (dataSementara.get(i).getIdKonter().contains(idKonter))
+                {
+                    data.add(dataSementara.get(i));
+                }
+            }
+        }
+
+        notifyDataSetChanged();
+    }
+    public void filterKategori(String idKategori){
+        data.clear();
+        if (idKategori.length() == 0){
+            data.addAll(dataSementara);
+        }else {
+            for (int i = 0; i < dataSementara.size(); i++){
+                if (dataSementara.get(i).getIdKategori().contains(idKategori))
+                {
+                    data.add(dataSementara.get(i));
+                }
+            }
+        }
+
+        notifyDataSetChanged();
+    }
+    public void filterKonterdanKategori(String idKonter,String idKategori){
+        data.clear();
+        if (idKonter.length() == 0){
+            data.addAll(dataSementara);
+        }else {
+            for (int i = 0; i < dataSementara.size(); i++){
+                if (dataSementara.get(i).getIdKonter().contains(idKonter) || dataSementara.get(i).getIdKategori().contains(idKategori))
+                {
+                    data.add(dataSementara.get(i));
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
 }
 
 

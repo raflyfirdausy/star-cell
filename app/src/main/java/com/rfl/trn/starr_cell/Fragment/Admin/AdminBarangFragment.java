@@ -190,13 +190,16 @@ public class AdminBarangFragment extends Fragment {
                     getAllBarang();
                     new Bantuan(getActivity()).toastLong("semua barang");
                 }else if (item.equalsIgnoreCase("semua")){
-                    getFilterKategori();
+                    //getFilterKategori();
+                    adapterListBarang.filterKategori(idKategori);
                     new Bantuan(getActivity()).toastLong("per kategori");
                 }else if (idKategori.equalsIgnoreCase("semua")){
-                    getFilterKonter();
+                    //getFilterKonter();
+                    adapterListBarang.filterKonter(idKonter);
                     new Bantuan(getActivity()).toastLong("per konter");
                 }else {
-                    getFilterKonterAndKategori();
+                    //getFilterKonterAndKategori();
+                    adapterListBarang.filterKonterdanKategori(idKonter,idKategori);
                     new Bantuan(getActivity()).toastLong("per konter dan kategori");
                 }
 
@@ -213,13 +216,16 @@ public class AdminBarangFragment extends Fragment {
                     getAllBarang();
                     new Bantuan(getActivity()).toastLong("semua barang");
                 }else if (item.equalsIgnoreCase("semua")){
-                    getFilterKonter();
+                    //getFilterKonter();
+                    adapterListBarang.filterKonter(idKonter);
                     new Bantuan(getActivity()).toastLong("per konter");
                 }else if(idKonter.equalsIgnoreCase("semua")){
-                    getFilterKategori();
+                    //getFilterKategori();
+                    adapterListBarang.filterKonter(idKonter);
                     new Bantuan(getActivity()).toastLong("per kategori");
                 }else {
-                    getFilterKonterAndKategori();
+                    //getFilterKonterAndKategori();
+                    adapterListBarang.filterKonterdanKategori(idKonter,idKategori);
                     new Bantuan(getActivity()).toastLong("per kategori dan konter");
                 }
 //
