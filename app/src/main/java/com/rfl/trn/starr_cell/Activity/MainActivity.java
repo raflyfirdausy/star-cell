@@ -21,11 +21,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -39,6 +36,7 @@ import com.rfl.trn.starr_cell.Fragment.Admin.AdminLaporanFragment;
 import com.rfl.trn.starr_cell.Fragment.Admin.AdminPengaturanFragment;
 import com.rfl.trn.starr_cell.Fragment.Admin.AdminTransaksiFragment;
 import com.rfl.trn.starr_cell.Fragment.Admin.AdminUbahKataSandiFragment;
+import com.rfl.trn.starr_cell.Fragment.Karyawan.PenjualanBarangActivity;
 import com.rfl.trn.starr_cell.Helper.Bantuan;
 import com.rfl.trn.starr_cell.R;
 
@@ -91,18 +89,18 @@ public class MainActivity extends AppCompatActivity
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
-            @Override
-            public void onSuccess(InstanceIdResult instanceIdResult) {
-                instanceId = instanceIdResult.getToken();
+                    @Override
+                    public void onSuccess(InstanceIdResult instanceIdResult) {
+                        instanceId = instanceIdResult.getToken();
 
-                                    databaseReference
-                                            .child("admin")
-                                            .child(user.getUid())
-                                            .child("instanceId")
-                                            .setValue(instanceId);
+                        databaseReference
+                                .child("admin")
+                                .child(user.getUid())
+                                .child("instanceId")
+                                .setValue(instanceId);
 
-            }
-        });
+                    }
+                });
     }
 
     @Override
@@ -186,13 +184,13 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_transaksi) {
             Objects.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.transaksi));
             FT.replace(R.id.fl_content, new AdminTransaksiFragment(), "admin_transaksi").commit();
-        } else if (id == R.id.nav_Pengaturan){
+        } else if (id == R.id.nav_Pengaturan) {
             Objects.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.Pengaturan));
-            FT.replace(R.id.fl_content, new AdminPengaturanFragment(),"admin_pengaturan").commit();
-        }else if (id == R.id.nav_laporan){
+            FT.replace(R.id.fl_content, new AdminPengaturanFragment(), "admin_pengaturan").commit();
+        } else if (id == R.id.nav_laporan) {
             Objects.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.Pengaturan));
-            FT.replace(R.id.fl_content, new AdminLaporanFragment(),"admin_laporan").commit();
-        }else if (id == R.id.nav_logout) {
+            FT.replace(R.id.fl_content, new AdminLaporanFragment(), "admin_laporan").commit();
+        } else if (id == R.id.nav_logout) {
             new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
                     .setTitleText("Peringatan")
                     .setContentText("Apakah kamu ingin logout dari aplikasi ?")
@@ -219,9 +217,11 @@ public class MainActivity extends AppCompatActivity
                         }
                     })
                     .show();
-        } else if(id == R.id.nav_ubahKataSandi){
+        } else if (id == R.id.nav_ubahKataSandi) {
             Objects.requireNonNull(getSupportActionBar()).setSubtitle(getString(R.string.ubah_kata_sandi));
             FT.replace(R.id.fl_content, new AdminUbahKataSandiFragment(), "admin_ubahKataSandi").commit();
+        } else if (id == R.id.nav_penjualan) {
+            startActivity(new Intent(context, PenjualanBarangActivity.class));
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);

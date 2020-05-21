@@ -3,16 +3,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_flare"
+
     android:padding="@dimen/dp_16"
     tools:context=".Fragment.Karyawan.DashboardKaryawanFragment">
 
-
-    <ImageView
-        android:id="@+id/coba"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="fitXY" />
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dashboard Coming Soon!"/>
+
+        <ImageView
+            android:id="@+id/coba"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY" />
+    </LinearLayout>
+
 
 
 </ScrollView>
